@@ -15,6 +15,9 @@
                 <flux:navbar.item icon="home" href="/" :current="request()->is('/')">
                     {{ __('Home') }}
                 </flux:navbar.item>
+                <flux:navbar.item icon="calendar" href="events" :current="request()->is('events')">
+                    {{ __('Events') }}
+                </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
@@ -38,6 +41,9 @@
                 <flux:navlist.group :heading="__('Platform')">
                     <flux:navlist.item icon="layout-grid" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
                     {{ __('Home') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="layout-grid" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>
+                    {{ __('Events') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

@@ -1,3 +1,19 @@
+@php
+    // Map event tags to badge colors
+    $tagColors = [
+        'Sports' => 'blue',
+        'Education' => 'emerald',
+        'Technology' => 'cyan',
+        'Culture' => 'amber',
+        'Entertainment' => 'fuchsia',
+        'Health' => 'green',
+        'Business' => 'rose',
+        'Environment' => 'lime',
+        'Art' => 'purple',
+        'Science' => 'indigo',
+    ];
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
@@ -100,22 +116,25 @@
             </div>
 
             <!--Events Sections-->
-            <div class="grid-rows-4">
-                <flux:heading class="text-4xl text-center p-6" size="xl">Events 活动</flux:heading>
-                <article class="group flex rounded-radius max-w-sm flex-col overflow-hidden border border-outline bg-surface-alt text-on-surface dark:border-outline-dark dark:bg-surface-dark-alt dark:text-on-surface-dark">
-                    <div class="h-44 md:h-64 overflow-hidden"> 
-                        <img src="http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg" class="object-cover transition duration-700 ease-out group-hover:scale-105" alt="a penguin robot talking with a human" />
-                    </div>
-                    <div class="flex flex-col gap-4 p-6">
-                        <span class="text-sm font-medium">Features</span>
-                        <h3 class="text-balance text-xl lg:text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong" aria-describedby="featureDescription">Penguai can teach you Javascript</h3>
-                        <p id="featureDescription" class="text-pretty text-sm">
-                            Learning JavaScript doesn't need to be difficult. Our penguin AI
-                            robot can learn how much you know and will go at your speed.
-                            Although Penguai is small, he's got a mighty big CPU.
-                        </p>
-                    </div>
-                </article>
+            <div class="mt-6">
+                <flux:heading size="xl">Events</flux:heading>
+                <flux:heading size="lg">Explore what's happening in KKHS.</flux:heading>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+                    @foreach($events as $event)
+                        <article class="group flex rounded-radius max-w-sm flex-col overflow-hidden border border-outline bg-surface-alt dark:border-outline-dark dark:bg-surface-dark-alt">
+                            <div class="h-44 md:h-64 overflow-hidden">
+                                <img src="{{ $event->image_url ?? 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}" class="object-cover transition duration-700 ease-out group-hover:scale-105" alt="{{ $event->title }}" />
+                            </div>
+                            <div class="flex flex-col gap-4 p-6">
+                                <div class="inline-block items-end">
+                                    <flux:badge color="{{ $tagColors[$event->tag] ?? 'zinc' }}" class="inline">{{ $event->tag }}</flux:badge>
+                                </div>
+                                <h3 class="text-xl font-bold">{{ $event->title }}</h3>
+                                <p class="text-sm">{{ $event->description }}</p>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
             </div>
 
         </x-layouts.app>
