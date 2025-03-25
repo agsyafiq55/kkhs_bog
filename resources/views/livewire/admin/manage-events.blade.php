@@ -35,10 +35,11 @@
             @error('event_date') <p class="text-red-500">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Tag Dropdown using flux:select -->
+        <!-- Tag Dropdown-->
         <div>
             <flux:text variant="strong" class="mb-2">Tag</flux:text>
-            <flux:select wire:model="tag" placeholder="Choose Tag...">
+            <flux:select id="tag" size="sm" wire:model="tag">
+                <flux:select.option value="Choose Tag..">Choose Tag..</flux:select.option>
                 <flux:select.option value="Sports">Sports</flux:select.option>
                 <flux:select.option value="Education">Education</flux:select.option>
                 <flux:select.option value="Technology">Technology</flux:select.option>
@@ -52,12 +53,16 @@
             </flux:select>
             @error('tag') <p class="text-red-500">{{ $message }}</p> @enderror
         </div>
+
         <flux:separator variant="subtle" />
+        
         <div mt-2>
             <flux:textarea
+                id="article"
+                wire:model="article"
                 label="Article Content"
                 placeholder="Write about what's happening in KKHS!"
-            />
+            ></flux:textarea> 
             @error('article') <p class="text-red-500">{{ $message }}</p> @enderror
         </div>
 
