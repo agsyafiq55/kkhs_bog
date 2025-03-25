@@ -14,7 +14,7 @@
 
 
     <!-- Event Form -->
-    <form wire:submit.prevent="save" class="space-y-4">
+    <form wire:submit.prevent="save" enctype="multipart/form-data" class="space-y-4">
         <flux:heading class="mb-0">Event Details</flux:heading>
         <flux:text class="mt-1">Enter the details of the event.</flux:text>
         <div>
@@ -62,15 +62,48 @@
                 wire:model="article"
                 label="Article Content"
                 placeholder="Write about what's happening in KKHS!"
-            ></flux:textarea> 
+            ></flux:textarea>
             @error('article') <p class="text-red-500">{{ $message }}</p> @enderror
         </div>
 
         <div>
             <flux:text variant="strong" class="mb-2">Thumbnail</flux:text>
-            <flux:input type="file" id="thumbnail" wire:model="thumbnail" class="border-none outline-none" />
+            
+            <!-- Option 1: Try setting additional attributes on Flux input -->
+            <!-- 
+            <flux:input 
+                type="file" 
+                id="thumbnail" 
+                wire:model="thumbnail" 
+                class="border-none outline-none"
+                accept="image/*"
+            />
+            -->
+            
+            <!-- Option 2: Use standard HTML input instead of Flux component -->
+            <input 
+                type="file" 
+                id="thumbnail" 
+                wire:model="thumbnail"
+                class="block w-full text-sm text-gray-500
+                       file:mr-4 file:py-2 file:px-4
+                       file:rounded file:border-0
+                       file:text-sm file:font-semibold
+                       file:bg-blue-50 file:text-blue-700
+                       hover:file:bg-blue-100"
+                accept="image/*"
+            />
+            
             <small class="pl-0.5">PNG, JPG, WebP - Max 5MB</small>
             @error('thumbnail') <p class="text-red-500">{{ $message }}</p> @enderror
+            
+            <!-- Add image preview -->
+            @if ($thumbnail && method_exists($thumbnail, 'temporaryUrl'))
+                <div class="mt-2">
+                    <p>Preview:</p>
+                    <img src="{{ $thumbnail->temporaryUrl() }}" class="w-32 h-32 object-cover rounded" alt="Thumbnail preview">
+                </div>
+            @endif
         </div>
 
         <flux:button type="submit" class="bg-blue-500 text-white p-2 rounded">
@@ -78,15 +111,23 @@
         </flux:button>
     </form>
 
-    <!-- Event List -->
+    <!--Existing Events-->
     <div class="mt-6">
         <h2 class="text-xl font-semibold mb-4">Existing Events</h2>
         <ul class="space-y-2">
             @foreach($events as $event)
-                <li class="flex justify-between items-center">
+                <li class="flex justify-between items-center p-4 border rounded">
                     <div>
                         <strong>{{ $event->title }}</strong> ({{ $event->event_date }})
                         <p>{{ $event->description }}</p>
+                        
+                        <!-- Display thumbnail if available -->
+                        @if($event->thumbnail)
+                            <div class="mt-1">
+                                <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}" 
+                                     class="w-16 h-16 object-cover rounded" alt="Event thumbnail">
+                            </div>
+                        @endif
                     </div>
                     <div class="space-x-2">
                         <flux:button wire:click="edit({{ $event->id }})" class="text-blue-500">Edit</flux:button>

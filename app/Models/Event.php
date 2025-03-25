@@ -18,3 +18,6 @@ class Event extends Model
         'tag',
     ];
 }
+
+
+
