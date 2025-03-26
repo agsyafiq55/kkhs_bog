@@ -109,6 +109,7 @@
         <flux:button type="submit" class="bg-blue-500 text-white p-2 rounded">
             {{ $eventId ? 'Update Event' : 'Create Event' }}
         </flux:button>
+        <button x-on:click="$dispatch('notify', { variant: 'success', title: 'Success!',  message: 'Your changes have been saved. Keep up the great work!' })" type="button" class="whitespace-nowrap rounded-radius bg-success px-4 py-2 text-center text-sm font-medium tracking-wide text-on-success transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-success active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75">Save</button>
     </form>
 
     <!--Existing Events-->
@@ -117,17 +118,18 @@
         <ul class="space-y-2">
             @foreach($events as $event)
                 <li class="flex justify-between items-center p-4 border rounded">
-                    <div>
-                        <strong>{{ $event->title }}</strong> ({{ $event->event_date }})
-                        <p>{{ $event->description }}</p>
-                        
+                    <div class="flex">
                         <!-- Display thumbnail if available -->
                         @if($event->thumbnail)
-                            <div class="mt-1">
+                            <div>
                                 <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}" 
-                                     class="w-16 h-16 object-cover rounded" alt="Event thumbnail">
+                                     class="w-32 h-32 object-cover rounded" alt="Event thumbnail">
                             </div>
                         @endif
+                        <div class="ml-3">
+                            <strong>{{ $event->title }}</strong> ({{ $event->event_date }})
+                            <p>{{ $event->description }}</p>
+                        </div>
                     </div>
                     <div class="space-x-2">
                         <flux:button wire:click="edit({{ $event->id }})" class="text-blue-500">Edit</flux:button>

@@ -19,7 +19,7 @@ class ManageEvents extends Component
     public $thumbnail = null;
     public $tag = '';
     public $eventId = null;
-    
+
     // For debugging
     public $debugInfo = '';
 
@@ -62,11 +62,11 @@ class ManageEvents extends Component
         try {
             // Debug info
             $this->debugInfo = 'Starting save process...';
-            
+
             // Validate all fields at once
             $validated = $this->validate($this->rules(), $this->messages());
             $this->debugInfo .= ' Validation passed.';
-            
+
             // Prepare data array without thumbnail
             $data = [
                 'title' => $this->title,
@@ -75,16 +75,16 @@ class ManageEvents extends Component
                 'event_date' => $this->event_date,
                 'tag' => $this->tag,
             ];
-            
+
             // Process thumbnail if it exists
             if ($this->thumbnail) {
                 $this->debugInfo .= ' Processing thumbnail...';
-                
+
                 try {
                     // Get path and read the file
                     $imagePath = $this->thumbnail->getRealPath();
                     $this->debugInfo .= ' Image path found.';
-                    
+
                     $imageContent = file_get_contents($imagePath);
                     if ($imageContent !== false) {
                         $data['thumbnail'] = $imageContent;
@@ -97,17 +97,17 @@ class ManageEvents extends Component
                     Log::error('Thumbnail processing error', ['error' => $e->getMessage()]);
                 }
             }
-            
+
             // Create or update the event
             if ($this->eventId) {
                 $event = Event::find($this->eventId);
-                
+
                 // Keep existing thumbnail if no new one provided
                 if (!$this->thumbnail && $event) {
                     unset($data['thumbnail']);
                     $this->debugInfo .= ' Keeping existing thumbnail.';
                 }
-                
+
                 $event->update($data);
                 $this->debugInfo .= ' Event updated successfully.';
                 session()->flash('message', 'Event updated successfully!');
@@ -116,29 +116,28 @@ class ManageEvents extends Component
                 $this->debugInfo .= ' Event created successfully with ID: ' . $event->id;
                 session()->flash('message', 'Event created successfully!');
             }
-            
+
             // Check if thumbnail was saved correctly
             if (isset($event) && $event->id) {
                 $savedEvent = Event::find($event->id);
                 if ($savedEvent && $this->thumbnail) {
                     $thumbExists = !empty($savedEvent->thumbnail);
                     $thumbSize = $thumbExists ? strlen($savedEvent->thumbnail) : 0;
-                    $this->debugInfo .= " Thumbnail saved: " . ($thumbExists ? 'Yes' : 'No') . 
-                                      ". Size: {$thumbSize} bytes.";
+                    $this->debugInfo .= " Thumbnail saved: " . ($thumbExists ? 'Yes' : 'No') .
+                        ". Size: {$thumbSize} bytes.";
                 }
             }
-            
+
             // Reset form fields
             $this->reset(['title', 'description', 'article', 'event_date', 'thumbnail', 'tag', 'eventId']);
             $this->resetValidation();
-            
         } catch (\Exception $e) {
             $this->debugInfo = 'Error: ' . $e->getMessage();
             Log::error('Event save error', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             session()->flash('error', 'Error saving event: ' . $e->getMessage());
         }
     }
-    
+
     public function edit($id)
     {
         try {
@@ -150,11 +149,11 @@ class ManageEvents extends Component
             $this->event_date = $event->event_date;
             $this->tag = $event->tag;
             // Note: We don't set $this->thumbnail because it expects a fresh upload
-            
+
             $hasThumb = !empty($event->thumbnail);
             $thumbSize = $hasThumb ? strlen($event->thumbnail) : 0;
-            $this->debugInfo = "Editing event {$id}. Has thumbnail: " . ($hasThumb ? 'Yes' : 'No') . 
-                             ". Thumbnail size: {$thumbSize} bytes.";
+            $this->debugInfo = "Editing event {$id}. Has thumbnail: " . ($hasThumb ? 'Yes' : 'No') .
+                ". Thumbnail size: {$thumbSize} bytes.";
         } catch (\Exception $e) {
             $this->debugInfo = 'Error editing event: ' . $e->getMessage();
             session()->flash('error', 'Error editing event: ' . $e->getMessage());
@@ -173,14 +172,20 @@ class ManageEvents extends Component
         }
     }
 
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('events.show', compact('event'));
+    }
+
     public function render()
     {
-        $events = Event::orderBy('created_at', 'desc')->get()->map(function($event) {
+        $events = Event::orderBy('created_at', 'desc')->get()->map(function ($event) {
             // Add a property to indicate if thumbnail exists
             $event->has_thumbnail = !empty($event->thumbnail);
             return $event;
         });
-        
+
         return view('livewire.admin.manage-events', [
             'events' => $events,
             'debugInfo' => $this->debugInfo,
