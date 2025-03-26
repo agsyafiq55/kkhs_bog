@@ -12,19 +12,22 @@
         <a href="/" class="ml-2 mr-5 flex items-center space-x-2 lg:ml-0">
             <x-app-logo />
         </a>
-
+        <!-- LINKS FOR DESKTOP -->
         <flux:navbar class="-mb-px max-lg:hidden">
-            <flux:navbar.item icon="home" href="/" :current="request()->is('/')">
-                {{ __('Home') }}
-            </flux:navbar.item>
             <flux:navbar.item icon="calendar" href="{{ route('events') }}" :current="request()->is('events')">
                 {{ __('Events') }}
+            </flux:navbar.item>
+            <flux:navbar.item icon="user" href="{{ route('gallery') }}" :current="request()->is('gallery')">
+                {{ __('Gallery') }}
             </flux:navbar.item>
         </flux:navbar>
 
         <flux:spacer />
 
         <flux:navbar class="mr-1.5 space-x-0.5 py-0!">
+            <flux:navbar.item icon="user" href="{{ route('about-us') }}" :current="request()->is('about-us')">
+                {{ __('About Us') }}
+            </flux:navbar.item>
             <flux:tooltip :content="__('Search')" position="bottom">
                 <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
             </flux:tooltip>
@@ -41,12 +44,13 @@
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Platform')">
+                <!-- Links for mobile -->
                 <flux:navlist.item icon="layout-grid" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
                     {{ __('Home') }}
                 </flux:navlist.item>
                 <flux:navlist.item icon="calendar" href="{{ route('events') }}" :current="request()->is('events')">
-                {{ __('Events') }}
-            </flux:navlist.item>
+                    {{ __('Events') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 

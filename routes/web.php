@@ -10,7 +10,7 @@ require __DIR__.'/admin.php';
 // Landing Page
 Route::get('/', [GuestController::class, 'index'])->name('home');
 
-// Events Page
+// 1. Events Page
 // Index
 Route::get('/events', function () {
     return view('events.index', ['events' => Event::all()]);
@@ -18,3 +18,15 @@ Route::get('/events', function () {
 
 // Show
 Route::get('/events/{id}', [ManageEvents::class, 'show'])->name('events.show');
+
+// 2. Gallery 
+// Index
+Route::get('/gallery', function () {
+    return view('gallery.index');
+})->name('gallery');
+
+
+// About Us
+Route::get('/about-us', function () {
+    return view('about-us');
+})->name('about-us');

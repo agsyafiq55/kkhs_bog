@@ -17,7 +17,7 @@ $tagColors = [
 <x-layouts.app>
     <div class="container mx-auto px-4 py-8">
         <div class="grid md:grid-cols-2 gap-8">
-            <div>
+            <div class="max-h-[300px] w-full object-cover" >
                 @if($event->thumbnail)
                 <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}"
                     class="w-full rounded shadow-md"
