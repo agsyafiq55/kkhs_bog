@@ -11,10 +11,10 @@ require __DIR__.'/admin.php';
 Route::get('/', [GuestController::class, 'index'])->name('home');
 
 // Events Page
-    // Index
+// Index
 Route::get('/events', function () {
     return view('events.index', ['events' => Event::all()]);
-});
-Route::redirect('events', 'events')->name('events');
-    // Show
+})->name('events');
+
+// Show
 Route::get('/events/{id}', [ManageEvents::class, 'show'])->name('events.show');
