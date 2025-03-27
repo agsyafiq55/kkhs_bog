@@ -178,6 +178,18 @@ class ManageEvents extends Component
         return view('events.show', compact('event'));
     }
 
+    // To sort the cards in index from new to old
+    public function index()
+    {
+        // Retrieve events, sorted by event_date in descending order
+        $events = Event::orderBy('event_date', 'desc')->get();
+
+        // Pass them to the index view
+        return view('events.index', compact('events'));
+    }
+
+
+
     public function render()
     {
         $events = Event::orderBy('created_at', 'desc')->get()->map(function ($event) {
