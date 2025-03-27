@@ -14,10 +14,10 @@
         </a>
         <!-- LINKS FOR DESKTOP -->
         <flux:navbar class="-mb-px max-lg:hidden">
-            <flux:navbar.item icon="calendar" href="{{ route('events') }}" :current="request()->is('events')">
+            <flux:navbar.item icon="megaphone" href="{{ route('events') }}" :current="request()->is('events')">
                 {{ __('Events') }}
             </flux:navbar.item>
-            <flux:navbar.item icon="user" href="{{ route('gallery') }}" :current="request()->is('gallery')">
+            <flux:navbar.item icon="photo" href="{{ route('gallery') }}" :current="request()->is('gallery')">
                 {{ __('Gallery') }}
             </flux:navbar.item>
         </flux:navbar>

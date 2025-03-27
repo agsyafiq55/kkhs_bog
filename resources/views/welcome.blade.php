@@ -28,7 +28,7 @@ $tagColors = [
 <body class="min-h-screen bg-white dark:bg-zinc-800">
     <x-layouts.app :title="__('Home')">
 
-        <!-- Main Content -->
+        <!-- Announcements Carousel -->
         <div>
             <div x-data="{            
         // Sets the time between each slides in milliseconds
@@ -151,7 +151,7 @@ $tagColors = [
                 @endforeach
             </div>
         </div>
-        
+
     </x-layouts.app>
     </div>
 
