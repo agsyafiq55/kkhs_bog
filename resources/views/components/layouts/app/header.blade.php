@@ -28,6 +28,9 @@
             <flux:navbar.item icon="user" href="{{ route('about-us') }}" :current="request()->is('about-us')">
                 {{ __('About Us') }}
             </flux:navbar.item>
+            <flux:navbar.item icon="key" href="{{ route('login') }}" :current="request()->is('loginS')">
+                {{ __('Login') }}
+            </flux:navbar.item>
             <flux:tooltip :content="__('Search')" position="bottom">
                 <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
             </flux:tooltip>

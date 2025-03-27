@@ -12,11 +12,11 @@
         <flux:separator variant="subtle" />
     </div>
 
-
     <!-- Event Form -->
     <form wire:submit.prevent="save" enctype="multipart/form-data" class="space-y-4">
         <flux:heading class="mb-0">Event Details</flux:heading>
         <flux:text class="mt-1">Enter the details of the event.</flux:text>
+        
         <div>
             <flux:text variant="strong" class="mb-2">Title</flux:text>
             <flux:input type="text" id="title" wire:model="title" class="border-none outline-none" />
@@ -55,8 +55,8 @@
         </div>
 
         <flux:separator variant="subtle" />
-        
-        <div mt-2>
+
+        <div class="mt-2">
             <flux:textarea
                 id="article"
                 wire:model="article"
@@ -68,19 +68,6 @@
 
         <div>
             <flux:text variant="strong" class="mb-2">Thumbnail</flux:text>
-            
-            <!-- Option 1: Try setting additional attributes on Flux input -->
-            <!-- 
-            <flux:input 
-                type="file" 
-                id="thumbnail" 
-                wire:model="thumbnail" 
-                class="border-none outline-none"
-                accept="image/*"
-            />
-            -->
-            
-            <!-- Option 2: Use standard HTML input instead of Flux component -->
             <input 
                 type="file" 
                 id="thumbnail" 
@@ -93,10 +80,9 @@
                        hover:file:bg-blue-100"
                 accept="image/*"
             />
-            
             <small class="pl-0.5">PNG, JPG, WebP - Max 5MB</small>
             @error('thumbnail') <p class="text-red-500">{{ $message }}</p> @enderror
-            
+
             <!-- Add image preview -->
             @if ($thumbnail && method_exists($thumbnail, 'temporaryUrl'))
                 <div class="mt-2">
@@ -106,37 +92,13 @@
             @endif
         </div>
 
-        <flux:button type="submit" class="bg-blue-500 text-white p-2 rounded">
-            {{ $eventId ? 'Update Event' : 'Create Event' }}
-        </flux:button>
-        <button x-on:click="$dispatch('notify', { variant: 'success', title: 'Success!',  message: 'Your changes have been saved. Keep up the great work!' })" type="button" class="whitespace-nowrap rounded-radius bg-success px-4 py-2 text-center text-sm font-medium tracking-wide text-on-success transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-success active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75">Save</button>
+        <div class="flex space-x-2">
+            <flux:button type="submit" class="bg-blue-500 text-white p-2 rounded">
+                {{ $eventId ? 'Update Event' : 'Create Event' }}
+            </flux:button>
+            <button x-on:click="$dispatch('notify', { variant: 'success', title: 'Success!', message: 'Your changes have been saved. Keep up the great work!' })" type="button" class="whitespace-nowrap rounded bg-success px-4 py-2 text-center text-sm font-medium tracking-wide text-on-success transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-success active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75">
+                Save
+            </button>
+        </div>
     </form>
-
-    <!--Existing Events-->
-    <div class="mt-6">
-        <h2 class="text-xl font-semibold mb-4">Existing Events</h2>
-        <ul class="space-y-2">
-            @foreach($events as $event)
-                <li class="flex justify-between items-center p-4 border rounded">
-                    <div class="flex">
-                        <!-- Display thumbnail if available -->
-                        @if($event->thumbnail)
-                            <div>
-                                <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}" 
-                                     class="w-32 h-32 object-cover rounded" alt="Event thumbnail">
-                            </div>
-                        @endif
-                        <div class="ml-3">
-                            <strong>{{ $event->title }}</strong> ({{ $event->event_date }})
-                            <p>{{ $event->description }}</p>
-                        </div>
-                    </div>
-                    <div class="space-x-2">
-                        <flux:button wire:click="edit({{ $event->id }})" class="text-blue-500">Edit</flux:button>
-                        <flux:button wire:click="delete({{ $event->id }})" class="text-red-500">Delete</flux:button>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-    </div>
 </div>
