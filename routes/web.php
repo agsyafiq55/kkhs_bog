@@ -1,8 +1,8 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuestController;
-use App\Livewire\Admin\ManageEvents;
-use App\Models\Event;
+use App\Http\Controllers\EventController;
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
@@ -11,20 +11,16 @@ require __DIR__.'/admin.php';
 Route::get('/', [GuestController::class, 'index'])->name('home');
 
 // 1. Events Page
-// Index
-Route::get('/events', function () {
-    return view('events.index', ['events' => Event::all()]);
-})->name('events');
+// Index: List all events
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
-// Show
-Route::get('/events/{id}', [ManageEvents::class, 'show'])->name('events.show');
+// Show: Display a single event's details
+Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
 // 2. Gallery 
-// Index
 Route::get('/gallery', function () {
     return view('gallery.index');
 })->name('gallery');
-
 
 // About Us
 Route::get('/about-us', function () {
