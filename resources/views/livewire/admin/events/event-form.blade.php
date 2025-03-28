@@ -1,104 +1,185 @@
-<div>
-    <div class="mb-6">
-        <div class="relative mb-3 w-full flex items-center">
-            <!-- Flux Icon on the left -->
-            <flux:icon name="calendar" class="mr-3 mb-0.5" />
-
-            <!-- Heading -->
-            <flux:heading size="xl" level="1">{{ __('Events Manager') }}</flux:heading>
+<div class="py-6">
+    <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <div class="flex items-center mb-2">
+                <flux:icon name="calendar" class="mr-3 text-indigo-600 dark:text-indigo-400" />
+                <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">{{ __('Events Manager') }}</flux:heading>
+            </div>
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ __('Create, View, Update or Delete Events.') }}</p>
         </div>
-
-        <flux:subheading size="lg" class="mb-6">{{ __('Create, View, Update or Delete Events.') }}</flux:subheading>
-        <flux:separator variant="subtle" />
+        
+        <flux:button href="{{ route('admin.events') }}" class="bg-gray-600 hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            {{ __('Back to Events') }}
+        </flux:button>
     </div>
+    
+    <flux:separator variant="subtle" class="mb-6" />
 
     <!-- Event Form -->
-    <form wire:submit.prevent="save" enctype="multipart/form-data" class="space-y-4">
-        <flux:heading class="mb-0">Event Details</flux:heading>
-        <flux:text class="mt-1">Enter the details of the event.</flux:text>
+    <form wire:submit.prevent="save" enctype="multipart/form-data">
+        <!-- Add form status messages -->
+        @if (session()->has('success'))
+            <div class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400">
+                {{ session('success') }}
+            </div>
+        @endif
         
-        <div>
-            <flux:text variant="strong" class="mb-2">Title</flux:text>
-            <flux:input type="text" id="title" wire:model="title" class="border-none outline-none" />
-            @error('title') <p class="text-red-500">{{ $message }}</p> @enderror
-        </div>
+        @if (session()->has('error'))
+            <div class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+                {{ session('error') }}
+            </div>
+        @endif
 
-        <div>
-            <flux:text variant="strong" class="mb-2">Description</flux:text>
-            <flux:textarea id="description" wire:model="description" class="border-none outline-none"></flux:textarea>
-            @error('description') <p class="text-red-500">{{ $message }}</p> @enderror
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Main Details -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <flux:heading size="lg" class="mb-4">Event Details</flux:heading>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Title</flux:text>
+                            <flux:input type="text" id="title" wire:model.defer="title" placeholder="Enter event title" class="w-full" />
+                            @error('title') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                        </div>
 
-        <div>
-            <flux:text variant="strong" class="mb-2">Event Date</flux:text>
-            <flux:input type="date" id="event_date" wire:model="event_date" class="border-none outline-none" />
-            @error('event_date') <p class="text-red-500">{{ $message }}</p> @enderror
-        </div>
+                        <div>
+                            <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Description</flux:text>
+                            <flux:textarea id="description" wire:model.defer="description" placeholder="Brief description of the event" rows="3" class="w-full"></flux:textarea>
+                            @error('description') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Event Date</flux:text>
+                                <flux:input type="date" id="event_date" wire:model.defer="event_date" class="w-full" />
+                                @error('event_date') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                            </div>
 
-        <!-- Tag Dropdown-->
-        <div>
-            <flux:text variant="strong" class="mb-2">Tag</flux:text>
-            <flux:select id="tag" size="sm" wire:model="tag">
-                <flux:select.option value="Choose Tag..">Choose Tag..</flux:select.option>
-                <flux:select.option value="Sports">Sports</flux:select.option>
-                <flux:select.option value="Education">Education</flux:select.option>
-                <flux:select.option value="Technology">Technology</flux:select.option>
-                <flux:select.option value="Culture">Culture</flux:select.option>
-                <flux:select.option value="Entertainment">Entertainment</flux:select.option>
-                <flux:select.option value="Health">Health</flux:select.option>
-                <flux:select.option value="Business">Business</flux:select.option>
-                <flux:select.option value="Environment">Environment</flux:select.option>
-                <flux:select.option value="Art">Art</flux:select.option>
-                <flux:select.option value="Science">Science</flux:select.option>
-            </flux:select>
-            @error('tag') <p class="text-red-500">{{ $message }}</p> @enderror
-        </div>
-
-        <flux:separator variant="subtle" />
-
-        <div class="mt-2">
-            <flux:textarea
-                id="article"
-                wire:model="article"
-                label="Article Content"
-                placeholder="Write about what's happening in KKHS!"
-            ></flux:textarea>
-            @error('article') <p class="text-red-500">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-            <flux:text variant="strong" class="mb-2">Thumbnail</flux:text>
-            <input 
-                type="file" 
-                id="thumbnail" 
-                wire:model="thumbnail"
-                class="block w-full text-sm text-gray-500
-                       file:mr-4 file:py-2 file:px-4
-                       file:rounded file:border-0
-                       file:text-sm file:font-semibold
-                       file:bg-blue-50 file:text-blue-700
-                       hover:file:bg-blue-100"
-                accept="image/*"
-            />
-            <small class="pl-0.5">PNG, JPG, WebP - Max 5MB</small>
-            @error('thumbnail') <p class="text-red-500">{{ $message }}</p> @enderror
-
-            <!-- Add image preview -->
-            @if ($thumbnail && method_exists($thumbnail, 'temporaryUrl'))
-                <div class="mt-2">
-                    <p>Preview:</p>
-                    <img src="{{ $thumbnail->temporaryUrl() }}" class="w-32 h-32 object-cover rounded" alt="Thumbnail preview">
+                            <div>
+                                <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Tag</flux:text>
+                                <flux:select id="tag" wire:model.defer="tag" class="w-full">
+                                    <flux:select.option value="">Choose Tag..</flux:select.option>
+                                    <flux:select.option value="Sports">Sports</flux:select.option>
+                                    <flux:select.option value="Education">Education</flux:select.option>
+                                    <flux:select.option value="Technology">Technology</flux:select.option>
+                                    <flux:select.option value="Culture">Culture</flux:select.option>
+                                    <flux:select.option value="Entertainment">Entertainment</flux:select.option>
+                                    <flux:select.option value="Health">Health</flux:select.option>
+                                    <flux:select.option value="Business">Business</flux:select.option>
+                                    <flux:select.option value="Environment">Environment</flux:select.option>
+                                    <flux:select.option value="Art">Art</flux:select.option>
+                                    <flux:select.option value="Science">Science</flux:select.option>
+                                </flux:select>
+                                @error('tag') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            @endif
-        </div>
-
-        <div class="flex space-x-2">
-            <flux:button type="submit" class="bg-blue-500 text-white p-2 rounded">
-                {{ $eventId ? 'Update Event' : 'Create Event' }}
-            </flux:button>
-            <button x-on:click="$dispatch('notify', { variant: 'success', title: 'Success!', message: 'Your changes have been saved. Keep up the great work!' })" type="button" class="whitespace-nowrap rounded bg-success px-4 py-2 text-center text-sm font-medium tracking-wide text-on-success transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-success active:opacity-100 active:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-75">
-                Save
-            </button>
+                
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <flux:heading size="lg" class="mb-4">Article Content</flux:heading>
+                    
+                    <div>
+                        <flux:textarea
+                            id="article"
+                            wire:model.defer="article"
+                            placeholder="Write about what's happening in KKHS!"
+                            rows="12"
+                            class="w-full"
+                        ></flux:textarea>
+                        @error('article') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Thumbnail and Actions -->
+            <div class="space-y-6">
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <flux:heading size="lg" class="mb-4">Thumbnail</flux:heading>
+                    
+                    <div x-data="{ previewUrl: '{{ $thumbnail && !is_string($thumbnail) && method_exists($thumbnail, 'temporaryUrl') ? $thumbnail->temporaryUrl() : ($eventId && $thumbnail ? "data:image/jpeg;base64," . base64_encode($thumbnail) : "") }}' }">
+                        <!-- Thumbnail Preview -->
+                        <div class="mb-4 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
+                            <template x-if="previewUrl">
+                                <img :src="previewUrl" class="w-full h-full object-cover" alt="Thumbnail preview">
+                            </template>
+                            <template x-if="!previewUrl">
+                                <div class="text-center p-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No image selected</p>
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <!-- File Upload -->
+                        <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Upload Image</flux:text>
+                        <input 
+                            type="file" 
+                            id="thumbnail" 
+                            wire:model.defer="thumbnail"
+                            x-on:change="previewUrl = URL.createObjectURL($event.target.files[0])"
+                            class="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-indigo-50 file:text-indigo-700
+                                hover:file:bg-indigo-100
+                                dark:text-gray-400 dark:file:bg-zinc-700 dark:file:text-zinc-100"
+                            accept="image/*"
+                        />
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP - Max 5MB</p>
+                        @error('thumbnail') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <flux:heading size="lg" class="mb-4">Actions</flux:heading>
+                    
+                    <div class="space-y-3">
+                        <flux:button 
+                            type="submit" 
+                            wire:loading.attr="disabled"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 transition-colors text-center py-3">
+                            <span wire:loading.remove wire:target="save">{{ $eventId ? 'Update Event' : 'Create Event' }}</span>
+                            <span wire:loading wire:target="save">
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Processing...
+                            </span>
+                        </flux:button>
+                        
+                        <flux:button 
+                            type="button"
+                            href="{{ route('admin.events') }}"
+                            class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:text-white transition-colors text-center py-3">
+                            Cancel
+                        </flux:button>
+                    </div>
+                </div>
+                
+                <!-- Form Debug Info (for development) -->
+                @if(config('app.debug'))
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <flux:heading size="lg" class="mb-4">Debug Info</flux:heading>
+                    <div class="text-xs font-mono overflow-x-auto">
+                        <p>Title: {{ $title }}</p>
+                        <p>Description: {{ $description }}</p>
+                        <p>Event Date: {{ $event_date }}</p>
+                        <p>Tag: {{ $tag }}</p>
+                        <p>Has Article: {{ !empty($article) ? 'Yes' : 'No' }}</p>
+                        <p>Has Thumbnail: {{ $thumbnail ? 'Yes' : 'No' }}</p>
+                    </div>
+                </div>
+                @endif
+            </div>
         </div>
     </form>
 </div>
