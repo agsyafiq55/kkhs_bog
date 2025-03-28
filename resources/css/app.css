@@ -180,3 +180,35 @@ select:focus[data-flux-control] {
 \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* Landing Page Hero BG Blob Animation */
+@layer utilities {
+  .animation-delay-0 {
+    animation-delay: 0s;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1) rotate(0deg);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1) rotate(20deg);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9) rotate(-15deg);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1) rotate(0deg);
+    }
+  }
+  
+  .animate-blob {
+    animation: blob 15s infinite;
+  }
+}
