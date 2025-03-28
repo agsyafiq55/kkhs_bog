@@ -78,13 +78,19 @@ class EventForm extends Component
     // Save (create or update) event.
     public function save()
     {
-        // Add debug info before validation
-        $this->debugInfo = "Thumbnail type: " . (is_object($this->thumbnail) ? get_class($this->thumbnail) : gettype($this->thumbnail));
-        
-        // Validate the form data
-        $this->validate($this->rules(), $this->messages());
-    
         try {
+            $this->debugInfo = 'Starting save process...';
+            
+            // Dump thumbnail info for debugging
+            $this->debugInfo .= ' Thumbnail type: ' . gettype($this->thumbnail);
+            if (is_object($this->thumbnail)) {
+                $this->debugInfo .= ' Class: ' . get_class($this->thumbnail);
+            }
+            
+            // Validate the form data
+            $this->validate($this->rules(), $this->messages());
+            $this->debugInfo .= ' Validation passed.';
+            
             // Create or update the event
             $event = $this->eventId ? Event::find($this->eventId) : new Event();
             $event->title = $this->title;
@@ -93,38 +99,81 @@ class EventForm extends Component
             $event->tag = $this->tag;
             $event->article = $this->article;
             
-            // Enhanced thumbnail debugging and handling
+            // Process thumbnail - enhanced handling
             if ($this->thumbnail) {
-                Log::info('Thumbnail object type: ' . gettype($this->thumbnail));
+                $this->debugInfo .= ' Processing thumbnail...';
                 
-                if (is_object($this->thumbnail) && method_exists($this->thumbnail, 'getClientOriginalName')) {
-                    Log::info('Thumbnail file name: ' . $this->thumbnail->getClientOriginalName());
-                    Log::info('Thumbnail file size: ' . $this->thumbnail->getSize());
-                    
-                    // Store the raw file contents for LONGBLOB
-                    $event->thumbnail = file_get_contents($this->thumbnail->getRealPath());
-                    $this->debugInfo .= "\nThumbnail processed successfully";
-                } else {
-                    Log::warning('Thumbnail is not a valid file upload object');
-                    $this->debugInfo .= "\nThumbnail is not a valid file upload object";
+                try {
+                    // For Livewire temporary uploads
+                    if (is_object($this->thumbnail) && method_exists($this->thumbnail, 'getRealPath')) {
+                        $this->debugInfo .= ' Using getRealPath method.';
+                        $imagePath = $this->thumbnail->getRealPath();
+                        $imageContent = file_get_contents($imagePath);
+                        
+                        if ($imageContent !== false) {
+                            $event->thumbnail = $imageContent;
+                            $this->debugInfo .= ' Image content read successfully: ' . strlen($imageContent) . ' bytes.';
+                        } else {
+                            throw new \Exception('Failed to read image content from path');
+                        }
+                    } 
+                    // Alternative method using get()
+                    elseif (is_object($this->thumbnail) && method_exists($this->thumbnail, 'get')) {
+                        $this->debugInfo .= ' Using get method.';
+                        $imageContent = $this->thumbnail->get();
+                        
+                        if ($imageContent) {
+                            $event->thumbnail = $imageContent;
+                            $this->debugInfo .= ' Image content read successfully: ' . strlen($imageContent) . ' bytes.';
+                        } else {
+                            throw new \Exception('Failed to get image content');
+                        }
+                    }
+                    // String content (base64 or binary)
+                    elseif (is_string($this->thumbnail)) {
+                        $this->debugInfo .= ' Thumbnail is already a string.';
+                        $event->thumbnail = $this->thumbnail;
+                    }
+                    else {
+                        throw new \Exception('Unsupported thumbnail format');
+                    }
+                } catch (\Exception $ex) {
+                    $this->debugInfo .= ' Error processing thumbnail: ' . $ex->getMessage();
+                    Log::error('Thumbnail processing error', ['error' => $ex->getMessage()]);
+                    // Continue without thumbnail rather than failing completely
                 }
             } else {
-                Log::warning('No thumbnail provided');
-                $this->debugInfo .= "\nNo thumbnail provided";
+                $this->debugInfo .= ' No new thumbnail provided.';
+                
+                // If updating and no new thumbnail, keep the existing one
+                if ($this->eventId) {
+                    $this->debugInfo .= ' Keeping existing thumbnail.';
+                }
             }
             
+            // Save the event
             $event->save();
-            Log::info('Event saved successfully with ID: ' . $event->id);
-    
+            $this->debugInfo .= ' Event saved with ID: ' . $event->id;
+            
+            // Log success
+            Log::info('Event saved successfully', ['id' => $event->id]);
+            
+            // Flash success message
             session()->flash('success', $this->eventId ? 'Event updated successfully!' : 'Event created successfully!');
             
-            // Redirect to the events list
+            // Redirect to events list
             return redirect()->route('admin.events');
         } catch (\Exception $e) {
-            // Enhanced error logging
-            Log::error('Event save error: ' . $e->getMessage());
-            Log::error('Error trace: ' . $e->getTraceAsString());
-            $this->debugInfo .= "\nError: " . $e->getMessage();
+            // Log error
+            Log::error('Event save error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            // Update debug info
+            $this->debugInfo .= ' Error: ' . $e->getMessage();
+            
+            // Flash error message
             session()->flash('error', 'Error saving event: ' . $e->getMessage());
         }
     }

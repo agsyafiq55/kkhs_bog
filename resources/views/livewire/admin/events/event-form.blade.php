@@ -122,8 +122,7 @@
                         <input 
                             type="file" 
                             id="thumbnail" 
-                            wire:model.defer="thumbnail"
-                            x-on:change="previewUrl = URL.createObjectURL($event.target.files[0])"
+                            wire:model="thumbnail"
                             class="block w-full text-sm text-gray-500
                                 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0
