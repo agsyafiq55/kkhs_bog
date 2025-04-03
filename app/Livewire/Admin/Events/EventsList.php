@@ -50,4 +50,10 @@ class EventsList extends Component
     {
         return redirect()->route('admin.events.show', $eventId);
     }
+    
+    // Add this new method to handle the edit button click
+    public function edit($eventId)
+    {
+        return redirect()->route('admin.events.edit', $eventId);
+    }
 }

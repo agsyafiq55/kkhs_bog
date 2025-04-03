@@ -7,6 +7,9 @@
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.0.7",
+        "@tiptap/core": "^2.11.5",
+        "@tiptap/pm": "^2.11.5",
+        "@tiptap/starter-kit": "^2.11.5",
         "alpinejs": "^3.14.9",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.4",

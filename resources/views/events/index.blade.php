@@ -57,7 +57,6 @@ $tagColors = [
         </div>
     </div>
 
-
     <!-- No events available message -->
     @if($events->isEmpty())
     <div class="text-center mt-8">
