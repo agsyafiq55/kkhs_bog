@@ -42,6 +42,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/gallery', App\Livewire\Admin\Gallery\GalleryList::class)->name('admin.gallery');
     // Create/edit a gallery image
     Route::get('/admin/gallery/edit/{galleryId?}', App\Livewire\Admin\Gallery\GalleryEdit::class)->name('admin.gallery.edit');
-    // View a single gallery image (detailed view)
+    // View a single gallery image
     Route::get('/admin/gallery/{galleryId}', App\Livewire\Admin\Gallery\GalleryShow::class)->name('admin.gallery.show');
 });

@@ -18,11 +18,9 @@ Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
 // 2. Gallery 
-Route::get('/gallery', function () {
-    return view('gallery.index');
-})->name('gallery');
-// Route::get('/gallery', [App\Http\Controllers\GalleryController::class, 'index'])->name('gallery.index');
-// Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
+// Guest routes for gallery
+Route::get('/gallery', [App\Http\Controllers\GalleryController::class, 'index'])->name('gallery');
+Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
 
 // About Us
 Route::get('/about-us', function () {
