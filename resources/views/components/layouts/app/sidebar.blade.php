@@ -20,14 +20,11 @@
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navlist.item>
-                        <!-- Optionally remove or comment out the old manage events link -->
-                        <!--
-                <flux:navlist.item icon="flag" :href="route('admin.events')" :current="request()->routeIs('admin.events')" wire:navigate>
-                    {{ __('Old Manage Events') }}
-                </flux:navlist.item>
-                -->
                 <flux:navlist.item icon="calendar" :href="route('admin.events')" :current="request()->routeIs('admin.events')" wire:navigate>
                     {{ __('Manage Events') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="photo" :href="route('admin.gallery')" :current="request()->routeIs('admin.gallery')" wire:navigate>
+                    {{ __('Manage Gallery') }}
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>

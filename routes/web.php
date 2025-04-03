@@ -21,6 +21,8 @@ Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show'
 Route::get('/gallery', function () {
     return view('gallery.index');
 })->name('gallery');
+// Route::get('/gallery', [App\Http\Controllers\GalleryController::class, 'index'])->name('gallery.index');
+// Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
 
 // About Us
 Route::get('/about-us', function () {
