@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Gallery;
 use Livewire\Component;
 use App\Models\Gallery;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
 
 class GalleryEdit extends Component
 {
@@ -17,13 +18,39 @@ class GalleryEdit extends Component
     public $description;
     public $category;
     public $newImage;
+    public $debugInfo = '';
 
-    protected $rules = [
-        'img_name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'category' => 'required|string|max:255',
-        'newImage' => 'nullable|image|max:2048',
-    ];
+    // Add this method to handle file uploads directly
+    public function updatedNewImage()
+    {
+        $this->validate([
+            'newImage' => 'image|max:5120', // 5MB max
+        ]);
+        
+        $this->debugInfo = "Image uploaded: " . $this->newImage->getClientOriginalName();
+    }
+
+    // Change from property to method for dynamic rules
+    protected function rules()
+    {
+        return [
+            'img_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|string|max:255',
+            'newImage' => $this->galleryId ? 'nullable|image|max:5120' : 'required|image|max:5120',
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'img_name.required' => 'The image name field is required.',
+            'category.required' => 'The category field is required.',
+            'newImage.required' => 'Please select an image to upload.',
+            'newImage.image' => 'The file must be an image (jpeg, png, bmp, gif, svg, or webp).',
+            'newImage.max' => 'The image size must not exceed 5MB.',
+        ];
+    }
 
     public function mount($galleryId = null)
     {
@@ -36,51 +63,71 @@ class GalleryEdit extends Component
         }
     }
 
+    // Add validation on field update
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName, $this->rules(), $this->messages());
+    }
+
     public function save()
     {
-        $this->validate();
-
-        if ($this->galleryId) {
-            // Update existing gallery
-            $gallery = Gallery::findOrFail($this->galleryId);
+        try {
+            // Debug info
+            $this->debugInfo = "Image type: " . (is_object($this->newImage) ? get_class($this->newImage) : gettype($this->newImage));
             
-            $data = [
-                'img_name' => $this->img_name,
-                'description' => $this->description,
-                'category' => $this->category,
-            ];
+            // Validate
+            $this->validate([
+                'img_name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'category' => 'required|string|max:255',
+                'newImage' => $this->galleryId ? 'nullable|image|max:5120' : 'required|image|max:5120',
+            ]);
 
-            if ($this->newImage) {
-                // Convert the uploaded image to base64
-                $imageData = base64_encode(file_get_contents($this->newImage->getRealPath()));
-                $data['image'] = $imageData;
+            if ($this->galleryId) {
+                // Update existing gallery
+                $gallery = Gallery::findOrFail($this->galleryId);
+                $gallery->img_name = $this->img_name;
+                $gallery->description = $this->description;
+                $gallery->category = $this->category;
+
+                if ($this->newImage) {
+                    // Store the image as base64
+                    $gallery->image = base64_encode(file_get_contents($this->newImage->getRealPath()));
+                }
+
+                $gallery->save();
+                session()->flash('message', 'Gallery image updated successfully!');
+            } else {
+                // Create new gallery
+                $gallery = new Gallery();
+                $gallery->img_name = $this->img_name;
+                $gallery->description = $this->description;
+                $gallery->category = $this->category;
+                
+                // Store the image as base64
+                $gallery->image = base64_encode(file_get_contents($this->newImage->getRealPath()));
+                
+                $gallery->save();
+                session()->flash('message', 'Gallery image added successfully!');
             }
 
-            $gallery->update($data);
-            session()->flash('message', 'Gallery image updated successfully!');
-        } else {
-            // Create new gallery
-            $this->validate([
-                'newImage' => 'required|image|max:2048',
-            ]);
-
-            // Convert the uploaded image to base64
-            $imageData = base64_encode(file_get_contents($this->newImage->getRealPath()));
+            return redirect()->route('admin.gallery');
+        } catch (\Exception $e) {
+            // Log error
+            Log::error('Gallery save error: ' . $e->getMessage());
             
-            Gallery::create([
-                'img_name' => $this->img_name,
-                'image' => $imageData,
-                'description' => $this->description,
-                'category' => $this->category,
-            ]);
-            session()->flash('message', 'Gallery image added successfully!');
+            // Update debug info
+            $this->debugInfo .= "\nError: " . $e->getMessage();
+            
+            // Flash error message
+            session()->flash('error', 'Error saving gallery: ' . $e->getMessage());
         }
-
-        return redirect()->route('admin.gallery');
     }
 
     public function render()
     {
-        return view('livewire.admin.gallery.gallery-edit');
+        return view('livewire.admin.gallery.gallery-edit', [
+            'debugInfo' => $this->debugInfo
+        ]);
     }
 }
