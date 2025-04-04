@@ -84,7 +84,7 @@
         <div id="carousel" class="pt-5">
             <div class="text-center mb-8">
                 <flux:heading size="xl" class="text-4xl md:text-5xl">
-                    Latest News <span class="block md:inline">最新消息</span>
+                    Latest News <h2 class="font-semibold block md:inline">最新消息</h2>
                 </flux:heading>
                 <div class="mt-2 text-sm md:text-base tracking-widest uppercase text-gray-600 dark:text-gray-400 flex flex-wrap justify-center gap-x-2">
                     <span>Get</span>
@@ -189,7 +189,7 @@
         <div class="mt-15">
             <div class="text-center mb-8">
                 <flux:heading size="xl" class="text-4xl md:text-5xl">
-                    Events <span class="block md:inline">活动</span>
+                    Events <h2 class="font-semibold block md:inline">活动</h2>
                 </flux:heading>
                 <div class="mt-2 text-sm md:text-base tracking-widest uppercase text-gray-600 dark:text-gray-400 flex flex-wrap justify-center gap-x-2">
                     <span>Explore</span>
