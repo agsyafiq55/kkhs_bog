@@ -10,22 +10,11 @@ class GalleryController extends Controller
     /**
      * Display a listing of gallery images.
      */
-    public function index(Request $request)
+    public function index($category = null)
     {
-        $selectedCategory = $request->category;
-        
-        $query = Gallery::orderBy('created_at', 'desc');
-        
-        if ($selectedCategory) {
-            $query->where('category', $selectedCategory);
-        }
-        
-        $images = $query->get();
-        
-        // Get all unique categories for the filter
-        $categories = Gallery::select('category')->distinct()->pluck('category');
-        
-        return view('gallery.index', compact('images', 'categories', 'selectedCategory'));
+        return view('gallery.index', [
+            'selectedCategory' => $category
+        ]);
     }
 
     /**
