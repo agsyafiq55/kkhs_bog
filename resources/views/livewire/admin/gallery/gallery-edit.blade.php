@@ -73,10 +73,6 @@
                                 <flux:select.option value="School Compound">School Compound</flux:select.option>
                                 <flux:select.option value="Facilities">Facilities</flux:select.option>
                                 <flux:select.option value="Garden and Orchard">Garden and Orchard</flux:select.option>
-                                <flux:select.option value="Events">Events</flux:select.option>
-                                <flux:select.option value="Activities">Activities</flux:select.option>
-                                <flux:select.option value="Staff">Staff</flux:select.option>
-                                <flux:select.option value="Students">Students</flux:select.option>
                                 <flux:select.option value="Other">Other</flux:select.option>
                             </flux:select>
                             @error('category')

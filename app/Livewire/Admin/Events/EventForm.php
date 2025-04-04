@@ -3,133 +3,122 @@
 namespace App\Livewire\Admin\Events;
 
 use Livewire\Component;
-use Livewire\WithFileUploads;
 use App\Models\Event;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 
 class EventForm extends Component
 {
     use WithFileUploads;
 
-    // Form fields
-    public $eventId = null;
-    public $title = '';
-    public $description = '';
-    public $article = '';
-    public $event_date = '';
-    public $thumbnail = null;
-    public $tag = '';
-
-    // For debugging
+    public $eventId;
+    public $event;
+    public $title;
+    public $description;
+    public $event_date;
+    public $tag;
+    public $article;
+    public $thumbnail;
     public $debugInfo = '';
 
-    // Validation rules
+    // Add this method to handle file uploads directly
+    public function updatedThumbnail()
+    {
+        $this->validate([
+            'thumbnail' => 'image|max:5120', // 5MB max
+        ]);
+        
+        $this->debugInfo = "Thumbnail uploaded: " . $this->thumbnail->getClientOriginalName();
+    }
+
+    // Change from property to method for dynamic rules
     protected function rules()
     {
         return [
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'article'     => 'required|string',
-            'event_date'  => 'required|date',
-            'thumbnail'   => $this->eventId ? 'nullable|image|max:5120' : 'required|image|max:5120',
-            'tag'         => 'required|string|max:100',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'event_date' => 'required|date',
+            'tag' => 'required|string|max:255',
+            'article' => 'required|string',
+            'thumbnail' => $this->eventId ? 'nullable|image|max:5120' : 'required|image|max:5120',
         ];
     }
 
-    // Custom validation messages
     protected function messages()
     {
         return [
-            'title.required'       => 'The title field is required.',
+            'title.required' => 'The title field is required.',
             'description.required' => 'The description field is required.',
-            'article.required'     => 'The article field is required.',
-            'event_date.required'  => 'The event date field is required.',
-            'thumbnail.required'   => 'Please select a thumbnail image.',
-            'thumbnail.image'      => 'The file must be an image (jpeg, png, bmp, gif, svg, or webp).',
-            'thumbnail.max'        => 'The image size must not exceed 5MB.',
-            'tag.required'         => 'The tag field is required.',
+            'event_date.required' => 'The event date field is required.',
+            'tag.required' => 'The tag field is required.',
+            'article.required' => 'The article content is required.',
+            'thumbnail.required' => 'Please select an image to upload.',
+            'thumbnail.image' => 'The file must be an image (jpeg, png, bmp, gif, svg, or webp).',
+            'thumbnail.max' => 'The image size must not exceed 5MB.',
         ];
     }
 
-    /**
-     * When the component is mounted, check if an eventId is passed.
-     * If so, load its data for editing.
-     */
     public function mount($eventId = null)
     {
         if ($eventId) {
-            $event = Event::findOrFail($eventId);
-            $this->eventId    = $event->id;
-            $this->title      = $event->title;
-            $this->description= $event->description;
-            $this->article    = $event->article;
-            $this->event_date = $event->event_date;
-            $this->tag        = $event->tag;
-            // Note: We don't prefill the thumbnail.
+            $this->eventId = $eventId;
+            $this->event = Event::findOrFail($eventId);
+            $this->title = $this->event->title;
+            $this->description = $this->event->description;
+            $this->event_date = $this->event->event_date;
+            $this->tag = $this->event->tag;
+            $this->article = $this->event->article;
         }
     }
 
-    // Validate fields as they are updated.
+    // Add validation on field update
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName, $this->rules(), $this->messages());
     }
 
-    // Save (create or update) event.
     public function save()
     {
         try {
-            // Simplified debug info
-            $this->debugInfo = "Thumbnail type: " . (is_object($this->thumbnail) ? get_class($this->thumbnail) : gettype($this->thumbnail));
-            
-            // Validate the form data
+            // Validate
             $this->validate($this->rules(), $this->messages());
-            
-            // Create or update the event
-            $event = $this->eventId ? Event::find($this->eventId) : new Event();
-            $event->title = $this->title;
-            $event->description = $this->description;
-            $event->event_date = $this->event_date;
-            $event->tag = $this->tag;
-            $event->article = $this->article;
-            
-            // Simplified thumbnail handling
-            if ($this->thumbnail) {
-                Log::info('Thumbnail object type: ' . gettype($this->thumbnail));
-                
-                if (is_object($this->thumbnail) && method_exists($this->thumbnail, 'getClientOriginalName')) {
-                    Log::info('Thumbnail file name: ' . $this->thumbnail->getClientOriginalName());
-                    Log::info('Thumbnail file size: ' . $this->thumbnail->getSize());
-                    
-                    // Store the raw file contents
+
+            if ($this->eventId) {
+                // Update existing event
+                $event = Event::findOrFail($this->eventId);
+                $event->title = $this->title;
+                $event->description = $this->description;
+                $event->event_date = $this->event_date;
+                $event->tag = $this->tag;
+                $event->article = $this->article;
+
+                if ($this->thumbnail) {
+                    // Store the image as binary data
                     $event->thumbnail = file_get_contents($this->thumbnail->getRealPath());
-                    $this->debugInfo .= "\nThumbnail processed successfully";
-                } else {
-                    Log::warning('Thumbnail is not a valid file upload object');
-                    $this->debugInfo .= "\nThumbnail is not a valid file upload object";
                 }
-            } elseif (!$this->eventId) {
-                // Only log warning if this is a new event
-                Log::warning('No thumbnail provided');
-                $this->debugInfo .= "\nNo thumbnail provided";
+
+                $event->save();
+                session()->flash('success', 'Event updated successfully!');
+            } else {
+                // Create new event
+                $event = new Event();
+                $event->title = $this->title;
+                $event->description = $this->description;
+                $event->event_date = $this->event_date;
+                $event->tag = $this->tag;
+                $event->article = $this->article;
+                
+                // Store the image as binary data
+                $event->thumbnail = file_get_contents($this->thumbnail->getRealPath());
+                
+                $event->save();
+                session()->flash('success', 'Event added successfully!');
             }
-            
-            // Save the event
-            $event->save();
-            Log::info('Event saved successfully with ID: ' . $event->id);
-            
-            // Flash success message
-            session()->flash('success', $this->eventId ? 'Event updated successfully!' : 'Event created successfully!');
-            
-            // Redirect to events list
+
             return redirect()->route('admin.events');
         } catch (\Exception $e) {
             // Log error
             Log::error('Event save error: ' . $e->getMessage());
-            Log::error('Error trace: ' . $e->getTraceAsString());
-            
-            // Update debug info
-            $this->debugInfo .= "\nError: " . $e->getMessage();
             
             // Flash error message
             session()->flash('error', 'Error saving event: ' . $e->getMessage());
@@ -138,8 +127,6 @@ class EventForm extends Component
 
     public function render()
     {
-        return view('livewire.admin.events.event-form', [
-            'debugInfo' => $this->debugInfo,
-        ]);
+        return view('livewire.admin.events.event-form');
     }
 }

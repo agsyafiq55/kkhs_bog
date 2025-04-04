@@ -75,17 +75,12 @@
     
     <!-- Empty state -->
     @if(count($galleries) === 0)
-        <div class="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div class="text-center py-12 bg-gray-50 dark:bg-zinc-900 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
             </svg>
             <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-gray-100">No gallery images found</h3>
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by adding your first image.</p>
-            <div class="mt-6">
-                <flux:button href="{{ route('admin.gallery.edit') }}" class="bg-indigo-600 hover:bg-indigo-700">
-                    Add your first image
-                </flux:button>
-            </div>
         </div>
     @endif
 </div>
