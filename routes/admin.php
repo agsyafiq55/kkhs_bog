@@ -7,6 +7,9 @@ use App\Livewire\Admin\Events\EventShow;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use App\Livewire\Admin\AboutUs\AboutUsList;
+use App\Livewire\Admin\AboutUs\AboutUsEdit;
+use App\Livewire\Admin\AboutUs\MemberEdit;
 
 Route::view('/admin/dashboard', '/admin/dashboard')
     ->middleware(['auth', 'verified'])
@@ -48,11 +51,13 @@ Route::middleware(['auth'])->group(function () {
 
 // 3. About Us 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/aboutus', function () {
-        return view('admin.aboutus.index');
-    })->name('aboutus');
+    // Main About Us page
+    Route::get('/aboutus', AboutUsList::class)->name('aboutus');
     
-    Route::get('/aboutus/edit', function () {
-        return view('admin.aboutus.edit');
-    })->name('aboutus.edit');
+    // About Us edit page
+    Route::get('/aboutus/edit', AboutUsEdit::class)->name('aboutus.edit');
+    
+    // Members management
+    Route::get('/aboutus/members/create', MemberEdit::class)->name('aboutus.members.create');
+    Route::get('/aboutus/members/edit/{memberId}', MemberEdit::class)->name('aboutus.members.edit');
 });

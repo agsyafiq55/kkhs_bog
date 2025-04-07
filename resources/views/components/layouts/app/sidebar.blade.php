@@ -22,13 +22,13 @@
                         {{ __('Dashboard') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="calendar" :href="route('admin.events')" :current="request()->routeIs('admin.events')" wire:navigate>
-                        {{ __('Manage Events') }}
+                        {{ __('Events') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="photo" :href="route('admin.gallery')" :current="request()->routeIs('admin.gallery')" wire:navigate>
-                        {{ __('Manage Gallery') }}
+                        {{ __('Gallery') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('admin.aboutus')" :current="request()->routeIs('admin.aboutus')" wire:navigate>
-                        {{ __('Manage About Us') }}
+                        {{ __('About Us') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

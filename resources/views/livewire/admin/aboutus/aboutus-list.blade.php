@@ -81,6 +81,60 @@
                     Last updated: {{ $aboutUs->updated_at->format('F j, Y, g:i a') }}
                 </div>
             </div>
+            
+            <!-- Members Section -->
+            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                <div class="flex justify-between items-center mb-6">
+                    <flux:heading size="lg">Board Members</flux:heading>
+                    <flux:button href="{{ route('admin.aboutus.members.create') }}" class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ __('Add Member') }}
+                    </flux:button>
+                </div>
+                
+                @if(count($members) > 0)
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @foreach($members as $member)
+                            <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 flex flex-col items-center">
+                                <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-700 mb-4">
+                                    <img src="data:image/jpeg;base64,{{ $member->photo }}" 
+                                        alt="{{ $member->member_name }}" 
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ $member->member_name }}</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ $member->position }}</p>
+                                
+                                <div class="flex space-x-2 mt-auto">
+                                    <flux:button href="{{ route('admin.aboutus.members.edit', $member->id) }}" variant="filled" size="sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        </svg>
+                                        Edit
+                                    </flux:button>
+                                    <flux:button wire:click="deleteMember({{ $member->id }})" 
+                                                wire:confirm="Are you sure you want to delete {{ $member->member_name }}?"
+                                                variant="danger" 
+                                                size="sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        Delete
+                                    </flux:button>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-12 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <p class="text-gray-500 dark:text-gray-400">No members have been added yet.</p>
+                    </div>
+                @endif
+            </div>
         </div>
     @else
         <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-12 border border-gray-100 dark:border-zinc-700 text-center">
