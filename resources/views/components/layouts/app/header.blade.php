@@ -20,14 +20,14 @@
             <flux:navbar.item icon="photo" href="{{ route('gallery') }}" :current="request()->is('gallery')">
                 {{ __('Gallery') }}
             </flux:navbar.item>
+            <flux:navbar.item icon="user" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
+                {{ __('About Us') }}
+            </flux:navbar.item>
         </flux:navbar>
 
         <flux:spacer />
 
         <flux:navbar class="mr-1.5 space-x-0.5 py-0!">
-            <flux:navbar.item icon="user" href="{{ route('about-us') }}" :current="request()->is('about-us')">
-                {{ __('About Us') }}
-            </flux:navbar.item>
             <flux:navbar.item icon="key" href="{{ route('login') }}" :current="request()->is('loginS')">
                 {{ __('Login') }}
             </flux:navbar.item>
@@ -53,6 +53,12 @@
                 </flux:navlist.item>
                 <flux:navlist.item icon="calendar" :href="route('events.index')" :current="request()->is('events')">
                     {{ __('Events') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="photo" :href="route('gallery')" :current="request()->is('gallery')">
+                    {{ __('Gallery') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="user" :href="route('aboutus')" :current="request()->is('about-us')">
+                    {{ __('About Us') }}
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>

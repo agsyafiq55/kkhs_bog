@@ -7,10 +7,6 @@
                 {{ $slot }}
             </flux:main>
         </div>
-        
-        <div class="mt-auto">
-            <x-layouts.app.footer />
-        </div>
     </div>
 </x-layouts.app.sidebar>
 @else

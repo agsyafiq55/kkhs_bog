@@ -22,7 +22,6 @@ Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show'
 Route::get('/gallery', [App\Http\Controllers\GalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
 
-// About Us
-Route::get('/about-us', function () {
-    return view('about-us');
-})->name('about-us');
+
+// 3. About Us routes
+Route::get('/about-us', [App\Http\Controllers\AboutUsController::class, 'index'])->name('aboutus');

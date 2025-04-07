@@ -45,3 +45,14 @@ Route::middleware(['auth'])->group(function () {
     // View a single gallery image
     Route::get('/admin/gallery/{galleryId}', App\Livewire\Admin\Gallery\GalleryShow::class)->name('admin.gallery.show');
 });
+
+// 3. About Us 
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/aboutus', function () {
+        return view('admin.aboutus.index');
+    })->name('aboutus');
+    
+    Route::get('/aboutus/edit', function () {
+        return view('admin.aboutus.edit');
+    })->name('aboutus.edit');
+});
