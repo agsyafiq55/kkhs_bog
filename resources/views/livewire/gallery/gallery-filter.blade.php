@@ -1,5 +1,25 @@
 <div>
-    <h1 class="text-3xl font-semibold text-center mb-8">Gallery</h1>
+    <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden">
+        <!-- Background image with overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.pexels.com/photos/5474047/pexels-photo-5474047.jpeg" alt="Chinese landscape" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
+        </div>
+            
+        <div class="flex flex-col md:flex-row relative z-10">
+            <div class="md:w-2/3 p-8 flex flex-col justify-center">
+                <h1 class="text-8xl font-bold mb-2">Gallery</h1>
+                <h2 class="text-6xl font-semibold">照片库</h2>
+            </div>
+            <div class="md:w-1/3 p-8 flex items-center">
+                <p class="text-sm md:text-base text-justify">
+                    Explore the mesmerizing sceneries and various facilities offered in Kota Kinabalu High School.
+                    <br><br>
+                    探索亚庇高中迷人的风景和各种设施。。
+                </p>
+            </div>
+        </div>
+    </div>
 
     <div class="flex items-center justify-center py-4 md:py-8 flex-wrap gap-1.5">
         <flux:button wire:click="setCategory()" 

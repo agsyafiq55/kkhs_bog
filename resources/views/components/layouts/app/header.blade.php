@@ -20,7 +20,7 @@
             <flux:navbar.item icon="photo" href="{{ route('gallery') }}" :current="request()->is('gallery')">
                 {{ __('Gallery') }}
             </flux:navbar.item>
-            <flux:navbar.item icon="user" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
+            <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
                 {{ __('About Us') }}
             </flux:navbar.item>
         </flux:navbar>
@@ -57,7 +57,7 @@
                 <flux:navlist.item icon="photo" :href="route('gallery')" :current="request()->is('gallery')">
                     {{ __('Gallery') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="user" :href="route('aboutus')" :current="request()->is('about-us')">
+                <flux:navlist.item icon="users" :href="route('aboutus')" :current="request()->is('about-us')">
                     {{ __('About Us') }}
                 </flux:navlist.item>
             </flux:navlist.group>
