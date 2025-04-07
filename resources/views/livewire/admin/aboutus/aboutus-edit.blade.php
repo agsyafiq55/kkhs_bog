@@ -1,7 +1,7 @@
 <div>
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-semibold">{{ $aboutUsId ? 'Edit' : 'Create' }} About Us</h1>
-        <flux:button href="{{ route('admin.aboutus') }}" variant="secondary">
+        <flux:button href="{{ route('admin.aboutus') }}" variant="filled">
             Back to About Us
         </flux:button>
     </div>
