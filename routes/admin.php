@@ -10,6 +10,7 @@ use App\Livewire\Settings\Profile;
 use App\Livewire\Admin\AboutUs\AboutUsList;
 use App\Livewire\Admin\AboutUs\AboutUsEdit;
 use App\Livewire\Admin\AboutUs\MemberEdit;
+use App\Livewire\Admin\TimelineManager; // Add this import
 
 Route::view('/admin/dashboard', '/admin/dashboard')
     ->middleware(['auth', 'verified'])
@@ -53,11 +54,14 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     // Main About Us page
     Route::get('/aboutus', AboutUsList::class)->name('aboutus');
-    
+
     // About Us edit page
     Route::get('/aboutus/edit', AboutUsEdit::class)->name('aboutus.edit');
-    
+
     // Members management
     Route::get('/aboutus/members/create', MemberEdit::class)->name('aboutus.members.create');
     Route::get('/aboutus/members/edit/{memberId}', MemberEdit::class)->name('aboutus.members.edit');
+
+    // Timeline management - added here
+    Route::get('/timeline', TimelineManager::class)->name('timeline');
 });

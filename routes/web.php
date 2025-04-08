@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\AboutUsController;
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';

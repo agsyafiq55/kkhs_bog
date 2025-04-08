@@ -157,4 +157,7 @@
             <pre class="text-xs">{{ $debugInfo }}</pre>
         </div>
     @endif
+
+    <livewire:timeline/>
+
 </div>

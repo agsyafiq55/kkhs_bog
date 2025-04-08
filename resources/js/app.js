@@ -1,6 +1,8 @@
 import Alpine from 'alpinejs'
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
+import Sortable from 'sortablejs';
+
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('editor', (content) => {
@@ -47,3 +49,5 @@ document.addEventListener('alpine:init', () => {
 
 window.Alpine = Alpine
 Alpine.start()
+
+window.Sortable = Sortable;

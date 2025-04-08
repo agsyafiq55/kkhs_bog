@@ -27,7 +27,18 @@ class AboutUsList extends Component
     // Load members information
     public function loadMembers()
     {
-        $this->members = Member::orderBy('position')->get();
+        $this->members = Member::orderByRaw("
+            CASE position
+                WHEN 'Chairman' THEN 1
+                WHEN 'Vice Chairman I' THEN 2
+                WHEN 'Vice Chairman II' THEN 3
+                WHEN 'Secretary' THEN 4
+                WHEN 'Tresurer' THEN 5
+                WHEN 'Supervision' THEN 6
+                WHEN 'Member of Board of Governor' THEN 7
+                ELSE 8
+            END
+        ")->get();
     }
 
     public function render()
