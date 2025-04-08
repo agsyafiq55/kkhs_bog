@@ -52,6 +52,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Board Members Section -->
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <h2 class="text-xl font-semibold mb-6 text-gray-800 dark:text-white">Board Members</h2>
+                    
+                    @if(count($members) > 0)
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            @foreach($members as $member)
+                                <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
+                                    <div class="w-32 h-32 mb-4 overflow-hidden rounded-full">
+                                        <img src="data:image/jpeg;base64,{{ $member->photo }}" alt="{{ $member->member_name }}"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $member->member_name }}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $member->position }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-500 dark:text-gray-400 text-center">No board members available.</p>
+                    @endif
+                </div>
             </div>
         @else
             <div

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AboutUs;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class AboutUsController extends Controller
@@ -15,6 +16,9 @@ class AboutUsController extends Controller
         // Get the first (and likely only) about us record
         $aboutUs = AboutUs::first();
         
-        return view('aboutus.index', compact('aboutUs'));
+        // Get all members ordered by position
+        $members = Member::orderBy('position')->get();
+        
+        return view('aboutus.index', compact('aboutUs', 'members'));
     }
 }
