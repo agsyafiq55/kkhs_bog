@@ -10,7 +10,7 @@ use App\Livewire\Settings\Profile;
 use App\Livewire\Admin\AboutUs\AboutUsList;
 use App\Livewire\Admin\AboutUs\AboutUsEdit;
 use App\Livewire\Admin\AboutUs\MemberEdit;
-use App\Livewire\Admin\TimelineManager; // Add this import
+use App\Livewire\Admin\TimelineManager; 
 
 Route::view('/admin/dashboard', '/admin/dashboard')
     ->middleware(['auth', 'verified'])

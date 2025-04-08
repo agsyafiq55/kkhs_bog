@@ -51,3 +51,4 @@ window.Alpine = Alpine
 Alpine.start()
 
 window.Sortable = Sortable;
+Sortable.start()

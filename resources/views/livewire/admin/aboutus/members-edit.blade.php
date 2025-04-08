@@ -60,7 +60,7 @@
                                 <flux:select.option value="Vice Chairman I">Vice Chairman I</flux:select.option>
                                 <flux:select.option value="Vice Chairman II">Vice Chairman II</flux:select.option>
                                 <flux:select.option value="Secretary">Secretary</flux:select.option>
-                                <flux:select.option value="Tresurer">Tresurer</flux:select.option>
+                                <flux:select.option value="Treasurer">Treasurer</flux:select.option>
                                 <flux:select.option value="Supervision">Supervision</flux:select.option>
                                 <flux:select.option value="Member of Board of Governor">Member of Board of Governor</flux:select.option>
                             </flux:select>

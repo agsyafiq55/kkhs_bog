@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KKHSedu</title>
+    <title>KKHSbog</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
@@ -101,19 +101,19 @@
                         imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-1.webp',
                         imgAlt: 'Vibrant abstract painting with swirling blue and light pink hues on a canvas.',
                         title: 'Slide 1',
-                        description: 'The architects of the digital world, constantly battling against their mortal enemy – browser compatibility.',
+                        description: 'Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text',
                     },
                     {
                         imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-2.webp',
                         imgAlt: 'Vibrant abstract painting with swirling red, yellow, and pink hues on a canvas.',
                         title: 'Slide 2',
-                        description: 'Because not all superheroes wear capes, some wear headphones and stare at terminal screens',
+                        description: 'Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text',
                     },
                     {
                         imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-3.webp',
                         imgAlt: 'Vibrant abstract painting with swirling blue and purple hues on a canvas.',
                         title: 'Slide 3',
-                        description: 'Where &quot;burnout&quot; is just a fancy term for &quot;Tuesday&quot;.',
+                        description: 'Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text',
                     },
                 ],
                 currentSlideIndex: 1,

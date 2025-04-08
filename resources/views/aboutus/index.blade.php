@@ -96,28 +96,39 @@
                 </div>
 
                 <!-- Board Members Section -->
-                <div
-                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
-                    <h2 class="text-xl font-semibold mb-6 text-gray-800 dark:text-white">Board Members</h2>
-
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                     @if (count($members) > 0)
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             @foreach ($members as $member)
-                                <div
-                                    class="flex flex-col items-center p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-                                    <div
-                                        class="w-32 h-32 mb-4 overflow-hidden rounded-full border-4 border-white dark:border-zinc-700 shadow-md">
-                                        <img src="data:image/jpeg;base64,{{ $member->photo }}"
-                                            alt="{{ $member->member_name }}" class="w-full h-full object-cover">
+                                <div class="group relative bg-white dark:bg-zinc-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100 dark:border-zinc-700">
+                                    <div class="p-6">
+                                        <!-- Member Photo - Centered and Rounded -->
+                                        <div class="flex justify-center mb-4">
+                                            <div class="relative w-[150px] h-[150px] rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-800 border-4 border-white dark:border-zinc-700 shadow-md">
+                                                <img src="data:image/jpeg;base64,{{ $member->photo }}" 
+                                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                                                    alt="{{ $member->member_name }}">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Member Content -->
+                                        <div class="text-center">
+                                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2 line-clamp-1">
+                                                {{ $member->member_name }}
+                                            </h3>
+                                            <div class="inline-block bg-red-700 text-white text-xs font-medium px-2.5 py-1 rounded-full shadow">
+                                                {{ $member->position }}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                        {{ $member->member_name }}</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $member->position }}</p>
+                                    
+                                    <!-- Hover overlay for better UX -->
+                                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"></div>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-8 text-center">
+                        <div class="text-center py-12 bg-gray-50 dark:bg-zinc-900 rounded-lg">
                             <p class="text-gray-500 dark:text-gray-400">No board members available.</p>
                         </div>
                     @endif

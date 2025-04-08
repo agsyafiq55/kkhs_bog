@@ -12,10 +12,8 @@ class TimelineCard extends Model
 
     protected $fillable = [
         'year',
-        'title',
         'description',
         'description_zh',
         'position',
-        'side'
     ];
 }
