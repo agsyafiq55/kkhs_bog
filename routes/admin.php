@@ -65,3 +65,20 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Timeline management - added here
     Route::get('/timeline', TimelineManager::class)->name('timeline');
 });
+
+// 4. Achievements
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // Academic Achievements
+    Route::prefix('achievements/academic')->name('achievements.academic.')->group(function () {
+        Route::get('/', App\Livewire\Admin\Achievements\AcademicAchievementsList::class)->name('index');
+        Route::get('/create', App\Livewire\Admin\Achievements\AcademicAchievementForm::class)->name('create');
+        Route::get('/{id}/edit', App\Livewire\Admin\Achievements\AcademicAchievementForm::class)->name('edit');
+    });
+
+    // Co-curricular Achievements
+    Route::prefix('achievements/cocurricular')->name('achievements.cocurricular.')->group(function () {
+        Route::get('/', App\Livewire\Admin\Achievements\CocurricularAchievementsList::class)->name('index');
+        Route::get('/create', App\Livewire\Admin\Achievements\CocurricularAchievementForm::class)->name('create');
+        Route::get('/{id}/edit', App\Livewire\Admin\Achievements\CocurricularAchievementForm::class)->name('edit');
+    });
+});

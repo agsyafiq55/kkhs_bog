@@ -24,5 +24,7 @@ Route::get('/gallery', [App\Http\Controllers\GalleryController::class, 'index'])
 Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
 
 
-// 3. About Us routes
+// 3. About Us 
 Route::get('/about-us', [App\Http\Controllers\AboutUsController::class, 'index'])->name('aboutus');
+
+

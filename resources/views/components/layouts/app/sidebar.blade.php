@@ -30,6 +30,9 @@
                     <flux:navlist.item icon="users" :href="route('admin.aboutus')" :current="request()->routeIs('admin.aboutus')" wire:navigate>
                         {{ __('About Us') }}
                     </flux:navlist.item>
+                    <flux:navlist.item icon="trophy" :href="route('admin.achievements.academic.index')" :current="request()->routeIs('admin.achievements.*')" wire:navigate>
+                        {{ __('Achievements') }}
+                    </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
