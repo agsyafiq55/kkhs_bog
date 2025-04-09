@@ -30,87 +30,110 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Event Title -->
                 <div class="md:col-span-2">
-                    <label for="eventTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Event Title</label>
-                    <input type="text" id="eventTitle" wire:model="eventTitle"
-                        class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500"
-                        placeholder="Enter event title">
+                    <flux:input type="text" wire:model="eventTitle" label="Cocurricular Event/Competition Title" 
+                        placeholder="eg. MSSD 2025" />
                     @error('eventTitle') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Category -->
                 <div>
-                    <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                    <div class="flex">
-                        <select id="category" wire:model="category"
-                            class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500">
-                            <option value="">Select Category</option>
-                            @foreach ($categories as $cat)
-                                <option value="{{ $cat }}">{{ $cat }}</option>
-                            @endforeach
-                            <option value="Robotics">Robotics</option>
-                            <option value="Sports">Sports</option>
-                            <option value="Debate">Debate</option>
-                            <option value="Academic">Academic</option>
-                            <option value="Arts">Arts</option>
-                            <option value="Music">Music</option>
-                            <option value="Leadership">Leadership</option>
-                            <option value="Community Service">Community Service</option>
-                        </select>
-                    </div>
+                    <flux:select wire:model="category" label="Category">
+                        <flux:select.option value="">Select Category</flux:select.option>
+                        @foreach ($categories as $cat)
+                            <flux:select.option value="{{ $cat }}">{{ $cat }}</flux:select.option>
+                        @endforeach
+                        <flux:select.option value="Robotics">Robotics</flux:select.option>
+                        <flux:select.option value="Sports">Sports</flux:select.option>
+                        <flux:select.option value="Debate">Debate</flux:select.option>
+                        <flux:select.option value="Academic">Academic</flux:select.option>
+                        <flux:select.option value="Arts">Arts</flux:select.option>
+                        <flux:select.option value="Music">Music</flux:select.option>
+                        <flux:select.option value="Leadership">Leadership</flux:select.option>
+                        <flux:select.option value="Community Service">Community Service</flux:select.option>
+                    </flux:select>
                     @error('category') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <!-- Placement Type -->
-                <div>
-                    <label for="placementType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Placement Type</label>
-                    <div class="flex">
-                        <select id="placementType" wire:model="placementType"
-                            class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500">
-                            <option value="">Select Placement</option>
-                            @foreach ($placementTypes as $type)
-                                <option value="{{ $type }}">{{ $type }}</option>
-                            @endforeach
-                            <option value="Gold">Gold</option>
-                            <option value="Silver">Silver</option>
-                            <option value="Bronze">Bronze</option>
-                            <option value="Scholarship">Scholarship</option>
-                            <option value="First Place">First Place</option>
-                            <option value="Second Place">Second Place</option>
-                            <option value="Third Place">Third Place</option>
-                            <option value="Honorable Mention">Honorable Mention</option>
-                        </select>
-                    </div>
-                    @error('placementType') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <!-- Student Count -->
-                <div>
-                    <label for="studentCount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number of Students Awarded</label>
-                    <input type="number" min="1" id="studentCount" wire:model="studentCount"
-                        class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500"
-                        placeholder="Enter number of students">
-                    @error('studentCount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Event Date -->
                 <div>
-                    <label for="eventDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Event Date</label>
-                    <input type="date" id="eventDate" wire:model="eventDate"
-                        class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500">
+                    <flux:input type="date" wire:model="eventDate" label="Event Date" />
                     @error('eventDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Description -->
                 <div class="md:col-span-2">
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description (Optional)</label>
-                    <textarea id="description" wire:model="description" rows="4"
-                        class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500"
-                        placeholder="Enter additional details about this achievement"></textarea>
+                    <flux:textarea wire:model="description" label="Description (Optional)" rows="4"
+                        placeholder="Enter additional details about this achievement" />
                     @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
-            <div class="flex justify-end">
+            <flux:separator />
+
+            <!-- Achievement Items Section -->
+            <div class="mt-6 mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Achievement Details
+                    </label>
+                </div>
+
+                @error('achievementItems')
+                    <span class="text-red-500 text-sm block mb-2">{{ $message }}</span>
+                @enderror
+
+                <div class="bg-gray-50 dark:bg-zinc-800 rounded-lg p-4 space-y-3">
+                    @foreach ($achievementItems as $index => $item)
+                        <div class="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 rounded-md shadow-sm">
+                            <div class="flex-1">
+                                <flux:input type="text" wire:model="achievementItems.{{ $index }}.achievement" 
+                                    label="Achievement" placeholder="e.g. Gold Medal, First Place, etc." />
+                                @error("achievementItems.{$index}.achievement")
+                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex-1">
+                                <flux:input type="number" wire:model="achievementItems.{{ $index }}.student_count"
+                                    label="Student Count" placeholder="Number of students" min="1" />
+                                @error("achievementItems.{$index}.student_count")
+                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <flux:separator vertical />
+                            <div class="flex items-end pr-0.5 pb-1">
+                                <button type="button" wire:click="removeAchievementItem({{ $index }})"
+                                    class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    @if (empty($achievementItems))
+                        <div class="text-center py-4 text-gray-500 dark:text-gray-400">
+                            <p>No achievement details added yet. Click "Add Achievement" to start.</p>
+                        </div>
+                    @endif
+                    <div class="flex justify-end">
+                        <flux:button type="button" wire:click="addAchievementItem">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline-block" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Add Achievement
+                        </flux:button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex pt-4 justify-end">
                 <flux:button type="submit" class="bg-amber-600 hover:bg-amber-700 transition-colors">
                     {{ $isEdit ? __('Update Achievement') : __('Create Achievement') }}
                 </flux:button>

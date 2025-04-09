@@ -69,7 +69,6 @@
                                 @foreach ($achievement->grades as $grade)
                                     <div class="bg-indigo-50 dark:bg-indigo-900/30 rounded-lg p-3 text-center">
                                         <span class="block text-lg font-bold text-indigo-600 dark:text-indigo-400">{{ $grade->grade }}</span>
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ $grade->student_count }} students</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -102,33 +101,9 @@
                                         {{ $achievement->category }}
                                     </span>
                                     
-                                    @php
-                                        $placementColors = [
-                                            'Gold' => 'yellow',
-                                            'Silver' => 'gray',
-                                            'Bronze' => 'amber',
-                                            'Scholarship' => 'emerald',
-                                            'First Place' => 'yellow',
-                                            'Second Place' => 'gray',
-                                            'Third Place' => 'amber',
-                                            'Honorable Mention' => 'purple',
-                                        ];
-                                        $color = $placementColors[$achievement->placement_type] ?? 'indigo';
-                                    @endphp
-                                    
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-{{ $color }}-100 text-{{ $color }}-800 dark:bg-{{ $color }}-900 dark:text-{{ $color }}-200">
-                                        {{ $achievement->placement_type }}
-                                    </span>
-                                    
                                     <span class="text-sm text-gray-500 dark:text-gray-400">
                                         {{ $achievement->event_date->format('d M Y') }}
                                     </span>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="bg-amber-50 dark:bg-amber-900/30 rounded-lg px-4 py-2 text-center">
-                                    <span class="block text-lg font-bold text-amber-600 dark:text-amber-400">{{ $achievement->student_count }}</span>
-                                    <span class="text-xs text-gray-600 dark:text-gray-400">Students</span>
                                 </div>
                             </div>
                         </div>
@@ -136,6 +111,23 @@
                         @if ($achievement->description)
                             <div class="mt-4 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-zinc-700 pt-4">
                                 {{ $achievement->description }}
+                            </div>
+                        @endif
+                        
+                        <!-- Achievement Items Display -->
+                        @if ($achievement->items && $achievement->items->count() > 0)
+                            <div class="mt-4 border-t border-gray-100 dark:border-zinc-700 pt-4">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Achievements:</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                    @foreach ($achievement->items as $item)
+                                        <div class="bg-amber-50 dark:bg-amber-900/30 rounded-lg p-3">
+                                            <span class="block text-sm font-medium text-amber-800 dark:text-amber-300">{{ $item->achievement }}</span>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                {{ $item->student_count }} {{ Str::plural('student', $item->student_count) }}
+                                            </span>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
                     </div>
@@ -150,7 +142,7 @@
                         @if ($selectedCategory)
                             No achievements found for {{ $selectedCategory }} in {{ $selectedYear }}. Try a different category or year.
                         @else
-                            No achievements found for {{ $selectedYear }}. Try selecting a different year.
+                            No achievements found for {{ $selectedYear }}. Try selecting a different year
                         @endif
                     </p>
                 </div>

@@ -12,14 +12,16 @@ class CocurricularAchievement extends Model
     protected $fillable = [
         'event_title',
         'category',
-        'placement_type',
-        'student_count',
         'event_date',
         'description',
     ];
 
     protected $casts = [
         'event_date' => 'date',
-        'student_count' => 'integer',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(CocurricularAchievementsItem::class);
+    }
 }
