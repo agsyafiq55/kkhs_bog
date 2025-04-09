@@ -2,11 +2,11 @@
     <!-- Tabs -->
     <div class="flex border-b border-gray-200 dark:border-zinc-700 mb-6">
         <button wire:click="setTab('academic')" type="button"
-            class="py-4 px-6 text-center border-b-2 font-medium text-sm {{ $activeTab === 'academic' ? 'border-indigo-500 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600' }}">
+            class="cursor-pointer py-4 px-6 text-center border-b-2 font-medium text-sm {{ $activeTab === 'academic' ? 'border-indigo-500 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600' }}">
             Academic Achievements
         </button>
         <button wire:click="setTab('cocurricular')" type="button"
-            class="py-4 px-6 text-center border-b-2 font-medium text-sm {{ $activeTab === 'cocurricular' ? 'border-amber-500 text-amber-600 dark:border-amber-400 dark:text-amber-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600' }}">
+            class="cursor-pointer py-4 px-6 text-center border-b-2 font-medium text-sm {{ $activeTab === 'cocurricular' ? 'border-amber-500 text-amber-600 dark:border-amber-400 dark:text-amber-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600' }}">
             Co-Curricular Achievements
         </button>
     </div>
@@ -17,7 +17,7 @@
             @if ($activeTab === 'academic')
                 @foreach ($academicYears as $year)
                     <button wire:click="setYear({{ $year }})" type="button"
-                        class="px-4 py-2 text-sm font-medium rounded-full {{ $selectedYear == $year ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-zinc-800 dark:text-gray-200 dark:hover:bg-zinc-700' }}">
+                        class="cursor-pointer px-4 py-2 text-sm font-medium rounded-full {{ $selectedYear == $year ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-zinc-800 dark:text-gray-200 dark:hover:bg-zinc-700' }}">
                         {{ $year }}
                     </button>
                 @endforeach

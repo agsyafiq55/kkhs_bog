@@ -195,32 +195,35 @@
                 </div>
 
                 <!-- Timeline Section -->
-                <div
-                    class="bg-white dark:bg-zinc-900 rounded-t-xl shadow-sm border border-gray-100 dark:border-zinc-700 border-b-0 relative overflow-hidden">
-                    <!-- Background image with overlay -->
-                    <div class="absolute inset-0 z-0">
-                        <img src="https://cdn.pixabay.com/photo/2017/07/02/09/03/books-2463779_1280.jpg"
-                            alt="Chinese landscape" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden">
+                    <!-- Background banner with overlay -->
+                    <div class="relative overflow-hidden mb-8">
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://cdn.pixabay.com/photo/2017/07/02/09/03/books-2463779_1280.jpg"
+                                alt="Books" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row relative z-10">
+                            <div class="md:w-2/3 p-8 flex flex-col justify-center">
+                                <h1 class="text-7xl font-bold mb-2">Our Journey</h1>
+                                <h2 class="text-5xl font-semibold">我们的历程</h2>
+                            </div>
+                            <div class="md:w-1/3 p-8 flex items-center">
+                                <p class="text-sm md:text-base text-justify">
+                                    Explore the mesmerizing sceneries and various facilities offered in Kota Kinabalu High
+                                    School.
+                                    <br><br>
+                                    探索亚庇高中迷人的风景和各种设施。
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col md:flex-row relative z-10">
-                        <div class="md:w-2/3 p-8 flex flex-col justify-center">
-                            <h1 class="text-8xl font-bold mb-2">Our Journey</h1>
-                            <h2 class="text-6xl font-semibold">照片库</h2>
-                        </div>
-                        <div class="md:w-1/3 p-8 flex items-center">
-                            <p class="text-sm md:text-base text-justify">
-                                Explore the mesmerizing sceneries and various facilities offered in Kota Kinabalu High
-                                School.
-                                <br><br>
-                                探索亚庇高中迷人的风景和各种设施。
-                            </p>
-                        </div>
+                    <!-- Timeline Component -->
+                    <div class="p-6">
+                        <livewire:timeline />
                     </div>
-                </div>
-                <div class="bg-white dark:bg-zinc-900 rounded-b-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700 border-t-0">
-                    <livewire:timeline />
                 </div>
             </div>
         @else

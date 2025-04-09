@@ -29,23 +29,19 @@
     <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <label for="examType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Exam Type</label>
-                <select id="examType" wire:model.live="examType"
-                    class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="">All Types</option>
-                    <option value="SPM">SPM</option>
-                    <option value="STPM">STPM</option>
-                </select>
+                <flux:select wire:model.live="examType" label="Exam Type">
+                    <flux:select.option value="">All Types</flux:select.option>
+                    <flux:select.option value="SPM">SPM</flux:select.option>
+                    <flux:select.option value="STPM">STPM</flux:select.option>
+                </flux:select>
             </div>
             <div>
-                <label for="year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Year</label>
-                <select id="year" wire:model.live="year"
-                    class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="">All Years</option>
+                <flux:select wire:model.live="year" label="Year">
+                    <flux:select.option value="">All Years</flux:select.option>
                     @for ($i = date('Y'); $i >= 2000; $i--)
-                        <option value="{{ $i }}">{{ $i }}</option>
+                        <flux:select.option value="{{ $i }}">{{ $i }}</flux:select.option>
                     @endfor
-                </select>
+                </flux:select>
             </div>
         </div>
     </div>
