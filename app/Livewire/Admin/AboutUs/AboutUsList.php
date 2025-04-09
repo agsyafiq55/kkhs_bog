@@ -60,15 +60,13 @@ class AboutUsList extends Component
     public function deleteMember($memberId)
     {
         try {
-            $member = Member::findOrFail($memberId);
-            $memberName = $member->member_name;
-            $member->delete();
-            
-            session()->flash('message', "Member '{$memberName}' deleted successfully!");
-            $this->loadMembers(); // Reload the members list
+            Member::findOrFail($memberId)->delete();
+            session()->flash('message', 'Member deleted successfully!');
+            $this->debugInfo = "Member {$memberId} deleted successfully.";
+            $this->loadMembers();
         } catch (\Exception $e) {
+            $this->debugInfo = 'Error deleting member: ' . $e->getMessage();
             session()->flash('error', 'Error deleting member: ' . $e->getMessage());
-            $this->debugInfo .= "\nError: " . $e->getMessage();
         }
     }
 }

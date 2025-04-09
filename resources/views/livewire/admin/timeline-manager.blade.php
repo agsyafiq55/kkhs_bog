@@ -1,4 +1,6 @@
 <!-- resources/views/livewire/admin/timeline-manager.blade.php -->
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 <div class="py-6">
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -129,11 +131,11 @@
 
         <div x-data="{
             init() {
-                const sortable = new Sortable(this.$refs.cardsList, {
+                new Sortable(this.$refs.cardsList, {
                     animation: 150,
-                    ghostClass: 'bg-indigo-100 dark:bg-indigo-900/30',
-                    onEnd: () => {
-                        const orderedIds = Array.from(this.$refs.cardsList.children)
+                    ghostClass: 'opacity-50',
+                    onSort: (evt) => {
+                        const orderedIds = Array.from(evt.to.children)
                             .map(item => item.getAttribute('data-id'));
                         @this.updateOrder(orderedIds);
                     }
@@ -167,7 +169,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                     fill="currentColor">
                                     <path fill-rule="evenodd"
-                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                         clip-rule="evenodd" />
                                 </svg>
                             </button>

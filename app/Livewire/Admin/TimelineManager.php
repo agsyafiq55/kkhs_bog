@@ -22,11 +22,6 @@ class TimelineManager extends Component
         $this->loadCards();
     }
 
-    public function loadCards()
-    {
-        $this->cards = TimelineCard::orderBy('position')->get();
-    }
-
     public function saveCard()
     {
         $this->validate([
@@ -72,13 +67,36 @@ class TimelineManager extends Component
         $this->loadCards();
     }
 
-    public function updateOrder($orderedIds)
+    /**
+     * Update the order of timeline cards
+     */
+    public function updateOrder(array $orderedIds)
     {
-        foreach ($orderedIds as $position => $id) {
-            TimelineCard::where('id', $id)->update(['position' => $position]);
+        // Loop through the ordered IDs and update the position
+        foreach ($orderedIds as $index => $id) {
+            // Find the card
+            $card = \App\Models\TimelineCard::find($id);
+            if ($card) {
+                // Update the position (assuming you have a 'position' column)
+                $card->position = $index + 1;
+                $card->save();
+            }
         }
-
+        
+        // Refresh the cards
         $this->loadCards();
+        
+        // Show success message
+        session()->flash('message', 'Timeline order updated successfully!');
+    }
+    
+    /**
+     * Load timeline cards
+     */
+    private function loadCards()
+    {
+        // Load cards ordered by position
+        $this->cards = \App\Models\TimelineCard::orderBy('position', 'asc')->get();
     }
 
     public function resetForm()

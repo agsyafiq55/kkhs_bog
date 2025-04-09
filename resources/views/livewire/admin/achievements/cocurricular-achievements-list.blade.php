@@ -29,30 +29,20 @@
     <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
-                <input type="text" id="search" wire:model.live.debounce.300ms="search"
-                    class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500"
-                    placeholder="Search by event title...">
+                <flux:select wire:model.live="category" label="Filter by Category">
+                    <flux:select.option value="">All Categories</flux:select.option>
+                    @foreach ($categories as $category)
+                        <flux:select.option value="{{ $category }}">{{ $category }}</flux:select.option>
+                    @endforeach
+                </flux:select>
             </div>
             <div>
-                <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                <select id="category" wire:model.live="category"
-                    class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500">
-                    <option value="">All Categories</option>
-                    @foreach ($categories as $cat)
-                        <option value="{{ $cat }}">{{ $cat }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label for="year" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Year</label>
-                <select id="year" wire:model.live="year"
-                    class="w-full rounded-md border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 shadow-sm focus:border-amber-500 focus:ring-amber-500">
-                    <option value="">All Years</option>
-                    @foreach ($years as $yr)
-                        <option value="{{ $yr }}">{{ $yr }}</option>
-                    @endforeach
-                </select>
+                <flux:select wire:model.live="year" label="Filter by Year">
+                    <flux:select.option value="">All Years</flux:select.option>
+                    @for ($i = date('Y'); $i >= 2000; $i--)
+                        <flux:select.option value="{{ $i }}">{{ $i }}</flux:select.option>
+                    @endfor
+                </flux:select>
             </div>
         </div>
     </div>

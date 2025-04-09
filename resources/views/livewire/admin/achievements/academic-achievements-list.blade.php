@@ -29,14 +29,14 @@
     <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <flux:select wire:model.live="examType" label="Exam Type">
+                <flux:select wire:model.live="examType" label="Filter by Exam">
                     <flux:select.option value="">All Types</flux:select.option>
                     <flux:select.option value="SPM">SPM</flux:select.option>
                     <flux:select.option value="STPM">STPM</flux:select.option>
                 </flux:select>
             </div>
             <div>
-                <flux:select wire:model.live="year" label="Year">
+                <flux:select wire:model.live="year" label="Filter by Year">
                     <flux:select.option value="">All Years</flux:select.option>
                     @for ($i = date('Y'); $i >= 2000; $i--)
                         <flux:select.option value="{{ $i }}">{{ $i }}</flux:select.option>
