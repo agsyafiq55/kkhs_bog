@@ -1,4 +1,5 @@
 <div class="py-6">
+    <form wire:submit.prevent="save">
     <!-- Header section remains the same -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>

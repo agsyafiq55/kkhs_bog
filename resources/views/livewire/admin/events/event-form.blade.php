@@ -132,7 +132,7 @@
                             @if($thumbnail)
                                 <img src="{{ $thumbnail->temporaryUrl() }}" class="w-full h-full object-cover" alt="Thumbnail preview">
                             @elseif($eventId && isset($event) && $event->thumbnail)
-                                <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}" class="w-full h-full object-cover" alt="Thumbnail preview">
+                                <img src="data:image/jpeg;base64,{{ $event->thumbnail }}" class="w-full h-full object-cover" alt="Thumbnail preview">
                             @else
                                 <div class="text-center p-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"

@@ -93,8 +93,9 @@ class EventForm extends Component
                 $event->article = $this->article;
 
                 if ($this->thumbnail) {
-                    // Store the image as binary data
-                    $event->thumbnail = file_get_contents($this->thumbnail->getRealPath());
+                    // Convert image to base64 string for longtext storage
+                    $imageData = base64_encode(file_get_contents($this->thumbnail->getRealPath()));
+                    $event->thumbnail = $imageData;
                 }
 
                 $event->save();
@@ -108,8 +109,9 @@ class EventForm extends Component
                 $event->tag = $this->tag;
                 $event->article = $this->article;
                 
-                // Store the image as binary data
-                $event->thumbnail = file_get_contents($this->thumbnail->getRealPath());
+                // Convert image to base64 string for longtext storage
+                $imageData = base64_encode(file_get_contents($this->thumbnail->getRealPath()));
+                $event->thumbnail = $imageData;
                 
                 $event->save();
                 session()->flash('success', 'Event added successfully!');

@@ -35,7 +35,7 @@ $formattedDate = \Carbon\Carbon::parse($event->event_date)->format('d F Y');
                 <!-- Hero Image -->
                 <div class="w-full h-[600px] overflow-hidden">
                     @if($event->thumbnail)
-                        <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}"
+                        <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
                             class="w-full h-full object-cover"
                             alt="{{ $event->title }}" />
                     @else

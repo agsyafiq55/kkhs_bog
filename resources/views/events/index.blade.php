@@ -42,7 +42,7 @@
                         class="relative overflow-hidden rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 h-96">
                         <!-- Background Image -->
                         <img alt="{{ $event->title }}"
-                            src="{{ $event->thumbnail ? 'data:image/jpeg;base64,' . base64_encode($event->thumbnail) : 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}"
+                            src="{{ $event->thumbnail ? 'data:image/jpeg;base64,' . $event->thumbnail : 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}"
                             class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105" />
 
                         <!-- Bottom Overlay with Gradient & Text -->
