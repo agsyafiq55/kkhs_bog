@@ -212,3 +212,7 @@ select:focus[data-flux-control] {
     animation: blob 15s infinite;
   }
 }
+
+.pause-animation {
+  animation-play-state: paused;
+}

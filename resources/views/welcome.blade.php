@@ -227,6 +227,8 @@
                 </div>
             </div>
 
+            {{-- 3. Gallery Section --}}
+
             <!-- Achievements Section -->
             <div
                 class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden mt-12">

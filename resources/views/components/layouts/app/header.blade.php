@@ -14,17 +14,17 @@
         </a>
         <!-- LINKS FOR DESKTOP -->
         <flux:navbar class="-mb-px max-lg:hidden">
-            <flux:navbar.item icon="megaphone" href="{{ route('events.index') }}" :current="request()->is('events')">
+            <flux:navbar.item icon="calendar" href="{{ route('events.index') }}" :current="request()->is('events')">
                 {{ __('Events') }}
             </flux:navbar.item>
             <flux:navbar.item icon="photo" href="{{ route('gallery') }}" :current="request()->is('gallery')">
                 {{ __('Gallery') }}
             </flux:navbar.item>
-            <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
-                {{ __('About Us') }}
-            </flux:navbar.item>
             <flux:navbar.item icon="megaphone" href="{{ route('announcements.index') }}" :current="request()->is('announcements*')">
                 {{ __('Announcements') }}
+            </flux:navbar.item>
+            <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
+                {{ __('About Us') }}
             </flux:navbar.item>
         </flux:navbar>
 
@@ -60,11 +60,11 @@
                 <flux:navlist.item icon="photo" :href="route('gallery')" :current="request()->is('gallery')">
                     {{ __('Gallery') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="users" :href="route('aboutus')" :current="request()->is('about-us')">
-                    {{ __('About Us') }}
-                </flux:navlist.item>
                 <flux:navlist.item icon="megaphone" :href="route('announcements.index')" :current="request()->is('announcements*')">
                     {{ __('Announcements') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="users" :href="route('aboutus')" :current="request()->is('about-us')">
+                    {{ __('About Us') }}
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>

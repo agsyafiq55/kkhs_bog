@@ -19,7 +19,7 @@ $formattedDate = \Carbon\Carbon::parse($event->event_date)->format('d F Y');
 
 <x-layouts.app>
     <div class="py-6 bg-gray-50 dark:bg-zinc-800 min-h-screen">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Back button -->
             <div class="mb-6">
                 <a href="{{ route('events.index') }}" class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">

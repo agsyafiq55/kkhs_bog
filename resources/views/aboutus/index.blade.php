@@ -1,7 +1,6 @@
 <x-layouts.app>
     <!-- Hero Banner -->
-    <div
-        class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden mb-8">
+    <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border mx-auto max-w-6xl border-gray-100 dark:border-zinc-700 relative overflow-hidden mb-8">
         <!-- Background image with overlay -->
         <div class="absolute inset-0 z-0">
             <img src="https://mrwallpaper.com/images/hd/chinese-lantern-photography-azuq3mbutdxhp3z7.jpg"
@@ -27,7 +26,7 @@
     </div>
 
     {{-- About us section --}}
-    <div class="container mx-auto max-full">
+    <div class="container mx-auto max-w-6xl">
         @if ($aboutUs)
             <div class="space-y-8">
                 <!-- Organization Photo -->
