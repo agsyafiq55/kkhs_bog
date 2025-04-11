@@ -95,27 +95,25 @@
                     <span>and Announcements</span>
                 </div>
             </div>
+            @php
+                // Get the latest 3 announcements ordered by published_at date
+                $latestAnnouncements = App\Models\Announcement::orderBy('published_at', 'desc')
+                    ->take(3)
+                    ->get();
+            @endphp
             <div x-data="{
                 // Sets the time between each slides in milliseconds
                 autoplayIntervalTime: 4500,
-                slides: [{
-                        imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-1.webp',
-                        imgAlt: 'Vibrant abstract painting with swirling blue and light pink hues on a canvas.',
-                        title: 'Slide 1',
-                        description: 'Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text',
-                    },
+                slides: [
+                    @foreach($latestAnnouncements as $announcement)
                     {
-                        imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-2.webp',
-                        imgAlt: 'Vibrant abstract painting with swirling red, yellow, and pink hues on a canvas.',
-                        title: 'Slide 2',
-                        description: 'Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text',
+                        imgSrc: '{{ $announcement->image ? "data:image/jpeg;base64," . $announcement->image : "http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg" }}',
+                        imgAlt: '{{ $announcement->title }}',
+                        title: '{{ $announcement->title }}',
+                        description: '{{ Str::limit(strip_tags($announcement->content), 150) }}',
+                        link: '{{ route('announcements.show', $announcement->id) }}'
                     },
-                    {
-                        imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-3.webp',
-                        imgAlt: 'Vibrant abstract painting with swirling blue and purple hues on a canvas.',
-                        title: 'Slide 3',
-                        description: 'Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text Samlple text',
-                    },
+                    @endforeach
                 ],
                 currentSlideIndex: 1,
                 isPaused: false,
