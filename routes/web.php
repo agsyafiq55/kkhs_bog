@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AnnouncementController;
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
@@ -26,5 +27,9 @@ Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'sho
 
 // 3. About Us 
 Route::get('/about-us', [App\Http\Controllers\AboutUsController::class, 'index'])->name('aboutus');
+
+// 4. Announcements
+Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');
+Route::get('/announcements/{id}', [AnnouncementController::class, 'show'])->name('announcements.show');
 
 

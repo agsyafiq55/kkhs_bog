@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 class MemberEdit extends Component
 {
     use WithFileUploads;
-
     public $memberId;
     public $member;
     public $member_name;
@@ -119,4 +118,5 @@ class MemberEdit extends Component
             'debugInfo' => $this->debugInfo
         ]);
     }
+
 }

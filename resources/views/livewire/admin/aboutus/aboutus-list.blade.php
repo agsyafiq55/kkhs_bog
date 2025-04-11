@@ -15,7 +15,7 @@
 
         <div>
             @if ($aboutUs)
-                <flux:button wire:click="edit" class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
+                <flux:button href="{{ route('admin.aboutus.edit') }}" class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
                         fill="currentColor">
                         <path

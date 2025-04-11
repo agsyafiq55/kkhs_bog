@@ -5,15 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Member extends Model
+class Announcement extends Model
 {
     use HasFactory;
 
-    protected $table = 'members';
-
     protected $fillable = [
-        'member_name',
-        'photo',
-        'position',
+        'title',
+        'content',
+        'image',
+        'published_at',
+    ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 }

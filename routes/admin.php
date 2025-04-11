@@ -11,6 +11,9 @@ use App\Livewire\Admin\AboutUs\AboutUsList;
 use App\Livewire\Admin\AboutUs\AboutUsEdit;
 use App\Livewire\Admin\AboutUs\MemberEdit;
 use App\Livewire\Admin\TimelineManager; 
+use App\Livewire\Admin\Announcements\AnnouncementsList;
+use App\Livewire\Admin\Announcements\AnnouncementForm;
+use App\Livewire\Admin\Announcements\AnnouncementShow;
 
 Route::view('/admin/dashboard', '/admin/dashboard')
     ->middleware(['auth', 'verified'])
@@ -62,7 +65,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/aboutus/members/create', MemberEdit::class)->name('aboutus.members.create');
     Route::get('/aboutus/members/edit/{memberId}', MemberEdit::class)->name('aboutus.members.edit');
 
-    // Timeline management - added here
+    // Timeline management 
     Route::get('/timeline', TimelineManager::class)->name('timeline');
 });
 
@@ -81,4 +84,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('/create', App\Livewire\Admin\Achievements\CocurricularAchievementForm::class)->name('create');
         Route::get('/{id}/edit', App\Livewire\Admin\Achievements\CocurricularAchievementForm::class)->name('edit');
     });
+});
+
+// 5. Announcements
+Route::middleware(['auth'])->group(function () {
+    // List all announcements
+    Route::get('/admin/announcements', App\Livewire\Admin\Announcements\AnnouncementsList::class)->name('admin.announcements');
+    // Create a new announcement
+    Route::get('/admin/announcements/create', App\Livewire\Admin\Announcements\AnnouncementForm::class)->name('admin.announcements.create');
+    // Edit an existing announcement
+    Route::get('/admin/announcements/edit/{announcementId}', App\Livewire\Admin\Announcements\AnnouncementForm::class)->name('admin.announcements.edit');
+    // View a single announcement (detailed view)
+    Route::get('/admin/announcements/show/{announcementId}', App\Livewire\Admin\Announcements\AnnouncementShow::class)->name('admin.announcements.show');
 });

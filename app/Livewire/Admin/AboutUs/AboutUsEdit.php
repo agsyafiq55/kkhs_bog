@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class AboutUsEdit extends Component
 {
-    use WithFileUploads;
-
+    use WithFileUploads; 
     public $aboutUsId;
     public $aboutUs;
     public $chairman_speech;

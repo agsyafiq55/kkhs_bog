@@ -8,6 +8,7 @@ use App\Models\Member;
 
 class AboutUsList extends Component
 {
+    public $memberId;
     public $aboutUs;
     public $members;
     public $debugInfo = '';
@@ -55,15 +56,22 @@ class AboutUsList extends Component
     {
         return redirect()->route('admin.aboutus.edit');
     }
-    
-    // Handle member deletion
+
+    // Handle the delete button click
     public function deleteMember($memberId)
     {
         try {
-            Member::findOrFail($memberId)->delete();
-            session()->flash('message', 'Member deleted successfully!');
-            $this->debugInfo = "Member {$memberId} deleted successfully.";
-            $this->loadMembers();
+            $member = Member::findOrFail($memberId);
+            $result = $member->delete();
+            
+            if ($result) {
+                $this->emit('member-deleted');  // Emit an event
+                $this->loadMembers();  // Refresh the list
+                session()->flash('message', 'Member deleted successfully!');
+                $this->debugInfo = "Member {$memberId} deleted successfully.";
+            } else {
+                throw new \Exception('Failed to delete member');
+            }
         } catch (\Exception $e) {
             $this->debugInfo = 'Error deleting member: ' . $e->getMessage();
             session()->flash('error', 'Error deleting member: ' . $e->getMessage());

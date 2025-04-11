@@ -23,6 +23,9 @@
             <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
                 {{ __('About Us') }}
             </flux:navbar.item>
+            <flux:navbar.item icon="megaphone" href="{{ route('announcements.index') }}" :current="request()->is('announcements*')">
+                {{ __('Announcements') }}
+            </flux:navbar.item>
         </flux:navbar>
 
         <flux:spacer />
@@ -59,6 +62,9 @@
                 </flux:navlist.item>
                 <flux:navlist.item icon="users" :href="route('aboutus')" :current="request()->is('about-us')">
                     {{ __('About Us') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="megaphone" :href="route('announcements.index')" :current="request()->is('announcements*')">
+                    {{ __('Announcements') }}
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
