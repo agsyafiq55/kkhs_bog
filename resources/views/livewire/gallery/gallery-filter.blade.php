@@ -1,5 +1,5 @@
-<div>
-    <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden">
+<div class="mx-auto max-w-6xl">
+    <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-md border border-gray-100 dark:border-zinc-800 relative overflow-hidden">
         <!-- Background image with overlay -->
         <div class="absolute inset-0 z-0">
             <img src="https://images.pexels.com/photos/5474047/pexels-photo-5474047.jpeg" alt="Chinese landscape" class="w-full h-full object-cover">
@@ -64,7 +64,7 @@
                         
                         <a href="{{ route('gallery.show', $image->id) }}" class="block">
                             <!-- Card with hover effect -->
-                            <div class="w-full {{ $randomHeight }} rounded-lg overflow-hidden relative transform-gpu preserve-3d perspective-1000 transition-all duration-500 ease-in-out cursor-pointer hover:rotate-y-10 hover:rotate-x-10 hover:scale-105 hover:shadow-lg group">
+                            <div class="w-full {{ $randomHeight }} shadow-lg rounded-lg overflow-hidden relative transform-gpu preserve-3d perspective-1000 transition-all duration-500 ease-in-out cursor-pointer hover:rotate-y-10 hover:rotate-x-10 hover:scale-105 hover:shadow-lg group">
                                 <!-- Background image with gradient overlay -->
                                 <div class="absolute inset-0 overflow-hidden">
                                     <img class="w-full h-full object-cover" 

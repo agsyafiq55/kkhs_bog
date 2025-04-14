@@ -202,7 +202,7 @@
                     @foreach ($events as $event)
                         <a href="{{ route('events.show', $event->id) }}" class="block hover:no-underline aspect-square group">
                             <article
-                                class="relative overflow-hidden rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 pb-[110%]">
+                                class="relative overflow-hidden rounded-lg shadow-md transition-transform duration-300 hover:shadow-lg hover:scale-105 pb-[110%]">
                                 <!-- Background Image -->
                                 <img alt="{{ $event->title }}"
                                     src="{{ $event->thumbnail ? 'data:image/jpeg;base64,' . $event->thumbnail : 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}"
@@ -231,7 +231,7 @@
 
             <!-- Achievements Section -->
             <div
-                class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden mt-12">
+                class="bg-white dark:bg-zinc-900 rounded-xl shadow-md border border-gray-100 dark:border-zinc-800 relative overflow-hidden mt-12">
                 <!-- Background banner with overlay -->
                 <div class="relative overflow-hidden mb-8">
                     <div class="absolute inset-0 z-0">
@@ -260,6 +260,8 @@
                 <div class="p-6">
                     <livewire:achievements.achievements-display />
                 </div>
+
+                
             </div>
         </div>
     </x-layouts.app>
