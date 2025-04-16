@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\AboutUs;
+namespace App\Livewire\Admin\AboutUs\Members;
 
 use Livewire\Component;
 use App\Models\Member;
@@ -99,7 +99,7 @@ class MemberEdit extends Component
             $action = $this->memberId ? 'updated' : 'created';
             session()->flash('message', "Member '{$this->member_name}' {$action} successfully!");
 
-            return redirect()->route('admin.aboutus');
+            return redirect()->route('admin.aboutus.members.list');
         } catch (\Exception $e) {
             // Log error
             Log::error('Member save error: ' . $e->getMessage());
@@ -114,7 +114,7 @@ class MemberEdit extends Component
 
     public function render()
     {
-        return view('livewire.admin.aboutus.members-edit', [
+        return view('livewire.admin.aboutus.members.members-edit', [
             'debugInfo' => $this->debugInfo
         ]);
     }

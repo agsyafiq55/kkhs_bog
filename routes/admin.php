@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\Members\MembersList;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\Events\EventsList;
 use App\Livewire\Admin\Events\EventForm;
@@ -9,7 +10,8 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Admin\AboutUs\AboutUsList;
 use App\Livewire\Admin\AboutUs\AboutUsEdit;
-use App\Livewire\Admin\AboutUs\MemberEdit;
+use App\Livewire\Admin\AboutUs\Members\MemberList;
+use App\Livewire\Admin\AboutUs\Members\MemberEdit;
 use App\Livewire\Admin\TimelineManager; 
 use App\Livewire\Admin\Announcements\AnnouncementsList;
 use App\Livewire\Admin\Announcements\AnnouncementForm;
@@ -61,11 +63,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // About Us edit page
     Route::get('/aboutus/edit', AboutUsEdit::class)->name('aboutus.edit');
 
-    // Members management
+    // 3a. Members management
+    Route::get('/aboutus/members', MemberList::class)->name('aboutus.members.list');
     Route::get('/aboutus/members/create', MemberEdit::class)->name('aboutus.members.create');
     Route::get('/aboutus/members/edit/{memberId}', MemberEdit::class)->name('aboutus.members.edit');
 
-    // Timeline management 
+    // 3b. Timeline management 
     Route::get('/timeline', TimelineManager::class)->name('timeline');
 });
 
