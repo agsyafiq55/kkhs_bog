@@ -2,7 +2,7 @@
     <flux:input 
         wire:model.live.debounce.300ms="query"
         icon="magnifying-glass" 
-        placeholder="Search..."
+        placeholder="Filter by Search"
         class="w-full"
     />
 </div>

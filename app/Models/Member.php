@@ -15,5 +15,6 @@ class Member extends Model
         'member_name',
         'photo',
         'position',
+        'year',
     ];
 }

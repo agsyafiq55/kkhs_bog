@@ -14,6 +14,7 @@ class MemberEdit extends Component
     public $member;
     public $member_name;
     public $position;
+    public $year;
     public $newPhoto;
     public $debugInfo = '';
 
@@ -50,6 +51,7 @@ class MemberEdit extends Component
         return [
             'member_name.required' => 'The member name field is required.',
             'position.required' => 'The position field is required.',
+            'year.required' => 'The year field is required.',
             'newPhoto.required' => 'Please select a member photo to upload.',
             'newPhoto.image' => 'The file must be an image (jpeg, png, bmp, gif, svg, or webp).',
             'newPhoto.max' => 'The image size must not exceed 5MB.',
@@ -63,6 +65,7 @@ class MemberEdit extends Component
             $this->member = Member::findOrFail($memberId);
             $this->member_name = $this->member->member_name;
             $this->position = $this->member->position;
+            $this->year = $this->member->year;
         }
     }
 
@@ -88,6 +91,7 @@ class MemberEdit extends Component
             
             $member->member_name = $this->member_name;
             $member->position = $this->position;
+            $member->year = $this->year;
 
             if ($this->newPhoto) {
                 // Store the photo as base64

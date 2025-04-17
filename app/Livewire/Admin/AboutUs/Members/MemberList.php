@@ -11,12 +11,25 @@ class MemberList extends Component
     public $members;
     public $debugInfo = '';
     public $search = ''; // Added search property
+    public $selectedYear = ''; // Added year filter property
+    public $availableYears = []; // To store all available years
 
     protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
+        $this->loadAvailableYears();
         $this->loadMembers();
+    }
+    
+    // Load all unique years from the members table
+    public function loadAvailableYears()
+    {
+        $this->availableYears = Member::select('year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
     }
     
     public function loadMembers()
@@ -34,14 +47,25 @@ class MemberList extends Component
             END
         ");
         
+        // Apply year filter if selected
+        if ($this->selectedYear !== '') {
+            $query->where('year', $this->selectedYear);
+        }
+
         if ($this->search !== '') {
             $query->where(function ($q) {
                 $q->where('member_name', 'like', "%{$this->search}%")
-                  ->orWhere('position', 'like', "%{$this->search}%");
+                    ->orWhere('position', 'like', "%{$this->search}%");
             });
         }
         
         $this->members = $query->get();
+    }
+    
+    // Add method to handle year filter changes
+    public function updatedSelectedYear()
+    {
+        $this->loadMembers();
     }
     
     // Add the updateSearch method to handle search events
