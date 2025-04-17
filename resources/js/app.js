@@ -2,8 +2,11 @@ import Alpine from 'alpinejs'
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Sortable from 'sortablejs'
+import { ClassicEditor } from 'ckeditor5';
+import 'ckeditor5/ckeditor5.css';
 
 window.Sortable = Sortable;
+window.ClassicEditor = ClassicEditor;
 
 window.Alpine = Alpine
 Alpine.start()

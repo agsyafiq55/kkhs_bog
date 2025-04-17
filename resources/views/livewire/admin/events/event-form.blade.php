@@ -108,6 +108,7 @@
                     class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                     <flux:heading size="lg" class="mb-4">Article Content</flux:heading>
 
+                    {{-- Article Rich Text Editor--}}
                     <div>
                         <flux:textarea id="article" wire:model.defer="article"
                             placeholder="Write about what's happening in KKHS!" rows="12" class="w-full">
@@ -129,10 +130,12 @@
                         <!-- Thumbnail Preview -->
                         <div
                             class="mb-4 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
-                            @if($thumbnail)
-                                <img src="{{ $thumbnail->temporaryUrl() }}" class="w-full h-full object-cover" alt="Thumbnail preview">
+                            @if ($thumbnail)
+                                <img src="{{ $thumbnail->temporaryUrl() }}" class="w-full h-full object-cover"
+                                    alt="Thumbnail preview">
                             @elseif($eventId && isset($event) && $event->thumbnail)
-                                <img src="data:image/jpeg;base64,{{ $event->thumbnail }}" class="w-full h-full object-cover" alt="Thumbnail preview">
+                                <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
+                                    class="w-full h-full object-cover" alt="Thumbnail preview">
                             @else
                                 <div class="text-center p-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
@@ -161,8 +164,9 @@
                         @error('thumbnail')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
-                        
-                        <div wire:loading wire:target="thumbnail" class="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+
+                        <div wire:loading wire:target="thumbnail"
+                            class="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
                             <svg class="animate-spin -ml-1 mr-2 h-4 w-4 inline-block"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"

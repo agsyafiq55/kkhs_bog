@@ -15,7 +15,6 @@ Route::get('/', [GuestController::class, 'index'])->name('home');
 // 1. Events Page
 // Index: List all events
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
-
 // Show: Display a single event's details
 Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
@@ -24,12 +23,13 @@ Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show'
 Route::get('/gallery', [App\Http\Controllers\GalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{id}', [App\Http\Controllers\GalleryController::class, 'show'])->name('gallery.show');
 
-
-// 3. About Us 
-Route::get('/about-us', [App\Http\Controllers\AboutUsController::class, 'index'])->name('aboutus');
-
-// 4. Announcements
+// 3. Announcements
 Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');
 Route::get('/announcements/{id}', [AnnouncementController::class, 'show'])->name('announcements.show');
+
+// 4. About Us 
+Route::get('/about-us', [App\Http\Controllers\AboutUsController::class, 'index'])->name('aboutus');
+
+
 
 

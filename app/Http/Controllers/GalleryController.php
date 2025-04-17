@@ -12,7 +12,7 @@ class GalleryController extends Controller
      */
     public function index($category = null)
     {
-        return view('gallery.index', [
+        return view('public.gallery.index', [
             'selectedCategory' => $category
         ]);
     }
@@ -30,6 +30,6 @@ class GalleryController extends Controller
             ->limit(4)
             ->get();
             
-        return view('gallery.show', compact('image', 'relatedImages'));
+        return view('public.gallery.show', compact('image', 'relatedImages'));
     }
 }

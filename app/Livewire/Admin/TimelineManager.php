@@ -75,7 +75,7 @@ class TimelineManager extends Component
         // Loop through the ordered IDs and update the position
         foreach ($orderedIds as $index => $id) {
             // Find the card
-            $card = \App\Models\TimelineCard::find($id);
+            $card = TimelineCard::find($id);
             if ($card) {
                 // Update the position (assuming you have a 'position' column)
                 $card->position = $index + 1;
@@ -96,7 +96,7 @@ class TimelineManager extends Component
     private function loadCards()
     {
         // Load cards ordered by position
-        $this->cards = \App\Models\TimelineCard::orderBy('position', 'asc')->get();
+        $this->cards = TimelineCard::orderBy('position', 'asc')->get();
     }
 
     public function resetForm()

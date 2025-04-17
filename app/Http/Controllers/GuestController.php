@@ -11,6 +11,6 @@ class GuestController extends Controller
     {
         // Fetch events (limit to 4 for display)
         $events = Event::latest()->take(4)->get();
-        return view('welcome', compact('events'));
+        return view('public.welcome', compact('events'));
     }
 }

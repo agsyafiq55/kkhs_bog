@@ -13,7 +13,7 @@ class AnnouncementController extends Controller
     public function index()
     {
         $announcements = Announcement::orderBy('published_at', 'desc')->paginate(10);
-        return view('announcements.index', compact('announcements'));
+        return view('public.announcements.index', compact('announcements'));
     }
 
     /**
@@ -22,6 +22,6 @@ class AnnouncementController extends Controller
     public function show($id)
     {
         $announcement = Announcement::findOrFail($id);
-        return view('announcements.show', compact('announcement'));
+        return view('public.announcements.show', compact('announcement'));
     }
 }

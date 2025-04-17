@@ -25,3 +25,4 @@
     </div>
 </x-layouts.app.header>
 @endauth
+@stack('scripts')

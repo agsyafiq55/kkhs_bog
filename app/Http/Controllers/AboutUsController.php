@@ -19,6 +19,6 @@ class AboutUsController extends Controller
         // Get all members ordered by position
         $members = Member::orderBy('position')->get();
         
-        return view('aboutus.index', compact('aboutUs', 'members'));
+        return view('public.aboutus.index', compact('aboutUs', 'members'));
     }
 }
