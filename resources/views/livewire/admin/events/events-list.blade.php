@@ -6,6 +6,7 @@
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Manage and organize your school events</p>
         </div>
 
+        {{-- Search Bar --}}
         <div class="w-full sm:w-1/3">
             @livewire('search-bar', [
                 'model' => 'Event',
@@ -95,7 +96,7 @@
 
 <!-- Empty state -->
 @if (count($events) === 0)
-    <div class="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg">
+    <div class="text-center py-12 bg-gray-50 dark:bg-zinc-700 rounded-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none"
             viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
@@ -103,11 +104,6 @@
         </svg>
         <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-gray-100">No events found</h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating your first event.</p>
-        <div class="mt-6">
-            <flux:button href="{{ route('admin.events.create') }}" class="bg-indigo-600 hover:bg-indigo-700">
-                Create your first event
-            </flux:button>
-        </div>
     </div>
 @endif
 </div>

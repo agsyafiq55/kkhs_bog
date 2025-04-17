@@ -10,6 +10,9 @@ class MemberList extends Component
     public $memberId;
     public $members;
     public $debugInfo = '';
+    public $search = ''; // Added search property
+
+    protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
@@ -18,7 +21,7 @@ class MemberList extends Component
     
     public function loadMembers()
     {
-        $this->members = Member::orderByRaw("
+        $query = Member::orderByRaw("
             CASE position
                 WHEN 'Chairman' THEN 1
                 WHEN 'Vice Chairman I' THEN 2
@@ -29,7 +32,23 @@ class MemberList extends Component
                 WHEN 'Member of Board of Governor' THEN 7
                 ELSE 8
             END
-        ")->get();
+        ");
+        
+        if ($this->search !== '') {
+            $query->where(function ($q) {
+                $q->where('member_name', 'like', "%{$this->search}%")
+                  ->orWhere('position', 'like', "%{$this->search}%");
+            });
+        }
+        
+        $this->members = $query->get();
+    }
+    
+    // Add the updateSearch method to handle search events
+    public function updateSearch($term)
+    {
+        $this->search = $term;
+        $this->loadMembers();
     }
 
     public function render()

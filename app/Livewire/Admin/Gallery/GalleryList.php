@@ -9,16 +9,42 @@ class GalleryList extends Component
 {
     public $galleries = [];
     public $debugInfo = '';
+    public $search = ''; // Added search property
+
+    protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
         $this->loadGalleries();
     }
 
+    public function updateSearch($term)
+    {
+        $this->search = $term;
+        $this->loadGalleries();
+    }
+
     // Load galleries sorted by creation date.
+    // public function loadGalleries()
+    // {
+    //     $this->galleries = Gallery::orderBy('created_at', 'desc')->get();
+    // }
+
     public function loadGalleries()
     {
-        $this->galleries = Gallery::orderBy('created_at', 'desc')->get();
+        $query = Gallery::orderBy('created_at', 'desc');
+
+        if ($this->search !== '') {
+            $query->where(function ($q) {
+                $q->where('img_name', 'like', "%{$this->search}%")
+                    ->orWhere('category', 'like', "%{$this->search}%");
+            });
+        }
+
+        $this->galleries = $query->get()->map(function ($galleries) {
+            $galleries->has_image = !empty($galleries->image);
+            return $galleries;
+        });
     }
 
     // Delete a gallery item.

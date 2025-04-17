@@ -1,17 +1,30 @@
 <div class="py-6">
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">{{ __('Announcements Management') }}</flux:heading>
+            <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">
+                {{ __('Announcements Management') }}</flux:heading>
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Manage school announcements and notices</p>
         </div>
+
+        {{-- Search Bar --}}
+        <div class="w-full sm:w-1/3">
+            @livewire('search-bar', [
+                'model' => 'Announcement',
+                'searchFields' => ['title', 'content'],
+            ])
+        </div>
+
         <flux:button href="{{ route('admin.announcements.create') }}" class="transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                    clip-rule="evenodd" />
             </svg>
             {{ __('Add New Announcement') }}
         </flux:button>
     </div>
-    
+
     <flux:separator variant="subtle" class="mb-6" />
 
     @if (session()->has('message'))
@@ -31,13 +44,16 @@
             <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
                 <thead class="bg-gray-50 dark:bg-zinc-800">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Title
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Published At
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
@@ -46,20 +62,26 @@
                     @forelse($announcements as $announcement)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $announcement->title }}</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ $announcement->title }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $announcement->published_at->format('M d, Y H:i') }}</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $announcement->published_at->format('M d, Y H:i') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
-                                    <button wire:click="redirectToShow({{ $announcement->id }})" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                    <button wire:click="redirectToShow({{ $announcement->id }})"
+                                        class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                         View
                                     </button>
-                                    <button wire:click="edit({{ $announcement->id }})" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                    <button wire:click="edit({{ $announcement->id }})"
+                                        class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                                         Edit
                                     </button>
-                                    <button wire:click="delete({{ $announcement->id }})" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300" onclick="return confirm('Are you sure you want to delete this announcement?')">
+                                    <button wire:click="delete({{ $announcement->id }})"
+                                        class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                                        onclick="return confirm('Are you sure you want to delete this announcement?')">
                                         Delete
                                     </button>
                                 </div>
@@ -67,7 +89,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                            <td colspan="3"
+                                class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-500 dark:text-gray-400">
                                 No announcements found
                             </td>
                         </tr>

@@ -9,6 +9,9 @@ class AnnouncementsList extends Component
 {
     public $announcements = [];
     public $debugInfo = '';
+    public $search = ''; // Added search property
+
+    protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
@@ -16,9 +19,22 @@ class AnnouncementsList extends Component
     }
 
     // Load announcements sorted by published_at date.
+
     public function loadAnnouncements()
     {
-        $this->announcements = Announcement::orderBy('published_at', 'desc')->get();
+        $query = Announcement::orderBy('created_at', 'desc');
+
+        if ($this->search !== '') {
+            $query->where(function ($q) {
+                $q->where('title', 'like', "%{$this->search}%")
+                    ->orWhere('content', 'like', "%{$this->search}%");
+            });
+        }
+
+        $this->announcements = $query->get()->map(function ($announcements) {
+            $announcements->has_image = !empty($announcements->image);
+            return $announcements;
+        });
     }
 
     // Delete an announcement.
