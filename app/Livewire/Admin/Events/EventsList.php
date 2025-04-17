@@ -9,22 +9,39 @@ class EventsList extends Component
 {
     public $events = [];
     public $debugInfo = '';
+    public $search = ''; // Added search property
+
+    protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
         $this->loadEvents();
     }
 
-    // Load events sorted by creation date.
+    public function updateSearch($term)
+    {
+        $this->search = $term;
+        $this->loadEvents();
+    }
+
     public function loadEvents()
     {
-        $this->events = Event::orderBy('created_at', 'desc')->get()->map(function ($event) {
+        $query = Event::orderBy('created_at', 'desc');
+
+        if ($this->search !== '') {
+            $query->where(function ($q) {
+                $q->where('title', 'like', "%{$this->search}%")
+                    ->orWhere('event_date', 'like', "%{$this->search}%");
+            });
+        }
+
+        $this->events = $query->get()->map(function ($event) {
             $event->has_thumbnail = !empty($event->thumbnail);
             return $event;
         });
     }
 
-    // Delete an event.
+
     public function delete($id)
     {
         try {
@@ -41,7 +58,7 @@ class EventsList extends Component
     public function render()
     {
         return view('livewire.admin.events.events-list', [
-            'events'    => $this->events,
+            'events' => $this->events,
             'debugInfo' => $this->debugInfo,
         ]);
     }
@@ -50,8 +67,7 @@ class EventsList extends Component
     {
         return redirect()->route('admin.events.show', $eventId);
     }
-    
-    // Add this new method to handle the edit button click
+
     public function edit($eventId)
     {
         return redirect()->route('admin.events.edit', $eventId);
