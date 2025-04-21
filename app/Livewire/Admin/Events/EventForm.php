@@ -19,7 +19,7 @@ class EventForm extends Component
     public $tag;
     public $article;
     public $thumbnail;
-    public $is_highlighted = 0; // Change default to 0 instead of false
+    public $is_highlighted = 0; // Initialize with default value of 0
     public $debugInfo = '';
 
     // Add this method to handle file uploads directly
@@ -112,6 +112,7 @@ class EventForm extends Component
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
                 $event->article = $this->article;
+                $event->is_highlighted = $this->is_highlighted; // Explicitly set the is_highlighted value
                 
                 // Convert image to base64 string for longtext storage
                 $imageData = base64_encode(file_get_contents($this->thumbnail->getRealPath()));
