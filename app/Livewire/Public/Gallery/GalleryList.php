@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Public\Gallery;
 
 use Livewire\Component;
 use App\Models\Gallery;
 
-class GalleryFilter extends Component
+class GalleryList extends Component
 {
     public $selectedCategory = null;
     public $categories = [];
@@ -38,6 +38,6 @@ class GalleryFilter extends Component
 
     public function render()
     {
-        return view('livewire.gallery.gallery-filter');
+        return view('livewire.public.gallery.gallery-list');
     }
 }

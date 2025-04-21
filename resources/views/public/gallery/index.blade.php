@@ -1,3 +1,3 @@
 <x-layouts.app>
-    <livewire:gallery-filter :category="$selectedCategory ?? null" />
+    @livewire('public.gallery.gallery-list', ['category' => $selectedCategory ?? null])
 </x-layouts.app>
