@@ -129,7 +129,7 @@
                     <div>
                         <!-- Thumbnail Preview -->
                         <div
-                            class="mb-4 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
+                            class="mb-4 relative overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
                             @if ($thumbnail)
                                 <img src="{{ $thumbnail->temporaryUrl() }}" class="w-full h-full object-cover"
                                     alt="Thumbnail preview">

@@ -10,12 +10,25 @@ class EventsList extends Component
     public $events = [];
     public $debugInfo = '';
     public $search = ''; // Added search property
+    public $selectedTag = ''; // Added tag filter property
+    public $availableTags = []; // To store all available tags
 
     protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
+        $this->loadAvailableTags();
         $this->loadEvents();
+    }
+
+    // Load all unique tags from the events table
+    public function loadAvailableTags()
+    {
+        $this->availableTags = Event::select('tag')
+            ->distinct()
+            ->orderBy('tag')
+            ->pluck('tag')
+            ->toArray();
     }
 
     public function updateSearch($term)
@@ -26,7 +39,8 @@ class EventsList extends Component
 
     public function loadEvents()
     {
-        $query = Event::orderBy('created_at', 'desc');
+        $query = Event::orderBy('is_highlighted', 'desc')
+                      ->orderBy('created_at', 'desc');
 
         if ($this->search !== '') {
             $query->where(function ($q) {
@@ -35,12 +49,22 @@ class EventsList extends Component
             });
         }
 
+        // Apply tag filter if selected
+        if ($this->selectedTag !== '') {
+            $query->where('tag', $this->selectedTag);
+        }
+
         $this->events = $query->get()->map(function ($event) {
             $event->has_thumbnail = !empty($event->thumbnail);
             return $event;
         });
     }
 
+    // Add method to handle tag filter changes
+    public function updatedSelectedTag()
+    {
+        $this->loadEvents();
+    }
 
     public function delete($id)
     {
