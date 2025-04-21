@@ -112,9 +112,19 @@
 
                             <!-- Member Content -->
                             <div class="text-center">
-                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-1 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                     {{ $member->member_name }}
                                 </h3>
+                                @if($member->zh_member_name)
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                    {{ $member->zh_member_name }}
+                                </p>
+                                @endif
+                                @if($member->zh_position)
+                                <p class="text-xs text-gray-500 dark:text-gray-500">
+                                    {{ $member->zh_position }}
+                                </p>
+                                @endif
 
                                 <!-- Action Buttons -->
                                 <div class="flex justify-center space-x-3 mt-4">

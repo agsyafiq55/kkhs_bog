@@ -13,7 +13,9 @@ class MemberEdit extends Component
     public $memberId;
     public $member;
     public $member_name;
+    public $zh_member_name;
     public $position;
+    public $zh_position;
     public $year;
     public $newPhoto;
     public $debugInfo = '';
@@ -33,7 +35,9 @@ class MemberEdit extends Component
     {
         $rules = [
             'member_name' => 'required|string|max:255',
+            'zh_member_name' => 'nullable|string|max:255',
             'position' => 'required|string|max:255',
+            'zh_position' => 'nullable|string|max:255',
         ];
 
         // Only require photos for new records
@@ -50,6 +54,7 @@ class MemberEdit extends Component
     {
         return [
             'member_name.required' => 'The member name field is required.',
+            'zh_member_name.required' => 'The member Chinese name field is required.',
             'position.required' => 'The position field is required.',
             'year.required' => 'The year field is required.',
             'newPhoto.required' => 'Please select a member photo to upload.',
@@ -64,7 +69,9 @@ class MemberEdit extends Component
             $this->memberId = $memberId;
             $this->member = Member::findOrFail($memberId);
             $this->member_name = $this->member->member_name;
+            $this->zh_member_name = $this->member->zh_member_name;
             $this->position = $this->member->position;
+            $this->zh_position = $this->member->zh_position;
             $this->year = $this->member->year;
         }
     }
@@ -73,6 +80,25 @@ class MemberEdit extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName, $this->rules(), $this->messages());
+    }
+
+    public $positions = [
+        'Chairman' => '董事长',
+        'Vice Chairman I' => '第一副董事长',
+        'Vice Chairman II' => '第二副董事长',
+        'Secretary' => '秘书长',
+        'Treasurer' => '财政',
+        'Supervision' => '监学',
+        'Member of Board of Governor' => '董事'
+    ];
+    
+    public function updatedPosition($value)
+    {
+        if (isset($this->positions[$value])) {
+            $this->zh_position = $this->positions[$value];
+        } else {
+            $this->zh_position = '';
+        }
     }
 
     public function save()
@@ -90,7 +116,9 @@ class MemberEdit extends Component
             }
             
             $member->member_name = $this->member_name;
+            $member->zh_member_name = $this->zh_member_name;
             $member->position = $this->position;
+            $member->zh_position = $this->zh_position;
             $member->year = $this->year;
 
             if ($this->newPhoto) {
@@ -122,5 +150,4 @@ class MemberEdit extends Component
             'debugInfo' => $this->debugInfo
         ]);
     }
-
 }

@@ -13,8 +13,10 @@ class Member extends Model
 
     protected $fillable = [
         'member_name',
+        'zh_member_name',
         'photo',
         'position',
+        'zh_position',
         'year',
     ];
 }

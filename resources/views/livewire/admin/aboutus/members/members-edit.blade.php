@@ -60,9 +60,19 @@
                         </div>
 
                         <div>
+                            <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Chinese Name
+                            </flux:text>
+                            <flux:input type="text" id="zh_member_name" wire:model="zh_member_name"
+                                placeholder="Enter Chinese name" class="w-full" />
+                            @error('zh_member_name')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
                             <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Position
                             </flux:text>
-                            <flux:select id="position" wire:model="position" class="w-full">
+                            <flux:select id="position" wire:model.live="position" class="w-full">
                                 <flux:select.option value="">Choose Position...</flux:select.option>
                                 <flux:select.option value="Chairman">Chairman</flux:select.option>
                                 <flux:select.option value="Vice Chairman I">Vice Chairman I</flux:select.option>
@@ -77,6 +87,7 @@
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
+
                         <!-- Year -->
                         <div>
                             <flux:select wire:model="year" label="Year">
