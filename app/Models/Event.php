@@ -16,6 +16,7 @@ class Event extends Model
         'event_date',
         'thumbnail',
         'tag',
+        'is_highlighted',
     ];
 }
 

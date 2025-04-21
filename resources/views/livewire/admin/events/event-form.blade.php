@@ -108,7 +108,7 @@
                     class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                     <flux:heading size="lg" class="mb-4">Article Content</flux:heading>
 
-                    {{-- Article Rich Text Editor--}}
+                    {{-- Article Rich Text Editor --}}
                     <div>
                         <flux:textarea id="article" wire:model.defer="article"
                             placeholder="Write about what's happening in KKHS!" rows="12" class="w-full">
@@ -185,6 +185,25 @@
                     <flux:heading size="lg" class="mb-4">Actions</flux:heading>
 
                     <div class="space-y-3">
+                        <!-- Highlight toggle switch -->
+                        <flux:field variant="inline">
+                            <flux:heading class="flex items-center gap-2">
+                                Highlight this event?
+                                <flux:tooltip toggleable>
+                                    <flux:button icon="information-circle" size="sm" variant="ghost" />
+                                    <flux:tooltip.content class="max-w-[20rem] space-y-2">
+                                        <p>Highlighting an event will make sure that the event will always be displayed at the top of the Events Display Page.</p>
+                                    </flux:tooltip.content>
+                                </flux:tooltip>
+                            </flux:heading>
+                            <flux:switch 
+                                wire:model.defer="is_highlighted"
+                                :value="1"
+                                :checked="$is_highlighted == 1"
+                            />
+                            <flux:error name="is_highlighted" />
+                        </flux:field>
+
                         <flux:button type="submit" wire:loading.attr="disabled"
                             class="w-full bg-indigo-600 hover:bg-indigo-700 transition-colors text-center py-3">
                             <span wire:loading.remove
@@ -221,6 +240,7 @@
                             <p>Tag: {{ $tag }}</p>
                             <p>Has Article: {{ !empty($article) ? 'Yes' : 'No' }}</p>
                             <p>Has Thumbnail: {{ $thumbnail ? 'Yes' : 'No' }}</p>
+                            <p>Is Highlighted: {{ $is_highlighted ? 'Yes' : 'No' }}</p>
                         </div>
                     </div>
                 @endif

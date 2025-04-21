@@ -19,6 +19,7 @@ class EventForm extends Component
     public $tag;
     public $article;
     public $thumbnail;
+    public $is_highlighted = 0; // Change default to 0 instead of false
     public $debugInfo = '';
 
     // Add this method to handle file uploads directly
@@ -41,6 +42,7 @@ class EventForm extends Component
             'tag' => 'required|string|max:255',
             'article' => 'required|string',
             'thumbnail' => $this->eventId ? 'nullable|image|max:5120' : 'required|image|max:5120',
+            'is_highlighted' => 'boolean', // Add validation rule
         ];
     }
 
@@ -68,6 +70,7 @@ class EventForm extends Component
             $this->event_date = $this->event->event_date;
             $this->tag = $this->event->tag;
             $this->article = $this->event->article;
+            $this->is_highlighted = $this->event->is_highlighted; 
         }
     }
 
@@ -91,6 +94,7 @@ class EventForm extends Component
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
                 $event->article = $this->article;
+                $event->is_highlighted = $this->is_highlighted; 
 
                 if ($this->thumbnail) {
                     // Convert image to base64 string for longtext storage
