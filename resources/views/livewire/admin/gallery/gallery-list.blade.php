@@ -4,21 +4,50 @@
             <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">{{ __('Gallery Management') }}</flux:heading>
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Manage and organize your school gallery images</p>
         </div>
+    </div>
 
-        {{-- Search Bar --}}
-        <div class="w-full sm:w-1/3">
-            @livewire('search-bar', [
-                'model' => 'Gallery',
-                'searchFields' => ['img_name', 'category'],
-            ])
+    <!-- Controls Section with Background -->
+    <div class="mb-6 p-4 bg-gray-50 dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-700">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Search and Filter Controls -->
+            <div class="w-full sm:w-2/3 flex flex-col gap-2">
+                <!-- Filter Label -->
+                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {{ __('Filter Gallery') }}
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    {{-- Search Bar --}}
+                    <div class="w-full sm:w-1/2">
+                        @livewire('search-bar', [
+                            'model' => 'Gallery',
+                            'searchFields' => ['img_name', 'category'],
+                        ])
+                    </div>
+
+                    <!-- Category Filter Dropdown -->
+                    <div class="w-full sm:w-1/2">
+                        <flux:select wire:model.live="selectedCategory">
+                            <option value="">{{ __('All Categories') }}</option>
+                            @foreach($availableCategories as $category)
+                                <option value="{{ $category }}">{{ $category }}</option>
+                            @endforeach
+                        </flux:select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Button -->
+            <div>
+                <flux:button href="{{ route('admin.gallery.edit') }}" class="transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    {{ __('Add New Image') }}
+                </flux:button>
+            </div>
         </div>
-
-        <flux:button href="{{ route('admin.gallery.edit') }}" class="transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-            </svg>
-            {{ __('Add New Image') }}
-        </flux:button>
     </div>
     
     <flux:separator variant="subtle" class="mb-6" />

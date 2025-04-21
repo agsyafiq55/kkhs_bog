@@ -10,12 +10,25 @@ class GalleryList extends Component
     public $galleries = [];
     public $debugInfo = '';
     public $search = ''; // Added search property
+    public $selectedCategory = ''; // Added category filter property
+    public $availableCategories = []; // To store all available categories
 
     protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
 
     public function mount()
     {
+        $this->loadAvailableCategories();
         $this->loadGalleries();
+    }
+
+    // Load all unique categories from the gallery table
+    public function loadAvailableCategories()
+    {
+        $this->availableCategories = Gallery::select('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category')
+            ->toArray();
     }
 
     public function updateSearch($term)
@@ -23,12 +36,6 @@ class GalleryList extends Component
         $this->search = $term;
         $this->loadGalleries();
     }
-
-    // Load galleries sorted by creation date.
-    // public function loadGalleries()
-    // {
-    //     $this->galleries = Gallery::orderBy('created_at', 'desc')->get();
-    // }
 
     public function loadGalleries()
     {
@@ -41,10 +48,21 @@ class GalleryList extends Component
             });
         }
 
+        // Apply category filter if selected
+        if ($this->selectedCategory !== '') {
+            $query->where('category', $this->selectedCategory);
+        }
+
         $this->galleries = $query->get()->map(function ($galleries) {
             $galleries->has_image = !empty($galleries->image);
             return $galleries;
         });
+    }
+
+    // Add method to handle category filter changes
+    public function updatedSelectedCategory()
+    {
+        $this->loadGalleries();
     }
 
     // Delete a gallery item.
