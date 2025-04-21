@@ -42,6 +42,12 @@
                                 wire:navigate>
                                 {{ __('Members') }}
                             </flux:navlist.item>
+                            <flux:navlist.item icon="clock"
+                                :href="route('admin.timeline')"
+                                :current="request()->routeIs('admin.timeline')"
+                                wire:navigate>
+                                {{ __('Our History') }}
+                            </flux:navlist.item>
                         </flux:navlist.group>
                         
                         <flux:navlist.group expandable heading="Achievements" class="hidden lg:grid">

@@ -1,4 +1,3 @@
-<!-- resources/views/livewire/admin/timeline-manager.blade.php -->
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <div class="py-6">

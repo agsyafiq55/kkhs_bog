@@ -117,9 +117,4 @@
             </flux:button>
         </div>
     @endif
-
-    <livewire:admin.timeline-manager />
-
-<livewire:timeline />
-
 </div>

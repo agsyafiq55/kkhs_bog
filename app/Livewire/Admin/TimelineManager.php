@@ -109,6 +109,6 @@ class TimelineManager extends Component
 
     public function render()
     {
-        return view('livewire.admin.timeline-manager');
+        return view('livewire.admin.aboutus.timeline.timeline-manager');
     }
 }
