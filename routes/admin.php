@@ -100,3 +100,9 @@ Route::middleware(['auth'])->group(function () {
     // View a single announcement (detailed view)
     Route::get('/admin/announcements/show/{announcementId}', App\Livewire\Admin\Announcements\AnnouncementShow::class)->name('admin.announcements.show');
 });
+
+// 6. Contact Us Management
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/contactus', App\Livewire\Admin\ContactUs\ContactUsDisplay::class)->name('contactus.display');
+    Route::get('/contactus/edit', App\Livewire\Admin\ContactUs\ContactUsForm::class)->name('contactus.edit');
+});
