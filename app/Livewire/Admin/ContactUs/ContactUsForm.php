@@ -34,7 +34,7 @@ class ContactUsForm extends Component
             'email' => 'required|email|max:255',
             'phone_no1' => 'required|string|max:15',
             'phone_no2' => 'nullable|string|max:15',
-            'maps_coordinate' => 'nullable|string|max:255',
+            'maps_coordinate' => 'nullable|string', // Removed max:255 constraint
         ]);
 
         ContactUs::updateOrCreate(

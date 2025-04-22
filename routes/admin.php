@@ -104,5 +104,5 @@ Route::middleware(['auth'])->group(function () {
 // 6. Contact Us Management
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/contactus', App\Livewire\Admin\ContactUs\ContactUsDisplay::class)->name('contactus.display');
-    Route::get('/contactus/edit', App\Livewire\Admin\ContactUs\ContactUsForm::class)->name('contactus.edit');
+    Route::get('/contactus/edit/{contactUsId?}', App\Livewire\Admin\ContactUs\ContactUsForm::class)->name('contactus.edit');
 });
