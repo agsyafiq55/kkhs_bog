@@ -21,7 +21,14 @@ class CocurricularAchievementsList extends Component
 
     public function deleteAchievement($id)
     {
-        CocurricularAchievement::find($id)->delete();
+        $achievement = CocurricularAchievement::findOrFail($id);
+        
+        // Delete all related items first
+        $achievement->items()->delete();
+        
+        // Delete the achievement
+        $achievement->delete();
+
         session()->flash('message', 'Co-curricular achievement deleted successfully.');
     }
 
