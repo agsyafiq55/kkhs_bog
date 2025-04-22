@@ -30,6 +30,9 @@ Route::get('/announcements/{id}', [AnnouncementController::class, 'show'])->name
 // 4. About Us 
 Route::get('/about-us', [App\Http\Controllers\AboutUsController::class, 'index'])->name('aboutus');
 
+//5. Contact Us
+Route::get('/contact-us', [App\Http\Controllers\ContactUsController::class, 'index'])->name('contact-us');
+
 
 
 

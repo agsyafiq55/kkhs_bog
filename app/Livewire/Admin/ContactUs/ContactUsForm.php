@@ -12,7 +12,7 @@ class ContactUsForm extends Component
     public $email;
     public $phone_no1;
     public $phone_no2;
-    public $maps_coordinate;
+    public $map_url;
 
     public function mount($contactUsId = null)
     {
@@ -23,7 +23,7 @@ class ContactUsForm extends Component
             $this->email = $contactUs->email;
             $this->phone_no1 = $contactUs->phone_no1;
             $this->phone_no2 = $contactUs->phone_no2;
-            $this->maps_coordinate = $contactUs->maps_coordinate;
+            $this->map_url = $contactUs->map_url;
         }
     }
 
@@ -34,7 +34,7 @@ class ContactUsForm extends Component
             'email' => 'required|email|max:255',
             'phone_no1' => 'required|string|max:15',
             'phone_no2' => 'nullable|string|max:15',
-            'maps_coordinate' => 'nullable|string', // Removed max:255 constraint
+            'map_url' => 'nullable',
         ]);
 
         ContactUs::updateOrCreate(

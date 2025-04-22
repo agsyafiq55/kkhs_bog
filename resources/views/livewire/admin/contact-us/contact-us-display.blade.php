@@ -49,10 +49,14 @@
                 </div>
 
                 <div>
-                    <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Maps Coordinate:
+                    <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Google Maps Address:
                     </flux:text>
-                    <p><a href="{{ $contactUs->maps_coordinate }}" target="_blank">{{ __('View on Google Maps') }}</a>
-                    </p>
+                    @if ($contactUs->map_url)
+                        <iframe src="{{ $contactUs->map_url }}" width="600" height="450" class="rounded-xl w-full"
+                            style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    @endif
                 </div>
             </div>
         @else

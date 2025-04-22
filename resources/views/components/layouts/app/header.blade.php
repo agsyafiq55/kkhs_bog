@@ -26,6 +26,9 @@
             <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
                 {{ __('About Us') }}
             </flux:navbar.item>
+            <flux:navbar.item icon="phone" href="{{ route('contact-us') }}" :current="request()->is('contact-us')">
+                {{ __('Contact Us') }}
+            </flux:navbar.item>
         </flux:navbar>
 
         <flux:spacer />

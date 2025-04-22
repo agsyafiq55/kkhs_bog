@@ -84,9 +84,9 @@
 
                         <div>
                             <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Maps Coordinate</flux:text>
-                            <flux:input type="text" id="maps_coordinate" wire:model="maps_coordinate"
+                            <flux:input type="text" id="map_url" wire:model="map_url"
                                 placeholder="Enter Google Maps URL" class="w-full" />
-                            @error('maps_coordinate')
+                            @error('map_url')
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>

@@ -12,6 +12,6 @@ class ContactUs extends Model
         'email',
         'phone_no1',
         'phone_no2',
-        'maps_coordinate',
+        'map_url',
     ];
 }
