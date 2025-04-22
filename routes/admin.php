@@ -12,7 +12,8 @@ use App\Livewire\Admin\AboutUs\AboutUsList;
 use App\Livewire\Admin\AboutUs\AboutUsEdit;
 use App\Livewire\Admin\AboutUs\Members\MemberList;
 use App\Livewire\Admin\AboutUs\Members\MemberEdit;
-use App\Livewire\Admin\TimelineManager; 
+use App\Livewire\Admin\AboutUs\Timeline\TimelineList; 
+use App\Livewire\Admin\AboutUs\Timeline\TimelineEdit;
 use App\Livewire\Admin\Announcements\AnnouncementsList;
 use App\Livewire\Admin\Announcements\AnnouncementForm;
 use App\Livewire\Admin\Announcements\AnnouncementShow;
@@ -69,7 +70,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/aboutus/members/edit/{memberId}', MemberEdit::class)->name('aboutus.members.edit');
 
     // 3b. Timeline management 
-    Route::get('/timeline', TimelineManager::class)->name('timeline');
+    Route::get('/timeline', TimelineList::class)->name('timeline');
+    Route::get('/timeline/create', App\Livewire\Admin\AboutUs\Timeline\TimelineEdit::class)->name('timeline.create');
+    Route::get('/timeline/edit/{cardId}', App\Livewire\Admin\AboutUs\Timeline\TimelineEdit::class)->name('timeline.edit');
 });
 
 // 4. Achievements
