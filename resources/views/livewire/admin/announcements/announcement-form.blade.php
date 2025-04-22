@@ -58,6 +58,39 @@
                                 placeholder="Enter announcement content" class="w-full" />
                             @error('content') <p class="mt-1 text-sm text-red-500">{{ $message }}</p> @enderror
                         </div>
+                        
+                        <div>
+                            <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Publication Period</flux:text>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <flux:text variant="small" class="mb-1 block text-gray-600 dark:text-gray-400">Start Date</flux:text>
+                                    <flux:input 
+                                        type="date" 
+                                        id="publish_start"
+                                        wire:model="publish_start"
+                                        class="w-full" 
+                                    />
+                                    @error('publish_start')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <flux:text variant="small" class="mb-1 block text-gray-600 dark:text-gray-400">End Date</flux:text>
+                                    <flux:input 
+                                        type="date" 
+                                        id="publish_end"
+                                        wire:model="publish_end"
+                                        class="w-full" 
+                                    />
+                                    @error('publish_end')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                {{ __('If no dates are selected, the announcement will be published immediately and remain active indefinitely.') }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

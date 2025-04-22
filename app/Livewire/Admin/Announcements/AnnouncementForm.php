@@ -18,11 +18,16 @@ class AnnouncementForm extends Component
     public $image;
     public $currentImage;
     public $isEdit = false;
+    public $publish_start;
+    public $publish_end;
+    public $publishRange = [];
 
     protected $rules = [
         'title' => 'required|string|max:255',
         'content' => 'required|string',
         'image' => 'nullable|image|max:2048', // 2MB Max
+        'publish_start' => 'nullable|date',
+        'publish_end' => 'nullable|date|after_or_equal:publish_start',
     ];
 
     public function mount($announcementId = null)
@@ -41,6 +46,8 @@ class AnnouncementForm extends Component
             $this->title = $announcement->title;
             $this->content = $announcement->content;
             $this->currentImage = $announcement->image;
+            $this->publish_start = $announcement->publish_start ? $announcement->publish_start->format('Y-m-d') : null;
+            $this->publish_end = $announcement->publish_end ? $announcement->publish_end->format('Y-m-d') : null;
         } catch (\Exception $e) {
             session()->flash('error', 'Error loading announcement: ' . $e->getMessage());
             return redirect()->route('admin.announcements');
@@ -57,6 +64,8 @@ class AnnouncementForm extends Component
             $data = [
                 'title' => $this->title,
                 'content' => $this->content,
+                'publish_start' => $this->publish_start,
+                'publish_end' => $this->publish_end,
             ];
 
             // Handle image upload
@@ -99,5 +108,17 @@ class AnnouncementForm extends Component
     public function render()
     {
         return view('livewire.admin.announcements.announcement-form');
+    }
+
+    // Add this method to handle the date range updates
+    public function updatedPublishRange($value)
+    {
+        if (is_array($value) && isset($value['start']) && isset($value['end'])) {
+            $this->publish_start = $value['start'];
+            $this->publish_end = $value['end'];
+        } else {
+            $this->publish_start = null;
+            $this->publish_end = null;
+        }
     }
 }
