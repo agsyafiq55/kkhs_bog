@@ -15,6 +15,15 @@
             ])
         </div>
 
+        {{-- Status Filter Dropdown --}}
+        <div class="w-full sm:w-auto">
+            <flux:select wire:model.live="statusFilter" >
+                <option value="all">All Announcements</option>
+                <option value="active">Active Announcements</option>
+                <option value="inactive">Inactive Announcements</option>
+            </flux:select>
+        </div>
+
         <flux:button href="{{ route('admin.announcements.create') }}" class="transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
                 fill="currentColor">

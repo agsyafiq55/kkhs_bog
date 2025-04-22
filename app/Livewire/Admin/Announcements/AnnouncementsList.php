@@ -9,16 +9,15 @@ class AnnouncementsList extends Component
 {
     public $announcements = [];
     public $debugInfo = '';
-    public $search = ''; // Added search property
+    public $search = ''; 
+    public $statusFilter = 'all'; // Default to showing all announcements
 
-    protected $listeners = ['searchUpdated' => 'updateSearch']; // Listen for SearchBar updates
+    protected $listeners = ['searchUpdated' => 'updateSearch']; 
 
     public function mount()
     {
         $this->loadAnnouncements();
     }
-
-    // Load announcements sorted by published_at date.
 
     public function updateSearch($searchTerm)
     {
@@ -26,14 +25,41 @@ class AnnouncementsList extends Component
         $this->loadAnnouncements();
     }
 
+    public function updatedStatusFilter()
+    {
+        $this->loadAnnouncements();
+    }
+
     public function loadAnnouncements()
     {
         $query = Announcement::query()->orderBy('created_at', 'desc');
 
+        // Apply search filter if search term exists
         if (!empty($this->search)) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('content', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // Apply status filter if not set to 'all'
+        if ($this->statusFilter === 'active') {
+            $query->where(function($query) {
+                $query->where(function($q) {
+                    $q->whereNull('publish_start')
+                        ->orWhere('publish_start', '<=', now());
+                })->where(function($q) {
+                    $q->whereNull('publish_end')
+                        ->orWhere('publish_end', '>=', now());
+                });
+            });
+        } elseif ($this->statusFilter === 'inactive') {
+            $query->where(function($q) {
+                $q->where('publish_start', '>', now())
+                    ->orWhere(function($query) {
+                        $query->whereNotNull('publish_end')
+                            ->where('publish_end', '<', now());
+                    });
             });
         }
 

@@ -17,36 +17,36 @@
             </a>
             <!-- NAVIGATION LINKS -->
             <flux:navlist variant="outline">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                    <flux:navlist.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:navlist.item>
                     <flux:navlist.group class="grid">
-                        <flux:navlist.item icon="calendar" :href="route('admin.events')" :current="request()->routeIs('admin.events')" wire:navigate>
+                        <flux:navlist.item :href="route('admin.events')" :current="request()->routeIs('admin.events')" wire:navigate>
                             {{ __('Events') }}
                         </flux:navlist.item>
-                        <flux:navlist.item icon="photo" :href="route('admin.gallery')" :current="request()->routeIs('admin.gallery')" wire:navigate>
+                        <flux:navlist.item :href="route('admin.gallery')" :current="request()->routeIs('admin.gallery')" wire:navigate>
                             {{ __('Gallery') }}
                         </flux:navlist.item>
                         
-                        <flux:navlist.item icon="megaphone" :href="route('admin.announcements')" :current="request()->routeIs('admin.announcements*')" wire:navigate>
+                        <flux:navlist.item :href="route('admin.announcements')" :current="request()->routeIs('admin.announcements*')" wire:navigate>
                             {{ __('Announcements') }}
                         </flux:navlist.item>
 
-                        <flux:navlist.item icon="phone" :href="route('admin.contactus.display')" :current="request()->routeIs('admin.contactus*')" wire:navigate>
+                        <flux:navlist.item :href="route('admin.contactus.display')" :current="request()->routeIs('admin.contactus*')" wire:navigate>
                             {{ __('Contact Details') }}
                         </flux:navlist.item>
                         
-                        <flux:navlist.group expandable heading="About Us" class="hidden lg:grid">
-                            <flux:navlist.item icon="users" :href="route('admin.aboutus')" :current="request()->routeIs('admin.aboutus')" wire:navigate>
+                        <flux:navlist.group expandable :expanded="request()->routeIs('admin.aboutus*') || request()->routeIs('admin.timeline')" heading="About Us" class="hidden lg:grid">
+                            <flux:navlist.item  :href="route('admin.aboutus')" :current="request()->routeIs('admin.aboutus')" wire:navigate>
                             {{ __('Organization Info') }}
                             </flux:navlist.item>
-                            <flux:navlist.item icon="users"
+                            <flux:navlist.item 
                                 :href="route('admin.aboutus.members.list')"
                                 :current="request()->routeIs('admin.aboutus.members.*')"
                                 wire:navigate>
                                 {{ __('Members') }}
                             </flux:navlist.item>
-                            <flux:navlist.item icon="clock"
+                            <flux:navlist.item 
                                 :href="route('admin.timeline')"
                                 :current="request()->routeIs('admin.timeline')"
                                 wire:navigate>
@@ -54,14 +54,14 @@
                             </flux:navlist.item>
                         </flux:navlist.group>
                         
-                        <flux:navlist.group expandable heading="Achievements" class="hidden lg:grid">
-                            <flux:navlist.item icon="academic-cap" 
+                        <flux:navlist.group expandable :expanded="request()->routeIs('admin.achievements.*')" heading="Achievements" class="hidden lg:grid">
+                            <flux:navlist.item 
                                 :href="route('admin.achievements.academic.index')" 
                                 :current="request()->routeIs('admin.achievements.academic.*')" 
                                 wire:navigate>
                                 {{ __('Academic') }}
                             </flux:navlist.item>
-                            <flux:navlist.item icon="trophy" 
+                            <flux:navlist.item 
                                 :href="route('admin.achievements.cocurricular.index')" 
                                 :current="request()->routeIs('admin.achievements.cocurricular.*')" 
                                 wire:navigate>
