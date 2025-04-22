@@ -70,8 +70,18 @@
                             {{ \Illuminate\Support\Str::limit($announcement->content, 150) }}
                         </p>
 
-                        <div class="text-sm text-gray-500 dark:text-gray-400 mt-3">
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mt-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
                             {{ $announcement->published_at->format('F d, Y') }}
+                            
+                            @if($announcement->publish_end)
+                                <span class="mx-1">•</span>
+                                <span title="Available until {{ $announcement->publish_end->format('F d, Y') }}">
+                                    {{ $announcement->publish_end->diffForHumans() }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </article>
