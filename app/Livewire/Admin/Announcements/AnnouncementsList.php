@@ -20,21 +20,24 @@ class AnnouncementsList extends Component
 
     // Load announcements sorted by published_at date.
 
+    public function updateSearch($searchTerm)
+    {
+        $this->search = $searchTerm;
+        $this->loadAnnouncements();
+    }
+
     public function loadAnnouncements()
     {
-        $query = Announcement::orderBy('created_at', 'desc');
+        $query = Announcement::query()->orderBy('created_at', 'desc');
 
-        if ($this->search !== '') {
+        if (!empty($this->search)) {
             $query->where(function ($q) {
-                $q->where('title', 'like', "%{$this->search}%")
-                    ->orWhere('content', 'like', "%{$this->search}%");
+                $q->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('content', 'like', '%' . $this->search . '%');
             });
         }
 
-        $this->announcements = $query->get()->map(function ($announcements) {
-            $announcements->has_image = !empty($announcements->image);
-            return $announcements;
-        });
+        $this->announcements = $query->get();
     }
 
     // Delete an announcement.

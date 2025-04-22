@@ -11,6 +11,7 @@
             @livewire('search-bar', [
                 'model' => 'Announcement',
                 'searchFields' => ['title', 'content'],
+                'wireKey' => 'announcements-search'
             ])
         </div>
 
