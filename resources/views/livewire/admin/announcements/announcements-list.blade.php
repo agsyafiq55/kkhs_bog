@@ -116,17 +116,18 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
-                                    <button wire:click="redirectToShow({{ $announcement->id }})"
+                                    <a href="{{ route('admin.announcements.show', $announcement->id) }}"
                                         class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                         View
-                                    </button>
-                                    <button wire:click="edit({{ $announcement->id }})"
+                                    </a>
+                                    <a href="{{ route('admin.announcements.edit', $announcement->id) }}"
                                         class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                                         Edit
-                                    </button>
-                                    <button wire:click="delete({{ $announcement->id }})"
-                                        class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                                        onclick="return confirm('Are you sure you want to delete this announcement?')">
+                                    </a>
+                                    <button 
+                                        x-data
+                                        x-on:click.prevent="if(confirm('Are you sure you want to delete this announcement?')) { $wire.delete({{ $announcement->id }}) }"
+                                        class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
                                         Delete
                                     </button>
                                 </div>

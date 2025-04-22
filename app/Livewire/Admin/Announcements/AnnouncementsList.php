@@ -44,20 +44,20 @@ class AnnouncementsList extends Component
 
         // Apply status filter if not set to 'all'
         if ($this->statusFilter === 'active') {
-            $query->where(function($query) {
-                $query->where(function($q) {
-                    $q->whereNull('publish_start')
+            $query->where(function($q) {
+                $q->where(function($subQ) {
+                    $subQ->whereNull('publish_start')
                         ->orWhere('publish_start', '<=', now());
-                })->where(function($q) {
-                    $q->whereNull('publish_end')
+                })->where(function($subQ) {
+                    $subQ->whereNull('publish_end')
                         ->orWhere('publish_end', '>=', now());
                 });
             });
         } elseif ($this->statusFilter === 'inactive') {
             $query->where(function($q) {
                 $q->where('publish_start', '>', now())
-                    ->orWhere(function($query) {
-                        $query->whereNotNull('publish_end')
+                    ->orWhere(function($subQ) {
+                        $subQ->whereNotNull('publish_end')
                             ->where('publish_end', '<', now());
                     });
             });
