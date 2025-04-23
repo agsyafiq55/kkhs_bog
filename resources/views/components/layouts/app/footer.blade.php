@@ -3,7 +3,7 @@
         <div class="md:flex md:justify-between">
             <div class="mb-6 md:mb-0">
                 <a href="/" class="ml-2 mr-5 flex items-center space-x-2 lg:ml-0">
-                    <x-app-logo/>
+                    <x-app-logo />
                 </a>
             </div>
             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2">
@@ -12,10 +12,12 @@
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Links</h2>
                     <ul class="text-gray-500 dark:text-gray-400 font-medium">
                         <li class="mb-4">
-                            <a href="https://kkhs.edu.my/pibg-pta-%e5%ba%87%e4%b8%ad%e5%ae%b6%e6%95%99%e5%8d%8f%e4%bc%9a/" class="hover:underline">KKHS PIBG</a>
+                            <a href="https://kkhs.edu.my/pibg-pta-%e5%ba%87%e4%b8%ad%e5%ae%b6%e6%95%99%e5%8d%8f%e4%bc%9a/"
+                                class="hover:underline">KKHS PIBG</a>
                         </li>
                         <li>
-                            <a href="http://www.kkhs.org.my/exstudent/" class="hover:underline">KKHS Ex-Students Assoc</a>
+                            <a href="http://www.kkhs.org.my/exstudent/" class="hover:underline">KKHS Ex-Students
+                                Assoc</a>
                         </li>
                     </ul>
                 </div>
@@ -24,10 +26,12 @@
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
                     <ul class="text-gray-500 dark:text-gray-400 font-medium">
                         <li class="mb-4">
-                            <a href="https://www.youtube.com/c/KotaKinabaluHighSchool" class="hover:underline ">YouTube</a>
+                            <a href="https://www.youtube.com/c/KotaKinabaluHighSchool"
+                                class="hover:underline ">YouTube</a>
                         </li>
                         <li>
-                            <a href="https://www.facebook.com/KotaKinabaluHighSchool/?locale=ms_MY" class="hover:underline">Facebook</a>
+                            <a href="https://www.facebook.com/KotaKinabaluHighSchool/?locale=ms_MY"
+                                class="hover:underline">Facebook</a>
                         </li>
                     </ul>
                 </div>
