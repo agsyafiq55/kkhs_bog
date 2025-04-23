@@ -17,7 +17,7 @@
 
     <div class="mb-4">
         <flux:text variant="strong">Article Content:</flux:text>
-        <p>{{ $event->article }}</p>
+        {!! $event->article !!}
     </div>
 
     <div class="mb-4">

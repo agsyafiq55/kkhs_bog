@@ -74,8 +74,9 @@ $formattedDate = \Carbon\Carbon::parse($event->event_date)->format('d F Y');
             <!-- Article Content -->
             <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 p-6 sm:p-8 mb-8">
                 <div class="prose prose-indigo dark:prose-invert max-w-none">
-                    {!! nl2br(e($event->article)) !!}
+                    {!! $event->article !!}
                 </div>
+                
             </div>
             
             <!-- Share and Actions -->

@@ -110,9 +110,45 @@
 
                     {{-- Article Rich Text Editor --}}
                     <div>
-                        <flux:textarea id="article" wire:model.defer="article"
-                            placeholder="Write about what's happening in KKHS!" rows="12" class="w-full">
-                        </flux:textarea>
+                        <!-- Include stylesheet -->
+                        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
+                        <!-- Create the editor container -->
+                        <div wire:ignore>
+                            <div id="editor">
+                                <p>Hello World!</p>
+                                <p>Some initial <strong>bold</strong> text</p>
+                                <p><br /></p>
+                            </div>
+                        </div>
+
+
+                        <!-- Include the Quill library -->
+                        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const quill = new Quill('#editor', {
+                                    theme: 'snow',
+                                    modules: {
+                                        toolbar: [
+                                            [{
+                                                header: [1, 2, false]
+                                            }],
+                                            ['bold', 'italic', 'underline'],
+                                            ['image', 'code-block']
+                                        ]
+                                    }
+                                });
+
+                                // Listen to changes and update hidden input field
+                                quill.on('text-change', function() {
+                                    @this.set('article', quill.root.innerHTML);
+                                });
+                            });
+                        </script>
+
+
                         @error('article')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -192,15 +228,13 @@
                                 <flux:tooltip toggleable>
                                     <flux:button icon="information-circle" size="sm" variant="ghost" />
                                     <flux:tooltip.content class="max-w-[20rem] space-y-2">
-                                        <p>Highlighting an event will make sure that the event will always be displayed at the top of the Events Display Page.</p>
+                                        <p>Highlighting an event will make sure that the event will always be displayed
+                                            at the top of the Events Display Page.</p>
                                     </flux:tooltip.content>
                                 </flux:tooltip>
                             </flux:heading>
-                            <flux:switch 
-                                wire:model.defer="is_highlighted"
-                                :value="1"
-                                :checked="$is_highlighted == 1"
-                            />
+                            <flux:switch wire:model.defer="is_highlighted" :value="1"
+                                :checked="$is_highlighted == 1" />
                             <flux:error name="is_highlighted" />
                         </flux:field>
 

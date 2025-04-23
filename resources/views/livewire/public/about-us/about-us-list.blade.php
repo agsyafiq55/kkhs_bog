@@ -48,14 +48,21 @@
         @if ($aboutUs)
             <div class="space-y-8">
                 <!-- Organization Photo -->
+                <!-- Organization Photo with Text -->
                 <div
                     class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
-                    <div class="flex justify-center">
-                        <div class="max-w-5xl w-full">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-2/3">
                             <div class="aspect-video bg-gray-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
                                 <img src="data:image/jpeg;base64,{{ $aboutUs->organization_photo }}"
                                     alt="Organization Photo" class="w-full h-full object-contain">
                             </div>
+                        </div>
+                        <div class="md:w-1/3 flex flex-col justify-center">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Our Organization</h3>
+                            <p class="text-sm md:text-base text-justify text-gray-700 dark:text-gray-300">
+                                {{'Our esteemed Board of Governors stands as a testament to the rich tapestry of our community, drawing together accomplished individuals from a wide spectrum of professional backgrounds and industries. United by a shared vision for excellence, this dedicated body is deeply committed to the ongoing maintenance and strategic development of our school. Their collective expertise and varied perspectives serve as invaluable assets, enriching our institutions governance and ensuring a holistic approach to progress. More importantly, the Boards unwavering focus remains on fostering an environment that nurtures the comprehensive development and overall well-being of each and every student under our care, striving to empower them to reach their full potential.' }}
+                            </p>
                         </div>
                     </div>
                 </div>
