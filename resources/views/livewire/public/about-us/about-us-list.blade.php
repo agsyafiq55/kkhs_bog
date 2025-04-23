@@ -1,39 +1,20 @@
 <div>
-    <!-- Hero Banner -->
-    <div
-        class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border mx-auto max-w-6xl border-gray-100 dark:border-zinc-700 relative overflow-hidden mb-8">
-        <!-- Background image with overlay -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://mrwallpaper.com/images/hd/chinese-lantern-photography-azuq3mbutdxhp3z7.jpg"
-                alt="Chinese landscape" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
-        </div>
+    <div class="relative overflow-hidden rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-800 max-w-6xl mx-auto mb-12">
+    <img src="https://mrwallpaper.com/images/hd/chinese-lantern-photography-azuq3mbutdxhp3z7.jpg" 
+         alt="Chinese lantern" 
+         class="absolute inset-0 w-full h-full object-cover z-0">
+    <div class="absolute inset-0 bg-white/70 dark:bg-zinc-900/70 z-10"></div>
 
-        <div class="flex flex-col md:flex-row relative z-10">
-            <div class="md:w-2/3 p-8 flex flex-col justify-center">
-                <h1 class="text-7xl font-bold mb-2">About Us</h1>
-                <h2 class="text-5xl font-semibold">关于我们</h2>
-            </div>
-            <div class="md:w-1/3 p-8 flex items-center">
-                <p class="text-sm md:text-base text-justify">
-                    Our diverse board that comprises of individuals from different background and industries is
-                    committed towards maintaining and developing the school and adding value to the development and
-                    well-being of the students.
-                    <br><br>
-                    我们多元化的董事会由来自不同背景和行业的组成，团结一致, 维持和发展学校, 提升学生的福利和全方位发展。
-                </p>
-            </div>
-        </div>
-    </div>
-
-    {{-- Year Filter Dropdown --}}
-    <div class="container mx-auto max-w-6xl mb-6">
-        <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-4 border border-gray-100 dark:border-zinc-700">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-medium text-gray-800 dark:text-white">Board of Governors</h3>
-                <div class="flex items-center space-x-2">
-                    <label for="yearFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by Year:</label>
-                    <flux:select id="yearFilter" wire:model.live="selectedYear">
+    <div class="relative z-20 flex flex-col md:flex-row items-center md:items-start p-10 md:p-16">
+        <div class="md:w-2/3 mb-6 md:mb-0">
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-3">About Us</h1>
+            <h2 class="text-3xl md:text-4xl text-zinc-700 dark:text-zinc-300">关于我们</h2>
+            
+            <div class="mt-6">
+                <!-- Year Filter Dropdown -->
+                <div class="flex items-center space-x-2 mb-4 max-w-3xs">
+                    <label for="yearFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">KKHS BOG Over the Years:</label>
+                    <flux:select id="yearFilter" wire:model.live="selectedYear" class="w-32">
                         @foreach($availableYears as $year)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endforeach
@@ -41,7 +22,15 @@
                 </div>
             </div>
         </div>
+        <div class="md:w-1/3 text-base text-justify text-zinc-800 dark:text-zinc-300 leading-relaxed">
+            Our diverse board that comprises of individuals from different background and industries is
+                    committed towards maintaining and developing the school and adding value to the development and
+                    well-being of the students.<br><br>
+            我们多元化的董事会由来自不同背景和行业的组成，团结一致, 维持和发展学校, 提升学生的福利和全方位发展。
+        </div>
     </div>
+</div>
+
 
     {{-- About us section --}}
     <div class="container mx-auto max-w-6xl">

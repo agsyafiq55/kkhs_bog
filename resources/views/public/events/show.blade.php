@@ -20,54 +20,47 @@ $formattedDate = \Carbon\Carbon::parse($event->event_date)->format('d F Y');
 <x-layouts.app>
     <div class="py-6 bg-gray-50 dark:bg-zinc-800 min-h-screen">
         <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Back button -->
-            <div class="mb-6">
-                <a href="{{ route('events.index') }}" class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Back to Events
-                </a>
-            </div>
             
             <!-- Article Header -->
             <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 overflow-hidden mb-8">
-                <!-- Hero Image -->
-                <div class="w-full h-[600px] overflow-hidden">
-                    @if($event->thumbnail)
-                        <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
-                            class="w-full h-full object-cover"
-                            alt="{{ $event->title }}" />
-                    @else
-                        <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
-                            </svg>
-                        </div>
-                    @endif
-                </div>
-                
-                <!-- Article Info -->
-                <div class="p-6 sm:p-8">
-                    <div class="flex flex-wrap items-center gap-3 mb-4">
-                        <flux:badge color="{{ $tagColors[$event->tag] ?? 'zinc' }}" class="inline-flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                            </svg>
-                            {{ $event->tag }}
-                        </flux:badge>
-                        
-                        <span class="text-gray-500 dark:text-gray-400 flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            {{ $formattedDate }}
-                        </span>
+                <div class="flex flex-col md:flex-row">
+                    <!-- Hero Image (Left) -->
+                    <div class="w-full md:w-2/3">
+                        @if($event->thumbnail)
+                            <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
+                                class="w-full h-full object-cover"
+                                alt="" />
+                        @else
+                            <div class="w-full h-full min-h-[400px] bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
+                                </svg>
+                            </div>
+                        @endif
                     </div>
                     
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ $event->title }}</h1>
-                    
-                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-6 border-b border-gray-200 dark:border-zinc-700 pb-6">{{ $event->description }}</p>
+                    <!-- Article Info (Right) -->
+                    <div class="w-full md:w-1/3 p-6 sm:p-8 flex flex-col justify-center">
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <flux:badge color="{{ $tagColors[$event->tag] ?? 'zinc' }}" class="inline-flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                {{ $event->tag }}
+                            </flux:badge>
+                            
+                            <span class="text-gray-500 dark:text-gray-400 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                {{ $formattedDate }}
+                            </span>
+                        </div>
+                        
+                        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ $event->title }}</h1>
+                        
+                        <p class="text-lg text-gray-700 dark:text-gray-300">{{ $event->description }}</p>
+                    </div>
                 </div>
             </div>
             
