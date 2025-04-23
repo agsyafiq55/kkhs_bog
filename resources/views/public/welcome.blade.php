@@ -85,8 +85,24 @@
         <div class="max-w-6xl align mx-auto">
             <div id="carousel" class="pt-5">
                 @php
-                    // Get the latest 3 announcements ordered by published_at date
-                    $latestAnnouncements = App\Models\Announcement::orderBy('published_at', 'desc')->take(3)->get();
+                    // First get announcements with publish_start and publish_end dates
+                    $featuredAnnouncements = App\Models\Announcement::whereNotNull('publish_start')
+                        ->whereNotNull('publish_end')
+                        ->orderBy('published_at', 'desc')
+                        ->get();
+                    
+                    // If we have less than 6 featured announcements, get regular ones to fill the remaining slots
+                    $regularAnnouncements = collect();
+                    if ($featuredAnnouncements->count() < 6) {
+                        $regularAnnouncements = App\Models\Announcement::whereNull('publish_start')
+                            ->orWhereNull('publish_end')
+                            ->orderBy('published_at', 'desc')
+                            ->take(6 - $featuredAnnouncements->count())
+                            ->get();
+                    }
+                    
+                    // Combine the collections and take maximum 6
+                    $latestAnnouncements = $featuredAnnouncements->concat($regularAnnouncements)->take(6);
                 @endphp
                 <div x-data="{
                     // Sets the time between each slides in milliseconds
@@ -98,7 +114,8 @@
                         imgAlt: '{{ $announcement->title }}',
                         title: '{{ $announcement->title }}',
                         description: '{{ Str::limit(strip_tags($announcement->content), 150) }}',
-                        link: '{{ route('announcements.show', $announcement->id) }}'
+                        link: '{{ route('announcements.show', $announcement->id) }}',
+                        isFeatured: {{ $announcement->publish_start && $announcement->publish_end ? 'true' : 'false' }}
                     }, @endforeach
                     ],
                     currentSlideIndex: 1,
@@ -149,8 +166,11 @@
                                 <!-- Content positioned on left side -->
                                 <div class="relative z-20 flex h-full">
                                     <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                                        <div class="mb-2">
+                                        <div class="mb-2 flex gap-2">
                                             <span class="bg-red-500 text-white text-xs font-medium px-2.5 py-1 rounded">ANNOUNCEMENT</span>
+                                            <template x-if="slide.isFeatured">
+                                                <span class="bg-amber-500 text-white text-xs font-medium px-2.5 py-1 rounded">LATEST</span>
+                                            </template>
                                         </div>
                                         <h3 class="text-balance text-3xl md:text-6xl font-bold text-white mb-4"
                                             x-text="slide.title"></h3>
