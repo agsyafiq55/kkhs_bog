@@ -26,3 +26,4 @@
 </x-layouts.app.header>
 @endauth
 @stack('scripts')
+@stack('styles')

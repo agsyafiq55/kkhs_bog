@@ -109,50 +109,7 @@
                     <flux:heading size="lg" class="mb-4">Article Content</flux:heading>
 
                     {{-- Article Rich Text Editor --}}
-                    <div>
-                        <!-- Include stylesheet -->
-                        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
-
-                        <!-- Create the editor container -->
-                        <div wire:ignore>
-                            <div id="editor">
-                                <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong> text</p>
-                                <p><br /></p>
-                            </div>
-                        </div>
-
-
-                        <!-- Include the Quill library -->
-                        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const quill = new Quill('#editor', {
-                                    theme: 'snow',
-                                    modules: {
-                                        toolbar: [
-                                            [{
-                                                header: [1, 2, false]
-                                            }],
-                                            ['bold', 'italic', 'underline'],
-                                            ['image', 'code-block']
-                                        ]
-                                    }
-                                });
-
-                                // Listen to changes and update hidden input field
-                                quill.on('text-change', function() {
-                                    @this.set('article', quill.root.innerHTML);
-                                });
-                            });
-                        </script>
-
-
-                        @error('article')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <livewire:quill-editor model="article" />
                 </div>
             </div>
 
