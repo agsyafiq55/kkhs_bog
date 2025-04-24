@@ -41,7 +41,7 @@
             </div>
 
             <div
-                class="h-96 bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800">
+                class="h-96 bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800">
                 @if ($contactUs->map_url)
                     <iframe src="{{ $contactUs->map_url }}" class="w-full h-full rounded-xl" style="border:0;"
                         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
