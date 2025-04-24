@@ -60,7 +60,7 @@
     @if ($aboutUs)
         <div class="space-y-8">
             <!-- Organization Photo -->
-            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-900">
                 <flux:heading size="lg" class="mb-4">Organization Photo</flux:heading>
                 <div class="aspect-video bg-gray-100 dark:bg-zinc-800 rounded-lg overflow-hidden mb-4">
                     <img src="data:image/jpeg;base64,{{ $aboutUs->organization_photo }}" alt="Organization Photo"
@@ -69,7 +69,7 @@
             </div>
 
             <!-- Chairman Photo and Speech Combined -->
-            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-900">
                 <flux:heading size="lg" class="mb-4">Chairman's Message</flux:heading>
                 <div class="flex flex-col items-center gap-6">
                     <div class="w-48">

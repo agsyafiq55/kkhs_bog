@@ -15,6 +15,7 @@ class AboutUsEdit extends Component
     public $chairman_speech;
     public $newOrganizationPhoto;
     public $newChairmanPhoto;
+    public $year;
     public $debugInfo = '';
 
     // Add this method to handle file uploads directly
@@ -41,6 +42,7 @@ class AboutUsEdit extends Component
     {
         $rules = [
             'chairman_speech' => 'required|string',
+            'year' => 'required|string|regex:/^\d{4}-\d{4}$/', // Validates YYYY-YYYY format
         ];
 
         // Only require photos for new records
@@ -59,6 +61,8 @@ class AboutUsEdit extends Component
     {
         return [
             'chairman_speech.required' => 'The chairman speech field is required.',
+            'year.required' => 'Please select a year range.',
+            'year.regex' => 'The year range must be in YYYY-YYYY format.',
             'newOrganizationPhoto.required' => 'Please select an organization photo to upload.',
             'newChairmanPhoto.required' => 'Please select a chairman photo to upload.',
             'newOrganizationPhoto.image' => 'The file must be an image (jpeg, png, bmp, gif, svg, or webp).',
@@ -75,6 +79,7 @@ class AboutUsEdit extends Component
         if ($this->aboutUs) {
             $this->aboutUsId = $this->aboutUs->id;
             $this->chairman_speech = $this->aboutUs->chairman_speech;
+            $this->year = $this->aboutUs->year;
         }
     }
 
@@ -99,6 +104,7 @@ class AboutUsEdit extends Component
             }
             
             $aboutUs->chairman_speech = $this->chairman_speech;
+            $aboutUs->year = $this->year;
 
             if ($this->newOrganizationPhoto) {
                 // Store the organization photo as base64

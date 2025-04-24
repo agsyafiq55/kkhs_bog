@@ -12,13 +12,16 @@
             
             <div class="mt-6">
                 <!-- Year Filter Dropdown -->
-                <div class="flex items-center space-x-2 mb-4 max-w-3xs">
-                    <label for="yearFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">KKHS BOG Over the Years:</label>
-                    <flux:select id="yearFilter" wire:model.live="selectedYear" class="w-32">
-                        @foreach($availableYears as $year)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endforeach
-                    </flux:select>
+                <div class="flex items-center space-x-2 mb-4">
+                    <label for="yearFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Choose Year:</label>
+                    <div class="relative">
+                        <div class="absolute -inset-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg"></div>
+                        <flux:select id="yearFilter" wire:model.live="selectedYear" class="relative w-32 bg-white dark:bg-zinc-900">
+                            @foreach($availableYears as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </flux:select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,24 +34,21 @@
     </div>
 </div>
 
-
     {{-- About us section --}}
     <div class="container mx-auto max-w-6xl">
         @if ($aboutUs)
-            <div class="space-y-8">
+            <div class="space-y-6">
                 <!-- Organization Photo -->
-                <!-- Organization Photo with Text -->
-                <div
-                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-zinc-900">
+                    <flux:heading size="xl" class="pb-6 font-bold">We are KKHS Board of Governors</flux:heading>
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="md:w-2/3">
-                            <div class="aspect-video bg-gray-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
+                            <div class="h-full">
                                 <img src="data:image/jpeg;base64,{{ $aboutUs->organization_photo }}"
-                                    alt="Organization Photo" class="w-full h-full object-contain">
+                                    alt="Organization Photo" class="w-full h-full object-cover rounded-sm">
                             </div>
                         </div>
                         <div class="md:w-1/3 flex flex-col justify-center">
-                            <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Our Organization</h3>
                             <p class="text-sm md:text-base text-justify text-gray-700 dark:text-gray-300">
                                 {{'Our esteemed Board of Governors stands as a testament to the rich tapestry of our community, drawing together accomplished individuals from a wide spectrum of professional backgrounds and industries. United by a shared vision for excellence, this dedicated body is deeply committed to the ongoing maintenance and strategic development of our school. Their collective expertise and varied perspectives serve as invaluable assets, enriching our institutions governance and ensuring a holistic approach to progress. More importantly, the Boards unwavering focus remains on fostering an environment that nurtures the comprehensive development and overall well-being of each and every student under our care, striving to empower them to reach their full potential.' }}
                             </p>
@@ -58,7 +58,7 @@
 
                 <!-- Chairman Photo and Speech Combined -->
                 <div
-                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-zinc-900">
                     <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Chairman's Message</h2>
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="md:w-1/3 flex flex-col items-center">
@@ -83,7 +83,7 @@
 
                 <!-- Board Members Section -->
                 <div
-                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 relative overflow-hidden">
+                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-700 relative overflow-hidden">
                     <!-- Background banner with overlay -->
                     <div class="relative overflow-hidden mb-8">
                         <div class="absolute inset-0 z-0">

@@ -92,10 +92,9 @@
                         <div>
                             <flux:select wire:model="year" label="Year">
                                 <flux:select.option value="">Select Year</flux:select.option>
-                                @for ($i = date('Y'); $i >= 2000; $i--)
-                                    <flux:select.option value="{{ $i }}">{{ $i }}
-                                    </flux:select.option>
-                                @endfor
+                                @foreach ($availableYears as $yearRange)
+                                    <flux:select.option value="{{ $yearRange }}">{{ $yearRange }}</flux:select.option>
+                                @endforeach
                             </flux:select>
                             @error('year')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>

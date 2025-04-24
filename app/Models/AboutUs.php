@@ -15,5 +15,6 @@ class AboutUs extends Model
         'organization_photo',
         'chairman_photo',
         'chairman_speech',
+        'year',
     ];
 }

@@ -28,6 +28,22 @@
     <div class="grid grid-cols-1 ">
         <!-- Right Column - Image Uploads and Actions -->
         <div class="space-y-6">
+            <!-- Year Range Selection -->
+            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                <flux:heading size="lg" class="mb-4">Year Range</flux:heading>
+                <div>
+                    <flux:select wire:model="year" label="Select Year Range" class="w-full">
+                        <flux:select.option value="">Select Year Range</flux:select.option>
+                        @for ($i = date('Y'); $i >= 2000; $i--)
+                            <flux:select.option value="{{ $i }}-{{ $i + 2 }}">{{ $i }}-{{ $i + 2 }}</flux:select.option>
+                        @endfor
+                    </flux:select>
+                    @error('year')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
             <!-- Organization Section - Full Width -->
             <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                 <flux:heading size="lg" class="mb-4">Organization Photo</flux:heading>

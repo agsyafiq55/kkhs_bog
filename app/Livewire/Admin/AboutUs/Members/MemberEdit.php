@@ -63,8 +63,14 @@ class MemberEdit extends Component
         ];
     }
 
+    // Add this property
+    public $availableYears = [];
+
     public function mount($memberId = null)
     {
+        // Add this line to get available years
+        $this->availableYears = \App\Models\AboutUs::pluck('year')->unique()->toArray();
+
         if ($memberId) {
             $this->memberId = $memberId;
             $this->member = Member::findOrFail($memberId);
