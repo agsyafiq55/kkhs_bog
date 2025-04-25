@@ -9,19 +9,32 @@ class Chatbot extends Component
 {
     public $message = '';
     public $messages = [];
+    public $isCollapsed = true;
+    public $isLoading = false;
 
     public function mount()
     {
         $this->messages = [];
     }
 
+    public function toggleCollapse()
+    {
+        $this->isCollapsed = !$this->isCollapsed;
+    }
+
     public function sendMessage()
     {
-        if (trim($this->message) === '') return;
+        if (trim($this->message) === '')
+            return;
 
         $userMessage = $this->message;
         $this->messages[] = ['from' => 'user', 'text' => $userMessage];
-        $this->message = '';
+
+        // Clear message field immediately - fixing the issue
+        $this->reset('message');
+
+        // Set loading state to true
+        $this->isLoading = true;
 
         // Call Flask backend
         try {
@@ -39,6 +52,9 @@ class Chatbot extends Component
         }
 
         $this->messages[] = ['from' => 'bot', 'text' => $botReply];
+
+        // Set loading state back to false
+        $this->isLoading = false;
     }
 
     public function render()
@@ -46,4 +62,3 @@ class Chatbot extends Component
         return view('livewire.chatbot');
     }
 }
-
