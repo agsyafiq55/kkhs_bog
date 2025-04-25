@@ -39,8 +39,17 @@
             wire:model="message"
             wire:keydown.enter="sendMessage"
             type="text"
+            id="chatbot-input"
             placeholder="Type your message..."
             class="w-full px-3 py-2 border border-gray-100 dark:border-zinc-800 rounded-lg focus:outline-none focus:ring focus:border-indigo-300 dark:focus:border-indigo-600 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white"
         />
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('clear-chatbot-input', () => {
+            document.getElementById('chatbot-input').value = '';
+        });
+    });
+</script>

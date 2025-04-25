@@ -30,8 +30,11 @@ class Chatbot extends Component
         $userMessage = $this->message;
         $this->messages[] = ['from' => 'user', 'text' => $userMessage];
 
-        // Clear message field immediately - fixing the issue
-        $this->reset('message');
+        // Clear message field immediately - using a more direct approach
+        $this->message = '';
+        
+        // Dispatch browser event to clear input field
+        $this->dispatch('clear-chatbot-input');
 
         // Set loading state to true
         $this->isLoading = true;
