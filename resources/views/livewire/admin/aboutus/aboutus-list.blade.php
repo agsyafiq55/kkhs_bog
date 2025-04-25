@@ -12,9 +12,17 @@
             </p>
         </div>
 
+        <div class="flex items-center gap-4">
+            <!-- Year Filter Dropdown -->
+            <div class="min-w-[150px]">
+                <flux:select wire:model.live="selectedYear">
+                    @foreach($availableYears as $year)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endforeach
+                </flux:select>
+            </div>
 
-
-        <div>
+            <!-- Existing Create/Edit button -->
             @if ($aboutUs)
                 <flux:button href="{{ route('admin.aboutus.edit') }}"
                     class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
