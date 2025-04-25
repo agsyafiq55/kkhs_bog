@@ -38,6 +38,9 @@ class Chatbot extends Component
 
         // Set loading state to true
         $this->isLoading = true;
+        
+        // Force a UI update to show loading animation before making the API call
+        $this->dispatch('loading-started');
 
         // Call Flask backend
         try {
