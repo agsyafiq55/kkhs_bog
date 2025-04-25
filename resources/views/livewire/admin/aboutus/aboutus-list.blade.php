@@ -1,118 +1,156 @@
-@vite('resources/css/app.css')
 <div class="py-6">
-    <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <div class="flex items-center mb-2">
-                <flux:icon name="users" class="mr-3 text-indigo-600 dark:text-indigo-400" />
-                <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">
-                    {{ __('Organization Info Management') }}</flux:heading>
-            </div>
-            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                {{ __('Manage organization information and chairman\'s message.') }}
-            </p>
+    <!-- Page Header Section -->
+    <div class="mb-6">
+        <div class="flex items-center mb-2">
+            <flux:icon name="information-circle" class="mr-3 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+            <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">
+                {{ __('About Us Management') }}</flux:heading>
         </div>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            {{ __('Manage school about us information.') }}
+        </p>
+    </div>
 
-        <div class="flex items-center gap-4">
-            <!-- Year Filter Dropdown -->
-            <div class="min-w-[150px]">
-                <flux:select wire:model.live="selectedYear">
-                    @foreach($availableYears as $year)
-                        <option value="{{ $year }}">{{ $year }}</option>
-                    @endforeach
-                </flux:select>
+    <!-- Controls Section with Background -->
+    <div class="mb-6 p-4 bg-gray-50 dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-700">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Year Filter -->
+            <div class="w-full sm:w-2/3 flex flex-col gap-2">
+                <!-- Filter Label -->
+                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {{ __('Select Year') }}
+                </div>
+                
+                <!-- Year Filter Dropdown -->
+                <div class="w-full sm:w-1/2">
+                    <flux:select wire:model.live="selectedYear">
+                        @foreach($availableYears as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endforeach
+                    </flux:select>
+                </div>
             </div>
 
-            <!-- Existing Create/Edit button -->
-            @if ($aboutUs)
-                <flux:button href="{{ route('admin.aboutus.edit') }}"
-                    class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path
-                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                    </svg>
-                    {{ __('Edit About Us') }}
-                </flux:button>
-            @else
-                <flux:button href="{{ route('admin.aboutus.edit') }}"
-                    class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
+            <!-- Add Button -->
+            <div>
+                <flux:button href="{{ route('admin.aboutus.create') }}"
+                    class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
                         fill="currentColor">
                         <path fill-rule="evenodd"
                             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                             clip-rule="evenodd" />
                     </svg>
-                    {{ __('Create About Us') }}
+                    {{ __('Add About Us') }}
                 </flux:button>
-            @endif
+            </div>
         </div>
     </div>
 
-    <flux:separator variant="subtle" class="mb-6" />
-
     <!-- Status Messages -->
     @if (session()->has('message'))
-        <div
-            class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400">
+        <div class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border-l-4 border-green-500 dark:border-green-600 rounded-lg text-green-700 dark:text-green-400 flex items-center">
+            <flux:icon name="check-circle" class="h-5 w-5 mr-2 text-green-500 dark:text-green-400" />
             {{ session('message') }}
         </div>
     @endif
 
     @if (session()->has('error'))
-        <div
-            class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+        <div class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-600 rounded-lg text-red-700 dark:text-red-400 flex items-center">
+            <flux:icon name="exclamation-circle" class="h-5 w-5 mr-2 text-red-500 dark:text-red-400" />
             {{ session('error') }}
         </div>
     @endif
 
-    @if ($aboutUs)
-        <div class="space-y-8">
-            <!-- Organization Photo -->
-            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-900">
-                <flux:heading size="lg" class="mb-4">Organization Photo</flux:heading>
-                <div class="aspect-video bg-gray-100 dark:bg-zinc-800 rounded-lg overflow-hidden mb-4">
-                    <img src="data:image/jpeg;base64,{{ $aboutUs->organization_photo }}" alt="Organization Photo"
-                        class="w-full h-full object-contain">
-                </div>
-            </div>
-
-            <!-- Chairman Photo and Speech Combined -->
-            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-900">
-                <flux:heading size="lg" class="mb-4">Chairman's Message</flux:heading>
-                <div class="flex flex-col items-center gap-6">
-                    <div class="w-48">
-                        <div class="rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-square">
-                            <img src="data:image/jpeg;base64,{{ $aboutUs->chairman_photo }}" alt="Chairman Photo"
-                                class="w-full h-full object-cover">
-                        </div>
-                    </div>
-                    <div class="w-full">
-                        <div class="prose max-w-none bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg">
-                            <p class="whitespace-pre-line text-gray-700 dark:text-gray-300">
-                                {{ $aboutUs->chairman_speech }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <!-- About Us Content Section -->
+    <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+        @if ($aboutUsData)
+            <div class="mb-4 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                    {{ __('About Us Information for') }} {{ $selectedYear }}
+                </h2>
+                
+                <!-- Edit Button -->
+                <flux:button href="{{ route('admin.aboutus.edit', $aboutUsData->id) }}"
+                    class="bg-blue-600 hover:bg-blue-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                     </svg>
-                    Last updated: {{ $aboutUs->updated_at->format('F j, Y, g:i a') }}
+                    {{ __('Edit About Us Info') }}
+                </flux:button>
+            </div>
+            
+            <!-- About Us Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Organization Photo -->
+                <div class="bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700">
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-4">Organization Photo</h3>
+                    @if($aboutUsData->organization_photo)
+                        <div class="aspect-video relative overflow-hidden rounded-lg">
+                            <img src="data:image/jpeg;base64,{{ $aboutUsData->organization_photo }}" 
+                                 class="w-full h-full object-cover"
+                                 alt="Organization Photo">
+                        </div>
+                    @else
+                        <div class="text-center p-8 bg-gray-100 dark:bg-zinc-700 rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400">No organization photo available</p>
+                        </div>
+                    @endif
+                </div>
+            
+                <!-- Chairman Photo -->
+                <div class="bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700">
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-4">Chairman Photo</h3>
+                    @if($aboutUsData->chairman_photo)
+                        <div class="aspect-video relative overflow-hidden rounded-lg">
+                            <img src="data:image/jpeg;base64,{{ $aboutUsData->chairman_photo }}" 
+                                 class="w-full h-full object-cover"
+                                 alt="Chairman Photo">
+                        </div>
+                    @else
+                        <div class="text-center p-8 bg-gray-100 dark:bg-zinc-700 rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400">No chairman photo available</p>
+                        </div>
+                    @endif
+                </div>
+            
+                <!-- Chairman Speech -->
+                <div class="col-span-1 lg:col-span-2 bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700">
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-4">Chairman Speech</h3>
+                    @if($aboutUsData->chairman_speech)
+                        <div class="prose prose-indigo dark:prose-invert max-w-none">
+                            {!! $aboutUsData->chairman_speech !!}
+                        </div>
+                    @else
+                        <div class="text-center p-8 bg-gray-100 dark:bg-zinc-700 rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400">No chairman speech available</p>
+                        </div>
+                    @endif
+                </div>
+            
+                <!-- Delete Button -->
+                <div class="col-span-1 lg:col-span-2 mt-4 flex justify-end">
+                    <flux:button wire:click="deleteAboutUs({{ $aboutUsData->id }})"
+                        class="bg-red-600 hover:bg-red-700 transition-colors"
+                        onclick="return confirm('Are you sure you want to delete this About Us information?')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ __('Delete') }}
+                    </flux:button>
                 </div>
             </div>
         @else
-            <div
-                class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-12 border border-gray-100 dark:border-zinc-700 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 dark:text-gray-600 mb-4"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="text-center py-16 bg-gray-50 dark:bg-zinc-800/50 rounded-lg border border-dashed border-gray-300 dark:border-zinc-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p class="text-gray-500 dark:text-gray-400 mb-6">No About Us information has been created yet.</p>
-                <flux:button href="{{ route('admin.aboutus.edit') }}"
+                <h3 class="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">No About Us information found for {{ $selectedYear }}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">Get started by adding About Us information for this year.</p>
+                
+                <flux:button href="{{ route('admin.aboutus.create') }}"
                     class="bg-indigo-600 hover:bg-indigo-700 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
                         fill="currentColor">
@@ -120,8 +158,9 @@
                             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                             clip-rule="evenodd" />
                     </svg>
-                    {{ __('Create About Us') }}
+                    {{ __('Add About Us Information') }}
                 </flux:button>
             </div>
-    @endif
+        @endif
+    </div>
 </div>

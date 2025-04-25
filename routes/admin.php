@@ -61,8 +61,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Main About Us page
     Route::get('/aboutus', AboutUsList::class)->name('aboutus');
 
-    // About Us edit page
-    Route::get('/aboutus/edit', AboutUsEdit::class)->name('aboutus.edit');
+    // About Us create and edit pages
+    Route::get('/aboutus/create', AboutUsEdit::class)->name('aboutus.create');
+    Route::get('/aboutus/edit/{aboutUsId}', AboutUsEdit::class)->name('aboutus.edit');
 
     // 3a. Members management
     Route::get('/aboutus/members', MemberList::class)->name('aboutus.members.list');

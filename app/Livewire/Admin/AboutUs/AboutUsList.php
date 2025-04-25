@@ -7,17 +7,24 @@ use App\Models\AboutUs;
 
 class AboutUsList extends Component
 {
-    public $aboutUs;
-    public $debugInfo = '';
-    public $selectedYear = '';
-    public $availableYears = [];
+    public $aboutUsId;
+    public $aboutUsData;
+    public $selectedYear = ''; // Year filter property
+    public $availableYears = []; // To store all available years
 
     public function mount()
     {
         $this->loadAvailableYears();
-        $this->loadAboutUs();
+        
+        // Set default year to latest year if available
+        if (!empty($this->availableYears)) {
+            $this->selectedYear = $this->availableYears[0]; // First item is the latest year
+        }
+        
+        $this->loadAboutUsData();
     }
-
+    
+    // Load all unique years from the aboutus table
     public function loadAvailableYears()
     {
         $this->availableYears = AboutUs::select('year')
@@ -25,38 +32,48 @@ class AboutUsList extends Component
             ->orderBy('year', 'desc')
             ->pluck('year')
             ->toArray();
-
-        if (!$this->selectedYear && !empty($this->availableYears)) {
-            $this->selectedYear = $this->availableYears[0];
-        }
     }
-
-    public function loadAboutUs()
+    
+    public function loadAboutUsData()
     {
         $query = AboutUs::query();
         
-        if ($this->selectedYear) {
+        // Apply year filter if selected
+        if ($this->selectedYear !== '') {
             $query->where('year', $this->selectedYear);
         }
-
-        $this->aboutUs = $query->first();
+        
+        $this->aboutUsData = $query->first();
     }
-
+    
+    // Handle year filter changes
     public function updatedSelectedYear()
     {
-        $this->loadAboutUs();
+        $this->loadAboutUsData();
     }
 
     public function render()
     {
         return view('livewire.admin.aboutus.aboutus-list', [
-            'aboutUs' => $this->aboutUs,
-            'debugInfo' => $this->debugInfo,
+            'aboutUsData' => $this->aboutUsData,
         ]);
     }
-    
-    public function edit()
+
+    public function deleteAboutUs($aboutUsId)
     {
-        return redirect()->route('admin.aboutus.edit');
+        try {
+            $aboutUs = AboutUs::findOrFail($aboutUsId);
+            $result = $aboutUs->delete();
+            
+            if ($result) {
+                $this->loadAvailableYears();
+                $this->loadAboutUsData();
+                session()->flash('message', 'About Us information deleted successfully!');
+            } else {
+                throw new \Exception('Failed to delete About Us information');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error deleting About Us information: ' . $e->getMessage());
+        }
     }
 }

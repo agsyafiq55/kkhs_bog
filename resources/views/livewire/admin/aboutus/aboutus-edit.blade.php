@@ -1,19 +1,19 @@
 <div class="py-6">
-    <form wire:submit.prevent="save">
-    <!-- Header section remains the same -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <div class="flex items-center mb-2">
-                <flux:icon name="users" class="mr-3 text-indigo-600 dark:text-indigo-400" />
+                <flux:icon name="document-text" class="mr-3 text-indigo-600 dark:text-indigo-400" />
                 <flux:heading size="xl" level="1" class="text-gray-800 dark:text-white">
-                    {{ __('About Us Manager') }}</flux:heading>
+                    {{ $aboutUsId ? 'Edit About Us' : 'Create About Us' }}
+                </flux:heading>
             </div>
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                {{ __('Manage organization information and chairman\'s message.') }}
+                {{ __('Manage school about us information.') }}
             </p>
         </div>
 
-        <flux:button href="{{ route('admin.aboutus') }}" class="bg-gray-600 hover:bg-gray-700 transition-colors">
+        <flux:button href="{{ route('admin.aboutus') }}"
+            class="bg-gray-600 hover:bg-gray-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 inline-block" viewBox="0 0 20 20"
                 fill="currentColor">
                 <path fill-rule="evenodd"
@@ -25,150 +25,94 @@
     </div>
 
     <flux:separator variant="subtle" class="mb-6" />
-    <div class="grid grid-cols-1 ">
-        <!-- Right Column - Image Uploads and Actions -->
+
+    @if (session()->has('success'))
+        <div class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg text-green-700 dark:text-green-400">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <form wire:submit.prevent="save">
         <div class="space-y-6">
-            <!-- Year Range Selection -->
+            <!-- Content Section -->
             <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
-                <flux:heading size="lg" class="mb-4">Year Range</flux:heading>
-                <div>
-                    <flux:select wire:model="year" label="Select Year Range" class="w-full">
-                        <flux:select.option value="">Select Year Range</flux:select.option>
-                        @for ($i = date('Y'); $i >= 2000; $i--)
-                            <flux:select.option value="{{ $i }}-{{ $i + 2 }}">{{ $i }}-{{ $i + 2 }}</flux:select.option>
-                        @endfor
-                    </flux:select>
-                    @error('year')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
+                <flux:heading size="lg" class="mb-4">About Us Information</flux:heading>
 
-            <!-- Organization Section - Full Width -->
-            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
-                <flux:heading size="lg" class="mb-4">Organization Photo</flux:heading>
-
-                <div>
-                    <!-- Image Preview -->
-                    <div
-                        class="mb-4 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
-                        @if ($newOrganizationPhoto)
-                            <img src="{{ $newOrganizationPhoto->temporaryUrl() }}" class="w-full h-full object-cover"
-                                alt="Organization photo preview">
-                        @elseif($aboutUsId && $aboutUs->organization_photo)
-                            <img src="data:image/jpeg;base64,{{ $aboutUs->organization_photo }}"
-                                class="w-full h-full object-cover" alt="Current organization photo">
-                        @else
-                            <div class="text-center p-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
-                                </svg>
-                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No image selected</p>
-                            </div>
-                        @endif
+                <div class="space-y-5">
+                    <!-- Year Input -->
+                    <div>
+                        <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Year</flux:text>
+                        <flux:input type="text" id="year" wire:model="year" 
+                            placeholder="Enter year" class="w-full" maxlength="9" />
+                        @error('year')
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <!-- File Upload -->
-                    <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Upload Organization
-                        Photo</flux:text>
-                    <input type="file" wire:model="newOrganizationPhoto" id="organization_photo"
-                        class="block w-full text-sm text-gray-500
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-indigo-50 file:text-indigo-700
-                                hover:file:bg-indigo-100
-                                dark:text-gray-400 dark:file:bg-zinc-700 dark:file:text-zinc-100"
-                        accept="image/*" />
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP - Max 5MB</p>
-                    @error('newOrganizationPhoto')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Chairman Section - Two Columns -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left Column - Chairman Photo (1/3 width) -->
-                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
-                    <flux:heading size="lg" class="mb-4">Chairman Photo</flux:heading>
-
+                    <!-- Organization Photo -->
                     <div>
-                        <!-- Image Preview -->
-                        <div
-                            class="mb-4 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-square flex items-center justify-center">
-                            @if ($newChairmanPhoto)
-                                <img src="{{ $newChairmanPhoto->temporaryUrl() }}" class="w-full h-full object-cover"
-                                    alt="Chairman photo preview">
-                            @elseif($aboutUsId && $aboutUs->chairman_photo)
-                                <img src="data:image/jpeg;base64,{{ $aboutUs->chairman_photo }}"
-                                    class="w-full h-full object-cover" alt="Current chairman photo">
-                            @else
-                                <div class="text-center p-6">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
-                                    </svg>
-                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No image selected</p>
-                                </div>
-                            @endif
-                        </div>
+                        <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Organization Photo</flux:text>
+                        <flux:input type="file" wire:model="newOrganizationPhoto" accept="image/*" class="w-full" />
+                        @if($organization_photo)
+                            <div class="mt-2">
+                                <img src="data:image/jpeg;base64,{{ $organization_photo }}" 
+                                     class="max-w-xs h-auto rounded-lg border border-gray-200 dark:border-zinc-700" 
+                                     alt="Organization Photo">
+                            </div>
+                        @endif
+                        @error('newOrganizationPhoto')
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <!-- File Upload -->
-                        <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Upload Chairman
-                            Photo</flux:text>
-                        <input type="file" wire:model="newChairmanPhoto" id="chairman_photo"
-                            class="block w-full text-sm text-gray-500
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-full file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-indigo-50 file:text-indigo-700
-                                    hover:file:bg-indigo-100
-                                    dark:text-gray-400 dark:file:bg-zinc-700 dark:file:text-zinc-100"
-                            accept="image/*" />
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP - Max 5MB</p>
+                    <!-- Chairman Photo -->
+                    <div>
+                        <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Chairman Photo</flux:text>
+                        <flux:input type="file" wire:model="newChairmanPhoto" accept="image/*" class="w-full" />
+                        @if($chairman_photo)
+                            <div class="mt-2">
+                                <img src="data:image/jpeg;base64,{{ $chairman_photo }}" 
+                                     class="max-w-xs h-auto rounded-lg border border-gray-200 dark:border-zinc-700" 
+                                     alt="Chairman Photo">
+                            </div>
+                        @endif
                         @error('newChairmanPhoto')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
-                </div>
 
-                <!-- Right Column - Chairman's Speech (2/3 width) -->
-                <div class="lg:col-span-2 bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
-                    <flux:heading size="lg" class="mb-4">Chairman's Message</flux:heading>
-
-                    <div class="space-y-5">
-                        <div>
-                            <flux:textarea wire:model="chairman_speech" id="chairman_speech"
-                                placeholder="Enter the chairman's speech here..." rows="20" class="w-full h-full">
-                            </flux:textarea>
-                            @error('chairman_speech')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <!-- Chairman Speech -->
+                    <div>
+                        <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Chairman Speech</flux:text>
+                        <flux:textarea wire:model="chairman_speech" rows="4" class="w-full" 
+                            placeholder="Enter chairman's speech"></flux:textarea>
+                        @error('chairman_speech')
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div
-                class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+            <!-- Actions Section -->
+            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                 <flux:heading size="lg" class="mb-4">Actions</flux:heading>
 
                 <div class="space-y-3">
                     <flux:button type="submit" wire:loading.attr="disabled"
                         class="w-full bg-indigo-600 hover:bg-indigo-700 transition-colors text-center py-3">
                         <span wire:loading.remove wire:target="save">
-                            {{ $aboutUsId ? 'Save Changes' : 'Save' }}
+                            {{ $aboutUsId ? 'Update About Us' : 'Create About Us' }}
                         </span>
                         <span wire:loading wire:target="save">
                             <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                    stroke="currentColor" stroke-width="4"></circle>
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor"
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
@@ -183,7 +127,42 @@
                     </flux:button>
                 </div>
             </div>
+
+            @if ($debugInfo)
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
+                    <flux:heading size="lg" class="mb-4">Debug Info</flux:heading>
+                    <div class="text-xs font-mono overflow-x-auto">
+                        <pre>{{ $debugInfo }}</pre>
+                    </div>
+                </div>
+            @endif
         </div>
-    </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+    // Initialize CKEditor for both content fields
+    ClassicEditor
+        .create(document.querySelector('#content'))
+        .then(editor => {
+            editor.model.document.on('change:data', () => {
+                @this.set('content', editor.getData());
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    ClassicEditor
+        .create(document.querySelector('#zh_content'))
+        .then(editor => {
+            editor.model.document.on('change:data', () => {
+                @this.set('zh_content', editor.getData());
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+@endpush
