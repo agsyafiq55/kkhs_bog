@@ -11,6 +11,7 @@ class AboutUsEdit extends Component
 {
     use WithFileUploads;
 
+    // Livewire Form
     public $aboutUsId;
     public $aboutUs;
     public $year;
