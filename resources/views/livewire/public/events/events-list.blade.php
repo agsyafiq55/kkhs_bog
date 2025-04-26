@@ -15,7 +15,7 @@
             
             <!-- Subtitle -->
             <p class="text-gray-300 max-w-2xl mb-2">
-                Some text here.
+                Stay up-to-date with the latest events and activities. <br> 及时了解最新的事件和活动。
             </p>
             
             <!-- Search and filter section -->

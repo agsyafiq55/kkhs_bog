@@ -1,8 +1,24 @@
-<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Contact Us</h2>
-        <p class="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">Get in touch with us</p>
+<div>
+    <!-- Page Hero Section -->
+    <div class="bg-black relative overflow-hidden p-0 m-0 shadow-md -mx-6 -mt-6 lg:-mx-8 lg:-mt-8">
+        <!-- Background image with overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.pexels.com/photos/7651924/pexels-photo-7651924.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Newspaper"
+                alt="Events background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
+        </div>
+        <div class="relative z-10 flex flex-col items-center text-center py-16 px-4">
+            <!-- Main heading -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2">Get in touch.</h1>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-red-800 mb-6">公告</h2>
+
+            <!-- Subtitle -->
+            <p class="text-gray-300 max-w-2xl mb-2">
+                Reach out to us with any questions or inquiries.<br>如有任何问题或疑问，请联系我们。
+            </p>
+        </div>
     </div>
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     @if ($contactUs)
         <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -54,4 +70,5 @@
             Contact information is not available at the moment.
         </div>
     @endif
+</div>
 </div>
