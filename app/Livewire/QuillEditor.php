@@ -1,16 +1,23 @@
 <?php
 
-namespace App\Livewire;  // Changed from App\Http\Livewire
+namespace App\Livewire;
 
 use Livewire\Component;
 
 class QuillEditor extends Component
 {
     public string $model;
+    public $content;
 
-    public function mount($model)
+    public function mount($model, $content = '')
     {
         $this->model = $model;
+        $this->content = $content;
+    }
+
+    public function updateContent($html)
+    {
+        $this->dispatch('quillChanged', model: $this->model, html: $html);
     }
 
     public function render()
@@ -18,4 +25,3 @@ class QuillEditor extends Component
         return view('livewire.quill-editor');
     }
 }
-

@@ -107,8 +107,13 @@
                 <div
                     class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                     <flux:heading size="lg" class="mb-4">Article Content</flux:heading>
-                    {{-- Article Rich Text Editor --}}
-                    <livewire:quill-editor model="article" />
+
+                    {{-- pass both the model name and the current HTML content --}}
+                    <livewire:quill-editor model="article" :content="$article" key="quill-editor-article" />
+
+                    @error('article')
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -120,7 +125,8 @@
 
                     <div>
                         <!-- Thumbnail Preview -->
-                        <div class="mb-4 relative overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
+                        <div
+                            class="mb-4 relative overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
                             @if ($thumbnail && !is_string($thumbnail))
                                 <img src="{{ $thumbnail->temporaryUrl() }}" class="w-full h-full object-cover"
                                     alt="Thumbnail preview">

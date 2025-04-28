@@ -3,10 +3,11 @@
 namespace App\Livewire\Admin\Events;
 
 use Livewire\Component;
-use App\Models\Event;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Event;
+use DOMDocument;
 
 class EventForm extends Component
 {
@@ -20,20 +21,14 @@ class EventForm extends Component
     public $tag;
     public $article;
     public $thumbnail;
-    public $is_highlighted = 0; // Initialize with default value of 0
+    public $is_highlighted = 0;
     public $debugInfo = '';
 
-    // Add this method to handle file uploads directly
-    public function updatedThumbnail()
-    {
-        $this->validate([
-            'thumbnail' => 'image|max:5120', // 5MB max
-        ]);
-        
-        $this->debugInfo = "Thumbnail uploaded: " . $this->thumbnail->getClientOriginalName();
-    }
+    // listen for the Quill editor updates
+    protected $listeners = [
+        'quillChanged' => 'updateQuill'
+    ];
 
-    // Change from property to method for dynamic rules
     protected function rules()
     {
         return [
@@ -42,22 +37,17 @@ class EventForm extends Component
             'event_date' => 'required|date',
             'tag' => 'required|string|max:255',
             'article' => 'required|string',
-            'thumbnail' => $this->eventId ? 'nullable|image|max:5120' : 'required|image|max:5120',
-            'is_highlighted' => 'boolean', // Add validation rule
+            'thumbnail' => $this->eventId
+                ? 'nullable|image|max:5120'
+                : 'required|image|max:5120',
+            'is_highlighted' => 'boolean',
         ];
     }
 
     protected function messages()
     {
         return [
-            'title.required' => 'The title field is required.',
-            'description.required' => 'The description field is required.',
-            'event_date.required' => 'The event date field is required.',
-            'tag.required' => 'The tag field is required.',
-            'article.required' => 'The article content is required.',
-            'thumbnail.required' => 'Please select an image to upload.',
-            'thumbnail.image' => 'The file must be an image (jpeg, png, bmp, gif, svg, or webp).',
-            'thumbnail.max' => 'The image size must not exceed 5MB.',
+            // … your custom messages …
         ];
     }
 
@@ -71,74 +61,90 @@ class EventForm extends Component
             $this->event_date = $this->event->event_date;
             $this->tag = $this->event->tag;
             $this->article = $this->event->article;
-            $this->is_highlighted = $this->event->is_highlighted; 
+            $this->is_highlighted = $this->event->is_highlighted;
         }
     }
 
-    // Add validation on field update
-    public function updated($propertyName)
+    // sync thumbnail validation
+    public function updatedThumbnail()
     {
-        $this->validateOnly($propertyName, $this->rules(), $this->messages());
+        $this->validateOnly('thumbnail', ['thumbnail' => 'image|max:5120']);
+        $this->debugInfo = "Thumbnail ready: " . $this->thumbnail->getClientOriginalName();
+    }
+
+    // handle any field updating (including article via listener)
+    public function updated($field)
+    {
+        $this->validateOnly($field, $this->rules(), $this->messages());
+    }
+
+    // listener for Quill editor
+    public function updateQuill($model, $html)
+    {
+        $this->$model = $html;
+        $this->validateOnly($model, $this->rules(), $this->messages());
     }
 
     public function save()
     {
+        $this->validate($this->rules(), $this->messages());
+
         try {
-            // Validate
-            $this->validate($this->rules(), $this->messages());
-    
             if ($this->eventId) {
-                // Update existing event
+                // --- UPDATE ---
                 $event = Event::findOrFail($this->eventId);
+
+                // delete inline images from old article
+                $this->deleteImagesInContent($event->article);
+
+                // process new article (base64 → storage, swap src)
+                $cleanHtml = $this->processQuillContent($this->article);
+                $event->article = $cleanHtml;
+
+                // other fields
                 $event->title = $this->title;
                 $event->description = $this->description;
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
-                $event->article = $this->article;
-                $event->is_highlighted = $this->is_highlighted; 
+                $event->is_highlighted = $this->is_highlighted;
 
+                // thumbnail replacement
                 if ($this->thumbnail) {
-                    // Delete old image if exists
                     if ($event->thumbnail) {
-                        $imagePath = str_replace('public/', '', $event->thumbnail);
-                        if (Storage::disk('public')->exists($imagePath)) {
-                            Storage::disk('public')->delete($imagePath);
-                        }
+                        Storage::disk('public')->delete($event->thumbnail);
                     }
-                    
-                    // Store the new image
-                    $filename = uniqid() . '.' . $this->thumbnail->getClientOriginalExtension();
+                    $filename = uniqid() . '.' . $this->thumbnail->extension();
                     $this->thumbnail->storeAs('uploads/events', $filename, 'public');
                     $event->thumbnail = 'uploads/events/' . $filename;
                 }
-    
+
                 $event->save();
                 session()->flash('success', 'Event updated successfully!');
+
             } else {
-                // Create new event
+                // --- CREATE ---
                 $event = new Event();
                 $event->title = $this->title;
                 $event->description = $this->description;
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
-                $event->article = $this->article;
                 $event->is_highlighted = $this->is_highlighted;
-                
-                // Store the image
-                $filename = uniqid() . '.' . $this->thumbnail->getClientOriginalExtension();
+
+                // process article
+                $event->article = $this->processQuillContent($this->article);
+
+                // handle thumbnail
+                $filename = uniqid() . '.' . $this->thumbnail->extension();
                 $this->thumbnail->storeAs('uploads/events', $filename, 'public');
                 $event->thumbnail = 'uploads/events/' . $filename;
-                
+
                 $event->save();
                 session()->flash('success', 'Event added successfully!');
             }
-    
+
             return redirect()->route('admin.events');
         } catch (\Exception $e) {
-            // Log error
             Log::error('Event save error: ' . $e->getMessage());
-            
-            // Flash error message
             session()->flash('error', 'Error saving event: ' . $e->getMessage());
         }
     }
@@ -146,5 +152,41 @@ class EventForm extends Component
     public function render()
     {
         return view('livewire.admin.events.event-form');
+    }
+
+    /*** Helpers ***/
+
+    protected function processQuillContent(string $html): string
+    {
+        Storage::disk('public')->makeDirectory('rte-images');
+
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+
+        foreach (iterator_to_array($dom->getElementsByTagName('img')) as $img) {
+            $src = $img->getAttribute('src');
+            if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $src, $m)) {
+                $ext = $m[1];
+                $data = base64_decode($m[2]);
+                $filename = 'rte-images/' . uniqid() . '.' . $ext;
+                Storage::disk('public')->put($filename, $data);
+                $img->setAttribute('src', asset("storage/{$filename}"));
+            }
+        }
+
+        return $dom->saveHTML();
+    }
+
+    protected function deleteImagesInContent(string $html): void
+    {
+        preg_match_all('/<img[^>]+src="([^"]+)"/i', $html, $matches);
+        foreach ($matches[1] as $url) {
+            if (strpos($url, '/storage/rte-images/') !== false) {
+                $path = str_replace('/storage/', '', parse_url($url, PHP_URL_PATH));
+                Storage::disk('public')->delete($path);
+            }
+        }
     }
 }
