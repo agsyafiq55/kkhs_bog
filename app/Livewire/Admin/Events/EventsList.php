@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Events;
 use Livewire\Component;
 use App\Models\Event;
 use Illuminate\Support\Facades\Storage;
+use DOMDocument;
 
 class EventsList extends Component
 {
@@ -72,6 +73,11 @@ class EventsList extends Component
         try {
             $event = Event::findOrFail($id);
 
+            // Delete embedded images in article content
+            if ($event->article) {
+                $this->deleteImagesInContent($event->article);
+            }
+
             // Check if the event has a thumbnail and delete the image file from storage
             if ($event->thumbnail) {
                 // Remove 'public/' prefix from the path if it's stored in the database as a relative path
@@ -93,6 +99,20 @@ class EventsList extends Component
         } catch (\Exception $e) {
             $this->debugInfo = 'Error deleting event: ' . $e->getMessage();
             session()->flash('error', 'Error deleting event: ' . $e->getMessage());
+        }
+    }
+
+    // Add helper method to delete images in article content
+    protected function deleteImagesInContent(string $html): void
+    {
+        preg_match_all('/<img[^>]+src="([^"]+)"/i', $html, $matches);
+        foreach ($matches[1] as $url) {
+            if (strpos($url, '/storage/rte-images/') !== false) {
+                $path = str_replace('/storage/', '', parse_url($url, PHP_URL_PATH));
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
         }
     }
 
