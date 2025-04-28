@@ -64,42 +64,37 @@
             <div wire:loading.remove wire:target="search, selectedTag"
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 @foreach ($events as $event)
-                    <a href="{{ route('events.show', $event->id) }}" class="block hover:no-underline h-full group">
-                        <article
-                            class="relative overflow-hidden rounded-lg shadow-md border border-gray-100 dark:border-zinc-800 transition-all duration-300 hover:shadow-xl hover:scale-102 h-96 bg-white dark:bg-zinc-900">
-                            <!-- Event card content remains the same -->
-                            <div class="h-48 overflow-hidden">
+                    <a href="{{ route('events.show', $event->id) }}" class="block hover:no-underline group">
+                        <article class="flex flex-col relative">
+                            <!-- Square Image Container -->
+                            <div class="aspect-square w-full overflow-hidden rounded-lg">
                                 <img alt="{{ $event->title }}"
                                     src="{{ $event->thumbnail ? 'data:image/jpeg;base64,' . $event->thumbnail : 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}"
-                                    class="w-full h-full object-cover transition duration-700 ease-out group-hover:scale-105" />
+                                    class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105" />
                             </div>
 
-                            <div class="p-5">
-                                <div class="mb-3">
-                                    <flux:badge color="{{ $tagColors[$event->tag] ?? 'zinc' }}"
-                                        class="inline-block text-sm">
-                                        {{ $event->tag }}
-                                    </flux:badge>
-                                </div>
-
-                                <h3
-                                    class="line-clamp-2 text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                            <!-- Content Section - No Background -->
+                            <div>
+                                <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-white line-clamp-2 group-hover:text-red-500 transition-colors">
                                     {{ $event->title }}
                                 </h3>
 
-                                <p class="line-clamp-2 text-sm/relaxed text-gray-600 dark:text-gray-300">
-                                    {{ $event->description }}
-                                </p>
+                                <div class="mt-1 flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                                    <flux:badge color="{{ $tagColors[$event->tag] ?? 'zinc' }}"
+                                        class="inline-block text-xs font-medium">
+                                        {{ $event->tag }}
+                                    </flux:badge>
+                                    
+                                    <div class="flex items-center">
+                                        <span>{{ $event->event_date ? \Carbon\Carbon::parse($event->event_date)->format('M d, Y') : 'Upcoming' }}</span>
+                                    </div>
+                                </div>
                             </div>
 
                             @if ($event->is_highlighted)
-                                <div
-                                    class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-medium px-2.5 py-1 rounded-full shadow flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                        class="w-3 h-3">
-                                        <path fill-rule="evenodd"
-                                            d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                                            clip-rule="evenodd" />
+                                <div class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-medium px-2.5 py-1 rounded-full shadow flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
                                     </svg>
                                     Featured
                                 </div>
@@ -109,7 +104,7 @@
                 @endforeach
             </div>
 
-            <!-- Empty State -->
+            <!-- Empty State remains unchanged -->
             @if ($events->isEmpty())
                 <div class="text-center mt-8 p-8 bg-gray-50 dark:bg-zinc-800 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none"

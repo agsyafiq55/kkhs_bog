@@ -29,7 +29,7 @@
         <div class="mb-4">
             <flux:text variant="strong">Thumbnail:</flux:text>
             <div>
-                <img src="data:image/jpeg;base64,{{ base64_encode($event->thumbnail) }}" 
+                <img src="{{ asset('storage/' . $event->thumbnail) }}" 
                      class="w-32 h-32 object-cover rounded" alt="Event thumbnail">
             </div>
         </div>

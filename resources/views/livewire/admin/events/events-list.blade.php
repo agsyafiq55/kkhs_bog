@@ -64,7 +64,7 @@
                 <!-- Event Image -->
                 <div class="relative h-48 overflow-hidden">
                     @if ($event->thumbnail)
-                        <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
+                        <img src="{{ asset('storage/' . $event->thumbnail) }}"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             alt="{{ $event->title }}">
                     @else

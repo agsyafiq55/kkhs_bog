@@ -71,7 +71,7 @@
                 
                 <!-- Gallery Image -->
                 <div class="relative h-48 overflow-hidden">
-                    <img src="data:image/jpeg;base64,{{ $gallery->image }}" 
+                    <img src="{{ asset('storage/' . $gallery->image) }}"
                          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                          alt="{{ $gallery->img_name }}">
                     

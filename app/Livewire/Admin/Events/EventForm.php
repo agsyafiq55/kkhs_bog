@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Event;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class EventForm extends Component
 {
@@ -85,7 +86,7 @@ class EventForm extends Component
         try {
             // Validate
             $this->validate($this->rules(), $this->messages());
-
+    
             if ($this->eventId) {
                 // Update existing event
                 $event = Event::findOrFail($this->eventId);
@@ -97,11 +98,20 @@ class EventForm extends Component
                 $event->is_highlighted = $this->is_highlighted; 
 
                 if ($this->thumbnail) {
-                    // Convert image to base64 string for longtext storage
-                    $imageData = base64_encode(file_get_contents($this->thumbnail->getRealPath()));
-                    $event->thumbnail = $imageData;
+                    // Delete old image if exists
+                    if ($event->thumbnail) {
+                        $imagePath = str_replace('public/', '', $event->thumbnail);
+                        if (Storage::disk('public')->exists($imagePath)) {
+                            Storage::disk('public')->delete($imagePath);
+                        }
+                    }
+                    
+                    // Store the new image
+                    $filename = uniqid() . '.' . $this->thumbnail->getClientOriginalExtension();
+                    $this->thumbnail->storeAs('uploads/events', $filename, 'public');
+                    $event->thumbnail = 'uploads/events/' . $filename;
                 }
-
+    
                 $event->save();
                 session()->flash('success', 'Event updated successfully!');
             } else {
@@ -112,16 +122,17 @@ class EventForm extends Component
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
                 $event->article = $this->article;
-                $event->is_highlighted = $this->is_highlighted; // Explicitly set the is_highlighted value
+                $event->is_highlighted = $this->is_highlighted;
                 
-                // Convert image to base64 string for longtext storage
-                $imageData = base64_encode(file_get_contents($this->thumbnail->getRealPath()));
-                $event->thumbnail = $imageData;
+                // Store the image
+                $filename = uniqid() . '.' . $this->thumbnail->getClientOriginalExtension();
+                $this->thumbnail->storeAs('uploads/events', $filename, 'public');
+                $event->thumbnail = 'uploads/events/' . $filename;
                 
                 $event->save();
                 session()->flash('success', 'Event added successfully!');
             }
-
+    
             return redirect()->route('admin.events');
         } catch (\Exception $e) {
             // Log error

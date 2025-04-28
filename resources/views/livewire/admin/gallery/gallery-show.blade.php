@@ -11,7 +11,8 @@
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="md:flex">
             <div class="md:w-2/3">
-                <img src="data:image/jpeg;base64,{{ $gallery->image }}" alt="{{ $gallery->img_name }}" class="w-full h-auto">
+                <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $gallery->img_name }}" class="w-full h-auto">\
+
             </div>
             <div class="md:w-1/3 p-6">
                 <h1 class="text-2xl font-bold mb-2">{{ $gallery->img_name }}</h1>

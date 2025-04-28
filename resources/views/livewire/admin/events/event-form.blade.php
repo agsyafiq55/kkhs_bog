@@ -121,13 +121,12 @@
 
                     <div>
                         <!-- Thumbnail Preview -->
-                        <div
-                            class="mb-4 relative overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
-                            @if ($thumbnail)
+                        <div class="mb-4 relative overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
+                            @if ($thumbnail && !is_string($thumbnail))
                                 <img src="{{ $thumbnail->temporaryUrl() }}" class="w-full h-full object-cover"
                                     alt="Thumbnail preview">
-                            @elseif($eventId && isset($event) && $event->thumbnail)
-                                <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
+                            @elseif(isset($event) && $event->thumbnail)
+                                <img src="{{ asset('storage/' . $event->thumbnail) }}"
                                     class="w-full h-full object-cover" alt="Thumbnail preview">
                             @else
                                 <div class="text-center p-6">

@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Events;
 
 use Livewire\Component;
 use App\Models\Event;
+use Illuminate\Support\Facades\Storage;
 
 class EventsList extends Component
 {
@@ -69,7 +70,23 @@ class EventsList extends Component
     public function delete($id)
     {
         try {
-            Event::findOrFail($id)->delete();
+            $event = Event::findOrFail($id);
+
+            // Check if the event has a thumbnail and delete the image file from storage
+            if ($event->thumbnail) {
+                // Remove 'public/' prefix from the path if it's stored in the database as a relative path
+                $imagePath = str_replace('public/', '', $event->thumbnail);
+
+                // Check if the file exists before attempting to delete it
+                if (Storage::disk('public')->exists($imagePath)) {
+                    // Delete the image from storage
+                    Storage::disk('public')->delete($imagePath);
+                }
+            }
+
+            // Delete the event record
+            $event->delete();
+            
             session()->flash('message', 'Event deleted successfully!');
             $this->debugInfo = "Event {$id} deleted successfully.";
             $this->loadEvents();

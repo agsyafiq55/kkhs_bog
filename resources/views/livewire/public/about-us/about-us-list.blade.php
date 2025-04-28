@@ -44,7 +44,7 @@
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="md:w-2/3">
                             <div class="h-full">
-                                <img src="data:image/jpeg;base64,{{ $aboutUs->organization_photo }}"
+                                <img src="{{ asset('storage/' . $aboutUs->organization_photo) }}"
                                     alt="Organization Photo" class="w-full h-full object-cover rounded-sm">
                             </div>
                         </div>
@@ -63,7 +63,8 @@
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="md:w-1/3 flex flex-col items-center">
                             <div class="w-64 h-64 mb-4 overflow-hidden rounded-lg shadow-md">
-                                <img src="data:image/jpeg;base64,{{ $aboutUs->chairman_photo }}" alt="Chairman Photo"
+                                <img src="{{ asset('storage/' . $aboutUs->chairman_photo) }}" 
+                                    alt="Chairman Photo"
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="text-center">

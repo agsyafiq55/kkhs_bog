@@ -19,7 +19,7 @@
         <div class="mb-4">
             <flux:text variant="strong">Image:</flux:text>
             <div class="mt-2">
-                <img src="data:image/jpeg;base64,{{ $announcement->image }}" 
+                <img src="{{ asset('storage/' . $announcement->image) }}" 
                      class="max-w-full h-auto rounded-lg shadow-md" alt="Announcement image">
             </div>
         </div>
