@@ -121,11 +121,12 @@
                             </div>
                         </div>
 
+                        <!-- Replace the current image display section -->
                         @if($isEdit && $currentImage)
                             <div>
                                 <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Current Image</flux:text>
                                 <div class="mt-2 border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden">
-                                    <img src="data:image/jpeg;base64,{{ $currentImage }}" alt="Current Announcement Image" class="w-full h-auto">
+                                    <img src="{{ asset('storage/' . $currentImage) }}" alt="Current Announcement Image" class="w-full h-auto">
                                 </div>
                             </div>
                         @endif

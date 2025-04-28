@@ -111,7 +111,7 @@
                     slides: [
                         @foreach ($latestAnnouncements as $announcement)
                     {
-                        imgSrc: '{{ $announcement->image ? 'data:image/jpeg;base64,' . $announcement->image : 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}',
+                        imgSrc: '{{ $announcement->image ? asset('storage/' . $announcement->image) : asset('images/placeholder.jpg') }}',
                         imgAlt: '{{ $announcement->title }}',
                         title: '{{ $announcement->title }}',
                         description: '{{ Str::limit(strip_tags($announcement->content), 150) }}',
@@ -234,7 +234,7 @@
                                 <!-- Square Image Container -->
                                 <div class="aspect-square w-full overflow-hidden rounded-lg">
                                     <img alt="{{ $event->title }}"
-                                        src="{{ $event->thumbnail ? 'data:image/jpeg;base64,' . $event->thumbnail : 'http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg' }}"
+                                        src="{{ $event->thumbnail ? asset('storage/' . $event->thumbnail) : asset('images/placeholder.jpg') }}"
                                         class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105" />
                                 </div>
 

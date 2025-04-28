@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Announcements;
 
 use Livewire\Component;
 use App\Models\Announcement;
+use Illuminate\Support\Facades\Storage;
 
 class AnnouncementsList extends Component
 {
@@ -70,7 +71,17 @@ class AnnouncementsList extends Component
     public function delete($id)
     {
         try {
-            Announcement::findOrFail($id)->delete();
+            $announcement = Announcement::findOrFail($id);
+            
+            // Delete the image file from storage if it exists
+            if ($announcement->image) {
+                $imagePath = str_replace('public/', '', $announcement->image);
+                if (Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                }
+            }
+            
+            $announcement->delete();
             session()->flash('message', 'Announcement deleted successfully!');
             $this->debugInfo = "Announcement {$id} deleted successfully.";
             $this->loadAnnouncements();

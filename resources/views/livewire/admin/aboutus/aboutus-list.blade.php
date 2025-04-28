@@ -85,9 +85,10 @@
                 <!-- Organization Photo -->
                 <div class="bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700">
                     <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-4">Organization Photo</h3>
+                    <!-- Replace the organization photo display section -->
                     @if($aboutUsData->organization_photo)
                         <div class="aspect-video relative overflow-hidden rounded-lg">
-                            <img src="data:image/jpeg;base64,{{ $aboutUsData->organization_photo }}" 
+                            <img src="{{ asset('storage/' . $aboutUsData->organization_photo) }}" 
                                  class="w-full h-full object-cover"
                                  alt="Organization Photo">
                         </div>
@@ -101,9 +102,10 @@
                 <!-- Chairman Photo -->
                 <div class="bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700">
                     <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-4">Chairman Photo</h3>
+                    <!-- Replace the chairman photo display section -->
                     @if($aboutUsData->chairman_photo)
                         <div class="aspect-video relative overflow-hidden rounded-lg">
-                            <img src="data:image/jpeg;base64,{{ $aboutUsData->chairman_photo }}" 
+                            <img src="{{ asset('storage/' . $aboutUsData->chairman_photo) }}" 
                                  class="w-full h-full object-cover"
                                  alt="Chairman Photo">
                         </div>

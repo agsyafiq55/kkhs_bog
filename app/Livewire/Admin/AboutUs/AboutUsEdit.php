@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\AboutUs;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AboutUsEdit extends Component
 {
@@ -72,38 +73,78 @@ class AboutUsEdit extends Component
         $this->validateOnly($propertyName, $this->rules(), $this->messages());
     }
 
+    // Add this method to handle file uploads directly
+    public function updatedNewOrganizationPhoto()
+    {
+        $this->validate([
+            'newOrganizationPhoto' => 'image|max:5120', // 5MB max
+        ]);
+    }
+
+    public function updatedNewChairmanPhoto()
+    {
+        $this->validate([
+            'newChairmanPhoto' => 'image|max:5120', // 5MB max
+        ]);
+    }
+
     public function save()
     {
+        $this->validate();
+    
         try {
-            $this->validate($this->rules(), $this->messages());
-
             if ($this->aboutUsId) {
                 $aboutUs = AboutUs::findOrFail($this->aboutUsId);
+                
+                // Handle organization photo
+                if ($this->newOrganizationPhoto) {
+                    if ($aboutUs->organization_photo) {
+                        Storage::disk('public')->delete($aboutUs->organization_photo);
+                    }
+                    $filename = uniqid() . '.' . $this->newOrganizationPhoto->getClientOriginalExtension();
+                    $this->newOrganizationPhoto->storeAs('uploads/aboutus/organization_photo', $filename, 'public');
+                    $aboutUs->organization_photo = 'uploads/aboutus/organization_photo/' . $filename;
+                }
+            
+                // Handle chairman photo
+                if ($this->newChairmanPhoto) {
+                    if ($aboutUs->chairman_photo) {
+                        Storage::disk('public')->delete($aboutUs->chairman_photo);
+                    }
+                    $filename = uniqid() . '.' . $this->newChairmanPhoto->getClientOriginalExtension();
+                    $this->newChairmanPhoto->storeAs('uploads/aboutus/chairman_photo', $filename, 'public');
+                    $aboutUs->chairman_photo = 'uploads/aboutus/chairman_photo/' . $filename;
+                }
+
+                $aboutUs->year = $this->year;
+                $aboutUs->chairman_speech = $this->chairman_speech;
+                $aboutUs->save();
+            
+                session()->flash('success', 'About Us information updated successfully.');
             } else {
+                // Create new about us
                 $aboutUs = new AboutUs();
-            }
+                $aboutUs->year = $this->year;
+                $aboutUs->chairman_speech = $this->chairman_speech;
             
-            $aboutUs->year = $this->year;
-            $aboutUs->chairman_speech = $this->chairman_speech;
-
-            if ($this->newOrganizationPhoto) {
-                $aboutUs->organization_photo = base64_encode(file_get_contents($this->newOrganizationPhoto->getRealPath()));
-            }
-
-            if ($this->newChairmanPhoto) {
-                $aboutUs->chairman_photo = base64_encode(file_get_contents($this->newChairmanPhoto->getRealPath()));
-            }
-
-            $aboutUs->save();
+                // Store organization photo
+                $filename = uniqid() . '.' . $this->newOrganizationPhoto->getClientOriginalExtension();
+                $this->newOrganizationPhoto->storeAs('uploads/aboutus/organization_photo', $filename, 'public');
+                $aboutUs->organization_photo = 'uploads/aboutus/organization_photo/' . $filename;
             
-            $action = $this->aboutUsId ? 'updated' : 'created';
-            session()->flash('message', "About Us information for year {$this->year} {$action} successfully!");
-
+                // Store chairman photo
+                $filename = uniqid() . '.' . $this->newChairmanPhoto->getClientOriginalExtension();
+                $this->newChairmanPhoto->storeAs('uploads/aboutus/chairman_photo', $filename, 'public');
+                $aboutUs->chairman_photo = 'uploads/aboutus/chairman_photo/' . $filename;
+            
+                $aboutUs->save();
+                session()->flash('success', 'About Us information created successfully.');
+            }
+        
             return redirect()->route('admin.aboutus');
         } catch (\Exception $e) {
-            Log::error('About Us save error: ' . $e->getMessage());
-            $this->debugInfo .= "\nError: " . $e->getMessage();
-            session()->flash('error', 'Error saving About Us: ' . $e->getMessage());
+            Log::error('Error saving about us: ' . $e->getMessage());
+            session()->flash('error', 'Error saving about us information: ' . $e->getMessage());
         }
     }
 

@@ -20,7 +20,9 @@
                     </div>
 
                     <div class="mb-8">
-                        <img src="data:image/jpeg;base64,{{ $announcement->image }}" alt="{{ $announcement->title }}" class="w-full h-auto rounded-lg">
+                        <img src="{{ $announcement->image ? asset('storage/' . $announcement->image) : asset('images/placeholder.jpg') }}" 
+                             alt="{{ $announcement->title }}" 
+                             class="w-full h-auto rounded-lg">
                     </div>
 
                     <div class="prose prose-indigo max-w-none dark:prose-invert">

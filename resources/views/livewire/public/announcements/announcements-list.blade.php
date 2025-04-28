@@ -55,7 +55,7 @@
                         class="relative overflow-hidden rounded-lg shadow-md border border-gray-100 dark:border-zinc-800 transition-all duration-300 hover:shadow-xl hover:scale-102 h-96 bg-white dark:bg-zinc-900">
                         <!-- Background Image -->
                         <div class="h-48 overflow-hidden">
-                            <img src="data:image/jpeg;base64,{{ $announcement->image }}"
+                            <img src="{{ $announcement->image ? asset('storage/' . $announcement->image) : asset('images/placeholder.jpg') }}"
                                 alt="{{ $announcement->title }}"
                                 class="w-full h-full object-cover transition duration-700 ease-out group-hover:scale-105">
                         </div>

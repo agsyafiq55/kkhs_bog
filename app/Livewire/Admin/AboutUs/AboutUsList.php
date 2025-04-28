@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\AboutUs;
 
 use Livewire\Component;
 use App\Models\AboutUs;
+use Illuminate\Support\Facades\Storage;
 
 class AboutUsList extends Component
 {
@@ -59,21 +60,32 @@ class AboutUsList extends Component
         ]);
     }
 
-    public function deleteAboutUs($aboutUsId)
+    public function deleteAboutUs($id)
     {
         try {
-            $aboutUs = AboutUs::findOrFail($aboutUsId);
-            $result = $aboutUs->delete();
-            
-            if ($result) {
-                $this->loadAvailableYears();
-                $this->loadAboutUsData();
-                session()->flash('message', 'About Us information deleted successfully!');
-            } else {
-                throw new \Exception('Failed to delete About Us information');
+            $aboutUs = AboutUs::findOrFail($id);
+    
+            // Delete organization photo
+            if ($aboutUs->organization_photo) {
+                $orgPath = str_replace('public/', '', $aboutUs->organization_photo);
+                if (Storage::disk('public')->exists($orgPath)) {
+                    Storage::disk('public')->delete($orgPath);
+                }
             }
+    
+            // Delete chairman photo
+            if ($aboutUs->chairman_photo) {
+                $chairPath = str_replace('public/', '', $aboutUs->chairman_photo);
+                if (Storage::disk('public')->exists($chairPath)) {
+                    Storage::disk('public')->delete($chairPath);
+                }
+            }
+    
+            $aboutUs->delete();
+            session()->flash('success', 'About Us information deleted successfully.');
+            $this->loadAboutUsData();
         } catch (\Exception $e) {
-            session()->flash('error', 'Error deleting About Us information: ' . $e->getMessage());
+            session()->flash('error', 'Error deleting about us information: ' . $e->getMessage());
         }
     }
 }

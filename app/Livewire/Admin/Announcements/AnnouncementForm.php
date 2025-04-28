@@ -7,6 +7,7 @@ use App\Models\Announcement;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class AnnouncementForm extends Component
 {
@@ -56,11 +57,9 @@ class AnnouncementForm extends Component
 
     public function save()
     {
-        // Validate the form data
         $validatedData = $this->validate();
 
         try {
-            // Prepare the data for saving
             $data = [
                 'title' => $this->title,
                 'content' => $this->content,
@@ -68,31 +67,36 @@ class AnnouncementForm extends Component
                 'publish_end' => $this->publish_end,
             ];
 
-            // Handle image upload
-            if ($this->image) {
-                // Convert image to base64
-                $imageData = base64_encode(file_get_contents($this->image->getRealPath()));
-                $data['image'] = $imageData;
-            } elseif (!$this->isEdit) {
-                // If it's a new announcement, image is required
-                $this->validate([
-                    'image' => 'required|image|max:2048',
-                ]);
-            }
-
             if ($this->isEdit) {
-                // Update existing announcement
                 $announcement = Announcement::findOrFail($this->announcementId);
                 
-                // Only update image if a new one is uploaded
-                if (!isset($data['image'])) {
-                    unset($data['image']);
+                if ($this->image) {
+                    // Delete old image if exists
+                    if ($announcement->image) {
+                        $oldImagePath = str_replace('public/', '', $announcement->image);
+                        if (Storage::disk('public')->exists($oldImagePath)) {
+                            Storage::disk('public')->delete($oldImagePath);
+                        }
+                    }
+                    
+                    // Store new image
+                    $filename = uniqid() . '.' . $this->image->getClientOriginalExtension();
+                    $this->image->storeAs('uploads/announcements', $filename, 'public');
+                    $data['image'] = 'uploads/announcements/' . $filename;
                 }
                 
                 $announcement->update($data);
                 session()->flash('message', 'Announcement updated successfully!');
             } else {
-                // Create new announcement with current timestamp for published_at
+                // Validate image for new announcements
+                $this->validate(['image' => 'required|image|max:2048']);
+                
+                // Store image
+                $filename = uniqid() . '.' . $this->image->getClientOriginalExtension();
+                $this->image->storeAs('uploads/announcements', $filename, 'public');
+                $data['image'] = 'uploads/announcements/' . $filename;
+                
+                // Create new announcement
                 $data['published_at'] = Carbon::now();
                 Announcement::create($data);
                 session()->flash('message', 'Announcement created successfully!');

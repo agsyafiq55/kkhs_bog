@@ -101,11 +101,12 @@
 
                     <div>
                         <!-- Image Preview -->
+                        <!-- Replace the image preview section -->
                         <div class="mb-4 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
                             @if($newImage)
                                 <img src="{{ $newImage->temporaryUrl() }}" class="w-full h-full object-cover" alt="Image preview">
                             @elseif($galleryId && isset($gallery) && $gallery->image)
-                                <img src="data:image/jpeg;base64,{{ $gallery->image }}" class="w-full h-full object-cover" alt="Image preview">
+                                <img src="{{ asset('storage/' . $gallery->image) }}" class="w-full h-full object-cover" alt="Current image">
                             @else
                                 <div class="text-center p-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"

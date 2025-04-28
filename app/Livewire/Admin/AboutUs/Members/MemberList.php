@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\AboutUs\Members;
 
 use Livewire\Component;
 use App\Models\Member;
+use Illuminate\Support\Facades\Storage;
 
 class MemberList extends Component
 {
@@ -87,6 +88,15 @@ class MemberList extends Component
     {
         try {
             $member = Member::findOrFail($memberId);
+            
+            // Delete the member's photo if it exists
+            if ($member->photo) {
+                $imagePath = str_replace('public/', '', $member->photo);
+                if (Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                }
+            }
+            
             $result = $member->delete();
             
             if ($result) {

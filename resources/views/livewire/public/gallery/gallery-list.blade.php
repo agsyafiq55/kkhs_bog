@@ -92,8 +92,9 @@
                                         <!-- Background image with gradient overlay -->
                                         <div class="absolute inset-0 overflow-hidden">
                                             <img class="w-full h-full object-cover"
-                                                src="data:image/jpeg;base64,{{ $image->image }}"
-                                                alt="{{ $image->img_name }}">
+                                                <img class="w-full h-full object-cover"
+                                                src="{{ asset('storage/' . $image->image) }}" 
+                                                alt="Event Thumbnail">
                                         </div>
 
                                         <!-- Gradient overlay that appears on hover -->

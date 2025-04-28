@@ -12,7 +12,7 @@
         <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-lg overflow-hidden">
             <div class="md:flex">
                 <div class="md:w-2/3 bg-gray-100 dark:bg-zinc-700">
-                    <img src="data:image/jpeg;base64,{{ $image->image }}" 
+                    <img src="{{ asset('storage/' . $image->image) }}" 
                          alt="{{ $image->img_name }}" 
                          class="w-full h-full object-contain">
                 </div>
@@ -47,7 +47,7 @@
                         <a href="{{ route('gallery.show', $relatedImage->id) }}" 
                            class="block group">
                             <div class="aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
-                                <img src="data:image/jpeg;base64,{{ $relatedImage->image }}" 
+                                <img src="{{ asset('storage/' . $relatedImage->image) }}" 
                                      alt="{{ $relatedImage->img_name }}"
                                      class="w-full h-full object-cover group-hover:opacity-90 transition">
                             </div>

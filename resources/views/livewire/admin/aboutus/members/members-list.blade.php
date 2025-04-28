@@ -104,7 +104,7 @@
                             <div class="flex justify-center mb-4">
                                 <div
                                     class="relative w-[150px] h-[150px] rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-800 border-4 border-white dark:border-zinc-700 shadow-md group-hover:border-indigo-100 dark:group-hover:border-indigo-900 transition-colors">
-                                    <img src="data:image/jpeg;base64,{{ $member->photo }}"
+                                    <img src="{{ asset('storage/' . $member->photo) }}"
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         alt="{{ $member->member_name }}">
                                 </div>

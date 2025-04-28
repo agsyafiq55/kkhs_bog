@@ -118,7 +118,7 @@
                                 <img src="{{ $newPhoto->temporaryUrl() }}" class="w-full h-full object-cover"
                                     alt="Member photo preview">
                             @elseif($memberId && $member->photo)
-                                <img src="data:image/jpeg;base64,{{ $member->photo }}"
+                                <img src="{{ asset('storage/' . $member->photo) }}"
                                     class="w-full h-full object-cover" alt="Current Member Photo">
                             @else
                                 <div class="text-center p-6">

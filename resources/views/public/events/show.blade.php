@@ -27,9 +27,9 @@ $formattedDate = \Carbon\Carbon::parse($event->event_date)->format('d F Y');
                     <!-- Hero Image (Left) -->
                     <div class="w-full md:w-2/3">
                         @if($event->thumbnail)
-                            <img src="data:image/jpeg;base64,{{ $event->thumbnail }}"
+                            <img src="{{ asset('storage/' . $event->thumbnail) }}" 
                                 class="w-full h-full object-cover"
-                                alt="" />
+                                alt="Event Thumbnail" />
                         @else
                             <div class="w-full h-full min-h-[400px] bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

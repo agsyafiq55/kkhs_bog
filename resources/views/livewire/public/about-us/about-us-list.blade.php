@@ -1,45 +1,51 @@
 <div>
-    <div class="relative overflow-hidden rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-800 max-w-6xl mx-auto mb-12">
-    <img src="https://mrwallpaper.com/images/hd/chinese-lantern-photography-azuq3mbutdxhp3z7.jpg" 
-         alt="Chinese lantern" 
-         class="absolute inset-0 w-full h-full object-cover z-0">
-    <div class="absolute inset-0 bg-white/70 dark:bg-zinc-900/70 z-10"></div>
+    <div
+        class="relative overflow-hidden rounded-2xl shadow-lg border border-gray-200 dark:border-zinc-800 max-w-6xl mx-auto mb-12">
+        <img src="https://mrwallpaper.com/images/hd/chinese-lantern-photography-azuq3mbutdxhp3z7.jpg"
+            alt="Chinese lantern" class="absolute inset-0 w-full h-full object-cover z-0">
+        <div class="absolute inset-0 bg-white/70 dark:bg-zinc-900/70 z-10"></div>
 
-    <div class="relative z-20 flex flex-col md:flex-row items-center md:items-start p-10 md:p-16">
-        <div class="md:w-2/3 mb-6 md:mb-0">
-            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-3">About Us</h1>
-            <h2 class="text-3xl md:text-4xl text-zinc-700 dark:text-zinc-300">关于我们</h2>
-            
-            <div class="mt-6">
-                <!-- Year Filter Dropdown -->
-                <div class="flex items-center space-x-2 mb-4">
-                    <label for="yearFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Choose Year:</label>
-                    <div class="relative">
-                        <div class="absolute -inset-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg"></div>
-                        <flux:select id="yearFilter" wire:model.live="selectedYear" class="relative w-32 bg-white dark:bg-zinc-900">
-                            @foreach($availableYears as $year)
-                                <option value="{{ $year }}">{{ $year }}</option>
-                            @endforeach
-                        </flux:select>
+        <div class="relative z-20 flex flex-col md:flex-row items-center md:items-start p-10 md:p-16">
+            <div class="md:w-2/3 mb-6 md:mb-0">
+                <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-3">About
+                    Us</h1>
+                <h2 class="text-3xl md:text-4xl text-zinc-700 dark:text-zinc-300">关于我们</h2>
+
+                <div class="mt-6">
+                    <!-- Year Filter Dropdown -->
+                    <div class="flex items-center space-x-2 mb-4">
+                        <label for="yearFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Choose
+                            Year:</label>
+                        <div class="relative">
+                            <div
+                                class="absolute -inset-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg">
+                            </div>
+                            <flux:select id="yearFilter" wire:model.live="selectedYear"
+                                class="relative w-32 bg-white dark:bg-zinc-900">
+                                @foreach ($availableYears as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </flux:select>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="md:w-1/3 text-base text-justify text-zinc-800 dark:text-zinc-300 leading-relaxed">
-            Our diverse board that comprises of individuals from different background and industries is
-                    committed towards maintaining and developing the school and adding value to the development and
-                    well-being of the students.<br><br>
-            我们多元化的董事会由来自不同背景和行业的组成，团结一致, 维持和发展学校, 提升学生的福利和全方位发展。
+            <div class="md:w-1/3 text-base text-justify text-zinc-800 dark:text-zinc-300 leading-relaxed">
+                Our diverse board that comprises of individuals from different background and industries is
+                committed towards maintaining and developing the school and adding value to the development and
+                well-being of the students.<br><br>
+                我们多元化的董事会由来自不同背景和行业的组成，团结一致, 维持和发展学校, 提升学生的福利和全方位发展。
+            </div>
         </div>
     </div>
-</div>
 
     {{-- About us section --}}
     <div class="container mx-auto max-w-6xl">
         @if ($aboutUs)
             <div class="space-y-6">
                 <!-- Organization Photo -->
-                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-zinc-900">
+                <div
+                    class="bg-white dark:bg-zinc-900 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-zinc-900">
                     <flux:heading size="xl" class="pb-6 font-bold">We are KKHS Board of Governors</flux:heading>
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="md:w-2/3">
@@ -50,7 +56,7 @@
                         </div>
                         <div class="md:w-1/3 flex flex-col justify-center">
                             <p class="text-sm md:text-base text-justify text-gray-700 dark:text-gray-300">
-                                {{'Our esteemed Board of Governors stands as a testament to the rich tapestry of our community, drawing together accomplished individuals from a wide spectrum of professional backgrounds and industries. United by a shared vision for excellence, this dedicated body is deeply committed to the ongoing maintenance and strategic development of our school. Their collective expertise and varied perspectives serve as invaluable assets, enriching our institutions governance and ensuring a holistic approach to progress. More importantly, the Boards unwavering focus remains on fostering an environment that nurtures the comprehensive development and overall well-being of each and every student under our care, striving to empower them to reach their full potential.' }}
+                                {{ 'Our esteemed Board of Governors stands as a testament to the rich tapestry of our community, drawing together accomplished individuals from a wide spectrum of professional backgrounds and industries. United by a shared vision for excellence, this dedicated body is deeply committed to the ongoing maintenance and strategic development of our school. Their collective expertise and varied perspectives serve as invaluable assets, enriching our institutions governance and ensuring a holistic approach to progress. More importantly, the Boards unwavering focus remains on fostering an environment that nurtures the comprehensive development and overall well-being of each and every student under our care, striving to empower them to reach their full potential.' }}
                             </p>
                         </div>
                     </div>
@@ -63,8 +69,7 @@
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="md:w-1/3 flex flex-col items-center">
                             <div class="w-64 h-64 mb-4 overflow-hidden rounded-lg shadow-md">
-                                <img src="{{ asset('storage/' . $aboutUs->chairman_photo) }}" 
-                                    alt="Chairman Photo"
+                                <img src="{{ asset('storage/' . $aboutUs->chairman_photo) }}" alt="Chairman Photo"
                                     class="w-full h-full object-cover">
                             </div>
                             <div class="text-center">
@@ -76,7 +81,7 @@
                         <div class="md:w-2/3">
                             <div class="prose max-w-none">
                                 <p class="whitespace-pre-line text-gray-700 dark:text-gray-300 text-justify">
-                                    {{ $aboutUs->chairman_speech }}</p>
+                                    {!! $aboutUs->chairman_speech !!}</p>
                             </div>
                         </div>
                     </div>
@@ -151,7 +156,7 @@
                                             <div class="flex justify-center mb-4">
                                                 <div
                                                     class="relative w-[150px] h-[150px] rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-800 border-4 border-white dark:border-zinc-700 shadow-md">
-                                                    <img src="data:image/jpeg;base64,{{ $member->photo }}"
+                                                    <img src="{{ asset('storage/' . $member->photo) }}"
                                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                                         alt="{{ $member->member_name }}">
                                                 </div>
@@ -163,7 +168,7 @@
                                                     class="text-lg font-semibold text-gray-800 dark:text-white mb-2 line-clamp-1">
                                                     {{ $member->member_name }}
                                                 </h3>
-                                                
+
                                                 <flux:badge color="{{ $positionColors[$member->position] ?? 'zinc' }}"
                                                     class="text-sm">
                                                     {{ $member->position === 'Member of Board of Governor' ? 'Member' : $member->position }}

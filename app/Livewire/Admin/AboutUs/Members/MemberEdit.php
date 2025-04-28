@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Member;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MemberEdit extends Component
 {
@@ -18,6 +19,7 @@ class MemberEdit extends Component
     public $zh_position;
     public $year;
     public $newPhoto;
+    public $photo; // Add this to store the current photo path
     public $debugInfo = '';
 
     // Add this method to handle file uploads directly
@@ -79,6 +81,7 @@ class MemberEdit extends Component
             $this->position = $this->member->position;
             $this->zh_position = $this->member->zh_position;
             $this->year = $this->member->year;
+            $this->photo = $this->member->photo; // Store the current photo path
         }
     }
 
@@ -128,8 +131,18 @@ class MemberEdit extends Component
             $member->year = $this->year;
 
             if ($this->newPhoto) {
-                // Store the photo as base64
-                $member->photo = base64_encode(file_get_contents($this->newPhoto->getRealPath()));
+                // Delete old photo if exists
+                if ($member->photo) {
+                    $imagePath = str_replace('public/', '', $member->photo);
+                    if (Storage::disk('public')->exists($imagePath)) {
+                        Storage::disk('public')->delete($imagePath);
+                    }
+                }
+                
+                // Store the new photo
+                $filename = uniqid() . '.' . $this->newPhoto->getClientOriginalExtension();
+                $this->newPhoto->storeAs('uploads/members', $filename, 'public');
+                $member->photo = 'uploads/members/' . $filename;
             }
 
             $member->save();

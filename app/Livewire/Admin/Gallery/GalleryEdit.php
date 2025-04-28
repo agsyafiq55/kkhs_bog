@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Gallery;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryEdit extends Component
 {
@@ -71,18 +72,14 @@ class GalleryEdit extends Component
 
     public function save()
     {
-        try {
-            // Debug info
-            $this->debugInfo = "Image type: " . (is_object($this->newImage) ? get_class($this->newImage) : gettype($this->newImage));
-            
-            // Validate
-            $this->validate([
-                'img_name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'category' => 'required|string|max:255',
-                'newImage' => $this->galleryId ? 'nullable|image|max:5120' : 'required|image|max:5120',
-            ]);
+        $this->validate([
+            'img_name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'description' => 'nullable|string',
+            'newImage' => $this->galleryId ? 'nullable|image|max:5120' : 'required|image|max:5120',
+        ]);
 
+        try {
             if ($this->galleryId) {
                 // Update existing gallery
                 $gallery = Gallery::findOrFail($this->galleryId);
@@ -91,8 +88,18 @@ class GalleryEdit extends Component
                 $gallery->category = $this->category;
 
                 if ($this->newImage) {
-                    // Store the image as base64
-                    $gallery->image = base64_encode(file_get_contents($this->newImage->getRealPath()));
+                    // Delete old image if exists
+                    if ($gallery->image) {
+                        $imagePath = str_replace('public/', '', $gallery->image);
+                        if (Storage::disk('public')->exists($imagePath)) {
+                            Storage::disk('public')->delete($imagePath);
+                        }
+                    }
+                    
+                    // Store the new image
+                    $filename = uniqid() . '.' . $this->newImage->getClientOriginalExtension();
+                    $this->newImage->storeAs('uploads/gallery', $filename, 'public');
+                    $gallery->image = 'uploads/gallery/' . $filename;
                 }
 
                 $gallery->save();
@@ -104,8 +111,10 @@ class GalleryEdit extends Component
                 $gallery->description = $this->description;
                 $gallery->category = $this->category;
                 
-                // Store the image as base64
-                $gallery->image = base64_encode(file_get_contents($this->newImage->getRealPath()));
+                // Store the image
+                $filename = uniqid() . '.' . $this->newImage->getClientOriginalExtension();
+                $this->newImage->storeAs('uploads/gallery', $filename, 'public');
+                $gallery->image = 'uploads/gallery/' . $filename;
                 
                 $gallery->save();
                 session()->flash('message', 'Gallery image added successfully!');
@@ -113,13 +122,7 @@ class GalleryEdit extends Component
 
             return redirect()->route('admin.gallery');
         } catch (\Exception $e) {
-            // Log error
-            Log::error('Gallery save error: ' . $e->getMessage());
-            
-            // Update debug info
-            $this->debugInfo .= "\nError: " . $e->getMessage();
-            
-            // Flash error message
+            $this->debugInfo = 'Error saving gallery: ' . $e->getMessage();
             session()->flash('error', 'Error saving gallery: ' . $e->getMessage());
         }
     }

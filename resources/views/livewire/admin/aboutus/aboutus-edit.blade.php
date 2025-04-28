@@ -55,43 +55,115 @@
                         @enderror
                     </div>
 
-                    <!-- Organization Photo -->
+                    <!-- Replace the organization photo section -->
+                    <!-- Organization Photo Section -->
                     <div>
                         <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Organization Photo</flux:text>
-                        <flux:input type="file" wire:model="newOrganizationPhoto" accept="image/*" class="w-full" />
-                        @if($organization_photo)
-                            <div class="mt-2">
-                                <img src="data:image/jpeg;base64,{{ $organization_photo }}" 
-                                     class="max-w-xs h-auto rounded-lg border border-gray-200 dark:border-zinc-700" 
-                                     alt="Organization Photo">
-                            </div>
-                        @endif
+                        <!-- Thumbnail Preview -->
+                        <div class="mb-4 relative overflow-hidden max-w-lg bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
+                            @if ($newOrganizationPhoto && !is_string($newOrganizationPhoto))
+                                <img src="{{ $newOrganizationPhoto->temporaryUrl() }}" class="w-full h-full object-cover"
+                                    alt="Organization photo preview">
+                            @elseif($organization_photo)
+                                <img src="{{ asset('storage/' . $organization_photo) }}"
+                                    class="w-full h-full object-cover" alt="Organization photo">
+                            @else
+                                <div class="text-center p-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No image selected</p>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <!-- File Upload -->
+                        <input type="file" id="newOrganizationPhoto" wire:model="newOrganizationPhoto"
+                            class="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-indigo-50 file:text-indigo-700
+                                hover:file:bg-indigo-100
+                                dark:text-gray-400 dark:file:bg-zinc-700 dark:file:text-zinc-100"
+                            accept="image/*" />
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP - Max 5MB</p>
                         @error('newOrganizationPhoto')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
+                        
+                        <div wire:loading wire:target="newOrganizationPhoto"
+                            class="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 inline-block"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Uploading...
+                        </div>
                     </div>
-
-                    <!-- Chairman Photo -->
+                
+                    <!-- Chairman Photo Section -->
                     <div>
                         <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Chairman Photo</flux:text>
-                        <flux:input type="file" wire:model="newChairmanPhoto" accept="image/*" class="w-full" />
-                        @if($chairman_photo)
-                            <div class="mt-2">
-                                <img src="data:image/jpeg;base64,{{ $chairman_photo }}" 
-                                     class="max-w-xs h-auto rounded-lg border border-gray-200 dark:border-zinc-700" 
-                                     alt="Chairman Photo">
-                            </div>
-                        @endif
+                        <!-- Thumbnail Preview -->
+                        <div class="mb-4 relative overflow-hidden max-w-lg bg-gray-100 dark:bg-zinc-800 aspect-video flex items-center justify-center">
+                            @if ($newChairmanPhoto && !is_string($newChairmanPhoto))
+                                <img src="{{ $newChairmanPhoto->temporaryUrl() }}" class="w-full h-full object-cover"
+                                    alt="Chairman photo preview">
+                            @elseif($chairman_photo)
+                                <img src="{{ asset('storage/' . $chairman_photo) }}"
+                                    class="w-full h-full object-cover" alt="Chairman photo">
+                            @else
+                                <div class="text-center p-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M8 12h.01M12 12h.01M16 12h.01M20 12h.01M4 12h.01M8 16h.01M12 16h.01" />
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">No image selected</p>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <!-- File Upload -->
+                        <input type="file" id="newChairmanPhoto" wire:model="newChairmanPhoto"
+                            class="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-indigo-50 file:text-indigo-700
+                                hover:file:bg-indigo-100
+                                dark:text-gray-400 dark:file:bg-zinc-700 dark:file:text-zinc-100"
+                            accept="image/*" />
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP - Max 5MB</p>
                         @error('newChairmanPhoto')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
+                        
+                        <div wire:loading wire:target="newChairmanPhoto"
+                            class="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 inline-block"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Uploading...
+                        </div>
                     </div>
 
                     <!-- Chairman Speech -->
                     <div>
                         <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Chairman Speech</flux:text>
-                        <flux:textarea wire:model="chairman_speech" rows="4" class="w-full" 
-                            placeholder="Enter chairman's speech"></flux:textarea>
+                        <livewire:quill-editor model="chairman_speech" />
                         @error('chairman_speech')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror

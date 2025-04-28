@@ -107,7 +107,6 @@
                 <div
                     class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-zinc-700">
                     <flux:heading size="lg" class="mb-4">Article Content</flux:heading>
-
                     {{-- Article Rich Text Editor --}}
                     <livewire:quill-editor model="article" />
                 </div>

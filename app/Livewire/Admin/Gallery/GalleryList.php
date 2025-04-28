@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Gallery;
 
 use Livewire\Component;
 use App\Models\Gallery;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryList extends Component
 {
@@ -69,7 +70,19 @@ class GalleryList extends Component
     public function delete($id)
     {
         try {
-            Gallery::findOrFail($id)->delete();
+            $gallery = Gallery::findOrFail($id);
+    
+            // Delete the image file from storage if it exists
+            if ($gallery->image) {
+                $imagePath = str_replace('public/', '', $gallery->image);
+                if (Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                }
+            }
+    
+            // Delete the gallery record
+            $gallery->delete();
+            
             session()->flash('message', 'Gallery image deleted successfully!');
             $this->debugInfo = "Gallery image {$id} deleted successfully.";
             $this->loadGalleries();
