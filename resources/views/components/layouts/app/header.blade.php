@@ -14,6 +14,9 @@
         </a>
         <!-- LINKS FOR DESKTOP -->
         <flux:navbar class="-mb-px max-lg:hidden">
+            <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
+                {{ __('About Us') }}
+            </flux:navbar.item>
             <flux:navbar.item icon="calendar" href="{{ route('events.index') }}" :current="request()->is('events')">
                 {{ __('Events') }}
             </flux:navbar.item>
@@ -22,9 +25,6 @@
             </flux:navbar.item>
             <flux:navbar.item icon="megaphone" href="{{ route('announcements.index') }}" :current="request()->is('announcements*')">
                 {{ __('Announcements') }}
-            </flux:navbar.item>
-            <flux:navbar.item icon="users" href="{{ route('aboutus') }}" :current="request()->is('about-us')">
-                {{ __('About Us') }}
             </flux:navbar.item>
             <flux:navbar.item icon="phone" href="{{ route('contact-us') }}" :current="request()->is('contact-us')">
                 {{ __('Contact Us') }}

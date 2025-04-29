@@ -36,7 +36,25 @@
     // set initial HTML
     quill.root.innerHTML = initial;
 
-    // image handler (base64 inline)
+    // image handler remains the same...
+    // Modified text-change handler with explicit UTF-8 handling
+    quill.on('text-change', () => {
+      const html = quill.root.innerHTML;
+      
+      // Create a temporary element to handle the content
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      
+      // Get the text content with preserved HTML
+      const content = temp.innerHTML;
+      
+      // Send with explicit UTF-8 encoding
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder('utf-8');
+      const encoded = decoder.decode(encoder.encode(content));
+      
+      @this.updateContent(encoded);
+    });
     quill.getModule('toolbar').addHandler('image', () => {
       const input = document.createElement('input');
       input.setAttribute('type','file');
@@ -54,10 +72,16 @@
       };
     });
 
-    // sync back to parent
+    // single text-change handler with better encoding
     quill.on('text-change', () => {
       const html = quill.root.innerHTML;
-      @this.updateContent(html);
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result;
+        @this.updateContent(text);
+      };
+      reader.readAsText(blob, 'utf-8');
     });
   });
 </script>

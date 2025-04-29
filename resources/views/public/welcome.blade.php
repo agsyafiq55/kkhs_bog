@@ -213,21 +213,12 @@
 
             <!-- 2. Events Section -->
             <div class="mt-15">
-                <div class="text-center mb-8">
-                    <flux:heading size="xl" class="text-4xl md:text-5xl">
-                        Events <h2 class="font-semibold block md:inline">活动</h2>
-                    </flux:heading>
-                    <div
-                        class="mt-2 text-sm md:text-base tracking-widest uppercase text-gray-600 dark:text-gray-400 flex flex-wrap justify-center gap-x-2">
-                        <span>Explore</span>
-                        <span>what's</span>
-                        <span>happening</span>
-                        <span>in</span>
-                        <span>KKHS</span>
-                    </div>
+                <div class="mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">Events
+                    </h2>
+                    <p class="text-gray-300 mb-4">Read the latest articles about the events happening in KKHS</p>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($events as $event)
                         <a href="{{ route('events.show', $event->id) }}" class="block hover:no-underline group">
                             <article class="flex flex-col">
@@ -250,7 +241,7 @@
                                             class="inline-block text-xs font-medium">
                                             {{ $event->tag }}
                                         </flux:badge>
-                                        
+
                                         <div class="flex items-center">
                                             <span>{{ $event->event_date ? \Carbon\Carbon::parse($event->event_date)->format('M d, Y') : 'Upcoming' }}</span>
                                         </div>

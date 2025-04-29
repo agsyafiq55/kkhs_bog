@@ -81,6 +81,15 @@ class EventForm extends Component
     // listener for Quill editor
     public function updateQuill($model, $html)
     {
+        // Ensure UTF-8 encoding is preserved
+        $html = mb_convert_encoding($html, 'UTF-8', mb_detect_encoding($html));
+        
+        // Remove any BOM if present
+        $html = str_replace("\xEF\xBB\xBF", '', $html);
+        
+        // Force UTF-8 for DOMDocument operations
+        $html = '<?xml encoding="UTF-8">' . $html;
+        
         $this->$model = $html;
         $this->validateOnly($model, $this->rules(), $this->messages());
     }
@@ -169,9 +178,9 @@ class EventForm extends Component
     {
         Storage::disk('public')->makeDirectory('rte-images');
 
-        $dom = new DOMDocument();
+        $dom = new DOMDocument('1.0', 'UTF-8');
         libxml_use_internal_errors(true);
-        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT);
         libxml_clear_errors();
 
         foreach (iterator_to_array($dom->getElementsByTagName('img')) as $img) {

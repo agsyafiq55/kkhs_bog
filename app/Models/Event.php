@@ -18,6 +18,15 @@ class Event extends Model
         'tag',
         'is_highlighted',
     ];
+
+    protected $attributes = [
+        'article' => '',
+    ];
+
+    public function setArticleAttribute($value)
+    {
+        $this->attributes['article'] = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+    }
 }
 
 

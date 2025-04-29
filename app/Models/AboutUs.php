@@ -17,4 +17,13 @@ class AboutUs extends Model
         'chairman_speech',
         'year',
     ];
+
+    protected $attributes = [
+        'chairman_speech' => '',
+    ];
+
+    public function setChairmanSpeechAttribute($value)
+    {
+        $this->attributes['chairman_speech'] = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+    }
 }
