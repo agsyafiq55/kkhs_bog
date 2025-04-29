@@ -24,9 +24,11 @@
       theme: 'snow',
       modules: {
         toolbar: [
+          [{ 'font': [] }],
           [{ header: [1, 2, false] }],
           ['bold','italic','underline'],
-          ['image','code-block','blockquote']
+          [{ 'align': [] }],
+          ['image','blockquote']
         ]
       }
     });

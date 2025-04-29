@@ -88,26 +88,35 @@ class EventForm extends Component
     public function save()
     {
         $this->validate($this->rules(), $this->messages());
-
+    
         try {
             if ($this->eventId) {
                 // --- UPDATE ---
                 $event = Event::findOrFail($this->eventId);
-
-                // delete inline images from old article
-                $this->deleteImagesInContent($event->article);
-
+    
+                // Only delete images that are not present in the new content
+                $oldImages = $this->getImagesFromContent($event->article);
+                $newImages = $this->getImagesFromContent($this->article);
+                $imagesToDelete = array_diff($oldImages, $newImages);
+                
+                foreach ($imagesToDelete as $imageUrl) {
+                    if (strpos($imageUrl, '/storage/rte-images/') !== false) {
+                        $path = str_replace('/storage/', '', parse_url($imageUrl, PHP_URL_PATH));
+                        Storage::disk('public')->delete($path);
+                    }
+                }
+    
                 // process new article (base64 → storage, swap src)
                 $cleanHtml = $this->processQuillContent($this->article);
                 $event->article = $cleanHtml;
-
+    
                 // other fields
                 $event->title = $this->title;
                 $event->description = $this->description;
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
                 $event->is_highlighted = $this->is_highlighted;
-
+    
                 // thumbnail replacement
                 if ($this->thumbnail) {
                     if ($event->thumbnail) {
@@ -117,10 +126,10 @@ class EventForm extends Component
                     $this->thumbnail->storeAs('uploads/events', $filename, 'public');
                     $event->thumbnail = 'uploads/events/' . $filename;
                 }
-
+    
                 $event->save();
                 session()->flash('success', 'Event updated successfully!');
-
+    
             } else {
                 // --- CREATE ---
                 $event = new Event();
@@ -129,19 +138,19 @@ class EventForm extends Component
                 $event->event_date = $this->event_date;
                 $event->tag = $this->tag;
                 $event->is_highlighted = $this->is_highlighted;
-
+    
                 // process article
                 $event->article = $this->processQuillContent($this->article);
-
+    
                 // handle thumbnail
                 $filename = uniqid() . '.' . $this->thumbnail->extension();
                 $this->thumbnail->storeAs('uploads/events', $filename, 'public');
                 $event->thumbnail = 'uploads/events/' . $filename;
-
+    
                 $event->save();
                 session()->flash('success', 'Event added successfully!');
             }
-
+    
             return redirect()->route('admin.events');
         } catch (\Exception $e) {
             Log::error('Event save error: ' . $e->getMessage());
@@ -179,14 +188,9 @@ class EventForm extends Component
         return $dom->saveHTML();
     }
 
-    protected function deleteImagesInContent(string $html): void
+    protected function getImagesFromContent(string $html): array
     {
         preg_match_all('/<img[^>]+src="([^"]+)"/i', $html, $matches);
-        foreach ($matches[1] as $url) {
-            if (strpos($url, '/storage/rte-images/') !== false) {
-                $path = str_replace('/storage/', '', parse_url($url, PHP_URL_PATH));
-                Storage::disk('public')->delete($path);
-            }
-        }
+        return $matches[1] ?? [];
     }
 }
