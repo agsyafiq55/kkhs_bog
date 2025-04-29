@@ -163,7 +163,7 @@
                     <!-- Chairman Speech -->
                     <div>
                         <flux:text variant="strong" class="mb-2 block text-gray-700 dark:text-gray-300">Chairman Speech</flux:text>
-                        <livewire:quill-editor model="chairman_speech" />
+                        <livewire:quill-editor model="chairman_speech" :content="$chairman_speech" key="quill-editor-chairman-speech" />
                         @error('chairman_speech')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror

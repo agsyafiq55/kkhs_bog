@@ -7,6 +7,7 @@ use App\Models\AboutUs;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use DOMDocument;
 
 class AboutUsEdit extends Component
 {
@@ -22,6 +23,11 @@ class AboutUsEdit extends Component
     public $newOrganizationPhoto;
     public $newChairmanPhoto;
     public $debugInfo = '';
+
+    // Listen for Quill editor updates
+    protected $listeners = [
+        'quillChanged' => 'updateQuill'
+    ];
 
     protected function rules()
     {
@@ -73,6 +79,13 @@ class AboutUsEdit extends Component
         $this->validateOnly($propertyName, $this->rules(), $this->messages());
     }
 
+    // Listener for Quill editor
+    public function updateQuill($model, $html)
+    {
+        $this->$model = $html;
+        $this->validateOnly($model, $this->rules(), $this->messages());
+    }
+
     // Add this method to handle file uploads directly
     public function updatedNewOrganizationPhoto()
     {
@@ -88,6 +101,43 @@ class AboutUsEdit extends Component
         ]);
     }
 
+    // Helper method to extract image URLs from HTML content
+    protected function getImagesFromContent(string $html): array
+    {
+        $images = [];
+        preg_match_all('/<img[^>]+src="([^"]+)"/i', $html, $matches);
+        
+        if (isset($matches[1])) {
+            $images = $matches[1];
+        }
+        
+        return $images;
+    }
+
+    // Process Quill content to save base64 images to storage
+    protected function processQuillContent(string $html): string
+    {
+        Storage::disk('public')->makeDirectory('rte-images');
+
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+
+        foreach (iterator_to_array($dom->getElementsByTagName('img')) as $img) {
+            $src = $img->getAttribute('src');
+            if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $src, $m)) {
+                $ext = $m[1];
+                $data = base64_decode($m[2]);
+                $filename = 'rte-images/' . uniqid() . '.' . $ext;
+                Storage::disk('public')->put($filename, $data);
+                $img->setAttribute('src', asset("storage/{$filename}"));
+            }
+        }
+
+        return $dom->saveHTML();
+    }
+
     public function save()
     {
         $this->validate();
@@ -95,6 +145,25 @@ class AboutUsEdit extends Component
         try {
             if ($this->aboutUsId) {
                 $aboutUs = AboutUs::findOrFail($this->aboutUsId);
+                
+                // Process chairman speech content
+                if ($this->chairman_speech) {
+                    // Only delete images that are not present in the new content
+                    $oldImages = $this->getImagesFromContent($aboutUs->chairman_speech ?? '');
+                    $newImages = $this->getImagesFromContent($this->chairman_speech);
+                    $imagesToDelete = array_diff($oldImages, $newImages);
+                    
+                    foreach ($imagesToDelete as $imageUrl) {
+                        if (strpos($imageUrl, '/storage/rte-images/') !== false) {
+                            $path = str_replace('/storage/', '', parse_url($imageUrl, PHP_URL_PATH));
+                            Storage::disk('public')->delete($path);
+                        }
+                    }
+                    
+                    // Process new content (base64 → storage, swap src)
+                    $cleanHtml = $this->processQuillContent($this->chairman_speech);
+                    $aboutUs->chairman_speech = $cleanHtml;
+                }
                 
                 // Handle organization photo
                 if ($this->newOrganizationPhoto) {
@@ -117,7 +186,6 @@ class AboutUsEdit extends Component
                 }
 
                 $aboutUs->year = $this->year;
-                $aboutUs->chairman_speech = $this->chairman_speech;
                 $aboutUs->save();
             
                 session()->flash('success', 'About Us information updated successfully.');
@@ -125,7 +193,12 @@ class AboutUsEdit extends Component
                 // Create new about us
                 $aboutUs = new AboutUs();
                 $aboutUs->year = $this->year;
-                $aboutUs->chairman_speech = $this->chairman_speech;
+                
+                // Process chairman speech content for new entry
+                if ($this->chairman_speech) {
+                    $cleanHtml = $this->processQuillContent($this->chairman_speech);
+                    $aboutUs->chairman_speech = $cleanHtml;
+                }
             
                 // Store organization photo
                 $filename = uniqid() . '.' . $this->newOrganizationPhoto->getClientOriginalExtension();

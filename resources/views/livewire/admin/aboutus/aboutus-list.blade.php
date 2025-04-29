@@ -120,7 +120,7 @@
                 <div class="col-span-1 lg:col-span-2 bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700">
                     <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-4">Chairman Speech</h3>
                     @if($aboutUsData->chairman_speech)
-                        <div class="prose prose-indigo dark:prose-invert max-w-none">
+                        <div class="prose prose-indigo dark:prose-invert max-w-none" lang="zh">
                             {!! $aboutUsData->chairman_speech !!}
                         </div>
                     @else

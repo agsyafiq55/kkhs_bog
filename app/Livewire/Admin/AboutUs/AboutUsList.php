@@ -53,6 +53,20 @@ class AboutUsList extends Component
         $this->loadAboutUsData();
     }
 
+    // Helper method to delete images in rich text content
+    protected function deleteImagesInContent(string $html): void
+    {
+        preg_match_all('/<img[^>]+src="([^"]+)"/i', $html, $matches);
+        foreach ($matches[1] as $url) {
+            if (strpos($url, '/storage/rte-images/') !== false) {
+                $path = str_replace('/storage/', '', parse_url($url, PHP_URL_PATH));
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.admin.aboutus.aboutus-list', [
@@ -67,18 +81,17 @@ class AboutUsList extends Component
     
             // Delete organization photo
             if ($aboutUs->organization_photo) {
-                $orgPath = str_replace('public/', '', $aboutUs->organization_photo);
-                if (Storage::disk('public')->exists($orgPath)) {
-                    Storage::disk('public')->delete($orgPath);
-                }
+                Storage::disk('public')->delete($aboutUs->organization_photo);
             }
     
             // Delete chairman photo
             if ($aboutUs->chairman_photo) {
-                $chairPath = str_replace('public/', '', $aboutUs->chairman_photo);
-                if (Storage::disk('public')->exists($chairPath)) {
-                    Storage::disk('public')->delete($chairPath);
-                }
+                Storage::disk('public')->delete($aboutUs->chairman_photo);
+            }
+            
+            // Delete images in chairman speech content
+            if ($aboutUs->chairman_speech) {
+                $this->deleteImagesInContent($aboutUs->chairman_speech);
             }
     
             $aboutUs->delete();
