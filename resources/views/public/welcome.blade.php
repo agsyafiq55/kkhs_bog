@@ -307,40 +307,38 @@
                     </div>
                 </div>
             </div>
-        </div>
-
         <!--4. Achievements Section -->
-        <div
-            class="bg-white dark:bg-zinc-900 max-w-6xl align mx-auto rounded-xl shadow-md border border-gray-100 dark:border-zinc-800 relative overflow-hidden mt-12">
-            <!-- Background banner with overlay -->
-            <div class="relative overflow-hidden mb-8">
-                <div class="absolute inset-0 z-0">
-                    <img src="https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                        alt="Trophy and achievements" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
-                </div>
-
-                <div class="flex flex-col md:flex-row relative z-10">
-                    <div class="md:w-2/3 p-8 flex flex-col justify-center">
-                        <h1 class="text-7xl font-bold mb-2">Our Achievements</h1>
-                        <h2 class="text-5xl font-semibold">我们的成就</h2>
+                <div
+                    class="bg-white dark:bg-zinc-900 max-w-6xl align mx-auto rounded-xl shadow-md border border-gray-100 dark:border-zinc-800 relative overflow-hidden mt-12 mx-4 sm:mx-auto">
+                    <!-- Background banner with overlay -->
+                    <div class="relative overflow-hidden mb-8">
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                alt="Trophy and achievements" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80"></div>
+                        </div>
+                        <div class="flex flex-col md:flex-row relative z-10 p-4 sm:p-8">
+                            <div class="w-full md:w-2/3 flex flex-col justify-center space-y-2 md:space-y-4">
+                                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold">Our Achievements</h1>
+                                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold">我们的成就</h2>
+                            </div>
+                            <div class="w-full md:w-1/3 mt-4 md:mt-0">
+                                <p class="text-sm md:text-base text-justify">
+                                    Explore our academic and co-curricular achievements that showcase the excellence and
+                                    dedication of our students and staff.
+                                    <br class="hidden sm:block"><br class="hidden sm:block">
+                                    探索我们的学术和课外成就，展示我们学生和教职员工的卓越表现和奉献精神。
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="md:w-1/3 p-8 flex items-center">
-                        <p class="text-sm md:text-base text-justify">
-                            Explore our academic and co-curricular achievements that showcase the excellence and
-                            dedication of our students and staff.
-                            <br><br>
-                            探索我们的学术和课外成就，展示我们学生和教职员工的卓越表现和奉献精神。
-                        </p>
+
+                    <!-- Achievements Component -->
+                    <div class="p-6">
+                        <livewire:achievements.achievements-display />
                     </div>
                 </div>
             </div>
-
-            <!-- Achievements Component -->
-            <div class="p-6">
-                <livewire:achievements.achievements-display />
-            </div>
-        </div>
     </x-layouts.app>
     </div>
 
