@@ -9,6 +9,11 @@ use App\Http\Controllers\AnnouncementController;
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 
+// To creat sym link in production server
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
+
 // Landing Page
 Route::get('/', [GuestController::class, 'index'])->name('home');
 
