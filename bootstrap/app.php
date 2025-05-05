@@ -11,23 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Add your middleware to the global stack
-        $middleware->append(
-            \App\Http\Middleware\TrustProxies::class,
-            \App\Http\Middleware\EnsureLivewireUploadsUsePost::class
-        );
-
-        // Update the web middleware group if needed
-        $middleware->web(append: [
-            // ...
-        ]);
-
-        $middleware->alias([
-            // ...
-        ]);
-
-        // Exclude livewire upload from CSRF verification
-        $middleware->skipCsrfToken(['livewire/upload-file']);
+        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
